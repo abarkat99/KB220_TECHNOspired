@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Grepix Infotech Pvt LTD</title>         
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap -->
+        <link href="http://www.stitchmyapp.com/grepix-support/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="http://www.stitchmyapp.com/grepix-support/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+
+         <!-- Styles -->
+        <link href="http://www.stitchmyapp.com/grepix-support/styles/login_layout.css" rel="stylesheet" type="text/css">
+        <link href="http://www.stitchmyapp.com/grepix-support/styles/responsive.css" rel="stylesheet" type="text/css">
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,500,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+
+        <!-- SCRIPTS -->
+        <script type="text/javascript">
+        var global_base_url = "http://www.stitchmyapp.com/grepix-support/";
+        var global_url_suffix = ".grepix";
+        </script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="http://www.stitchmyapp.com/grepix-support/bootstrap/js/bootstrap.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+
+        <!-- Favicon: http://realfavicongenerator.net -->
+        <link rel="apple-touch-icon" sizes="152x152" href="http://www.stitchmyapp.com/grepix-support/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="http://www.stitchmyapp.com/grepix-support/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="http://www.stitchmyapp.com/grepix-support/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="http://www.stitchmyapp.com/grepix-support/images/favicon/site.webmanifest">
+        <link rel="mask-icon" href="http://www.stitchmyapp.com/grepix-support/images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="http://www.stitchmyapp.com/grepix-support/images/favicon/favicon.ico">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="msapplication-config" content="http://www.stitchmyapp.com/grepix-support/images/favicon/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+        
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $( document ).tooltip();
+            });
+        </script>
+
+        <!-- CODE INCLUDES -->
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+			<script type="text/javascript" src="http://www.stitchmyapp.com/grepix-support/scripts/custom/check_username.js" /></script> 
+    </head>
+    <body>
+
+    <div class="container">
+    <div class="row">
+    <div class="col-md-12 top-margin">
+                        
+        <div class="container">
+    <div class="row">
+    <div class="col-md-5 center-block-e">
+
+      
+
+      <div class="login-form">
+      	<div class="login-form-inner">
+ 		<p class="login-form-intro"><img src="http://www.stitchmyapp.com/grepix-support/images/ava2.png" width="100"></p>
+
+
+		
+    		<form action="http://www.stitchmyapp.com/grepix-support/register.grepix" id="register_form" method="post" accept-charset="utf-8">
+<input type="hidden" name="csrf_test_name" value="bf3a1dc1399c9ddd71ab465cfe9ba496" />      
+				<div class="form-group login-form-area has-feedback">
+					<input type="text" class="form-control" name="email" placeholder="Email" id="email" value="">
+		            <i class="glyphicon glyphicon-envelope form-control-feedback login-icon-color" id="login-icon-email"></i>
+		        </div>
+		        <div class="form-group login-form-area has-feedback">
+					<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="">
+		            <i class="glyphicon glyphicon-user form-control-feedback login-icon-color" id="login-icon-username"></i>
+		        </div>
+		        <div class="form-group login-form-area has-feedback">
+					<input type="password" class="form-control" name="password" placeholder="Password">
+		            <i class="glyphicon glyphicon-lock form-control-feedback login-icon-color"></i>
+		        </div>
+		        <div class="form-group login-form-area has-feedback">
+					<input type="password" class="form-control" name="password2" placeholder="Confirm Password">
+		            <i class="glyphicon glyphicon-lock form-control-feedback login-icon-color"></i>
+		        </div>
+		        <div class="form-group login-form-area has-feedback">
+					<input type="text" class="form-control" name="first_name" placeholder="First Name">
+		            <i class="glyphicon glyphicon-user form-control-feedback login-icon-color"></i>
+		        </div>
+		        <div class="form-group login-form-area has-feedback">
+					<input type="text" class="form-control" name="last_name" placeholder="Last Name">
+		            <i class="glyphicon glyphicon-user form-control-feedback login-icon-color"></i>
+		        </div>
+			  	
+			  	
+		  		
+
+		  		<input type="submit" name="s" class="btn btn-flat-login form-control" value="Register" />
+
+		  		<hr>
+
+		  			<p>Already have an account?</p>
+		  		</div>
+
+
+		  		<div class="login-form-bottom">
+		  		
+
+
+		  		 		          <div class="text-center decent-margin-top">
+		          		          
+		          		          </div>
+		          
+		  		<p class="decent-margin align-center"><a href="http://www.stitchmyapp.com/grepix-support/login.grepix">Back To Login</a></p>
+
+		  	</form>		  </div>
+</div>
+
+</div>
+</div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    var form = "register_form";
+    $('#'+form + ' input').on("focus", function(e) {
+      clearerrors();
+    });
+
+    $('#username').on("change", function() {
+    	$.ajax({
+	        url : global_base_url + "register/check_username" + ".grepix",
+	        type : 'GET',
+	        data : {
+	          username : $(this).val(),
+	        },
+	        dataType: 'JSON',
+	        success: function(data) {
+	        	if(data.success) {
+	        		$("#login-icon-username").css("color", "green");
+	        	} else {
+	        		$("#login-icon-username").css("color", "#a0a0a0");
+	        		if(data.field_errors) {
+			            var errors = data.fieldErrors;
+			            for (var property in errors) {
+			                if (errors.hasOwnProperty(property)) {
+			                    // Find form name
+			                    var field_name = '#' + form + ' input[name="'+property+'"]';
+			                    $(field_name).addClass("errorField");
+			                    if(errors[property]) {
+				                    // Get input group of field
+				                    $(field_name).parent().closest('.form-group').after('<div class="form-error-no-margin">'+errors[property]+'</div>');
+				                }
+			                    
+
+			                }
+			            }
+			          }
+	        	}
+	        }
+	    });
+    });
+
+    $('#email').on("change", function() {
+    	$.ajax({
+	        url : global_base_url + "register/check_email" + ".grepix",
+	        type : 'GET',
+	        data : {
+	          email : $(this).val(),
+	        },
+	        dataType: 'JSON',
+	        success: function(data) {
+	        	if(data.success) {
+	        		$("#login-icon-email").css("color", "green");
+	        	} else {
+	        		$("#login-icon-email").css("color", "#a0a0a0");
+	        		if(data.field_errors) {
+			            var errors = data.fieldErrors;
+			            for (var property in errors) {
+			                if (errors.hasOwnProperty(property)) {
+			                    // Find form name
+			                    var field_name = '#' + form + ' input[name="'+property+'"]';
+			                    $(field_name).addClass("errorField");
+			                    if(errors[property]) {
+				                    // Get input group of field
+				                    $(field_name).parent().closest('.form-group').after('<div class="form-error-no-margin">'+errors[property]+'</div>');
+				                }
+			                    
+
+			                }
+			            }
+			          }
+	        	}
+	        }
+	    });
+    });
+
+    $('#'+form).on("submit", function(e) {
+
+      e.preventDefault();
+      // Ajax check
+      var data = $(this).serialize();
+      $.ajax({
+        url : global_base_url + "register/ajax_check_register" + ".grepix",
+        type : 'POST',
+        data : {
+          formData : data,
+          'csrf_test_name' : 'bf3a1dc1399c9ddd71ab465cfe9ba496'
+        },
+        dataType: 'JSON',
+        success: function(data) {
+          if(data.error) {
+            $('#'+form).prepend('<div class="form-error">'+data.error_msg+'</div>');
+          }
+          if(data.success) {
+            // allow form submit
+            $('#'+form).unbind('submit').submit();
+          }
+          if(data.field_errors) {
+            var errors = data.fieldErrors;
+            for (var property in errors) {
+                if (errors.hasOwnProperty(property)) {
+                    // Find form name
+                    var field_name = '#' + form + ' input[name="'+property+'"]';
+                    $(field_name).addClass("errorField");
+                    if(errors[property]) {
+	                    // Get input group of field
+	                    $(field_name).parent().closest('.form-group').after('<div class="form-error-no-margin">'+errors[property]+'</div>');
+	                }
+                    
+
+                }
+            }
+          }
+        }
+      });
+
+      return false;
+
+
+    });
+  });
+
+  function clearerrors() 
+  {
+    console.log("Called");
+    $('.form-error').remove();
+    $('.form-error-no-margin').remove();
+    $('.errorField').removeClass('errorField');
+  }
+</script>
+    </div>
+    </div>
+    </div>
+
+ 
+
+    </body>
+</html>

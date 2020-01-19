@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add Grievance</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/all.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+    <!-- Styles 
+    <link href="css/styles.css" rel="stylesheet" type="text/css"> -->
+    <link href="http://www.stitchmyapp.com/grepix-support/styles/client2.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container-fluid background-area">
+    </div>
+
+    <div class="container-fluid header-top">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 clearfix">
+                            <div class="header-logo">
+                                <a href="http://www.stitchmyapp.com/grepix-support/client.grepix"
+                                    title="Grepix Infotech Pvt LTD">Grepix Infotech Pvt LTD</a>
+                            </div>
+                            <div class="header-links">
+                                <ul>
+
+                                    <li><a href="addgrievance.html">Add New Grievance</a></li>
+                                    <li><a
+                                            href="viewgrievance.html">View Grievances</a>
+                                    </li>
+
+                                    <li>
+                                        <div class="user-bar-segment">
+                                            <img src="http://www.stitchmyapp.com/grepix-support/uploads/bciit/4af680112c2de7c5027e26beb758779a.png"
+                                                class="user_avatar"> <a href="#">Admin User</a>
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-offset-2 col-md-8 header-search">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3"></div>
+
+                        <div class="col-lg-6 col-md-7" id="ticket-area">
+
+                            <h3 class="home-label">Grievance.</h3>
+
+                            <p>Welcome to Grievance Portal</p>
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+
+                                    <form action="http://www.stitchmyapp.com/grepix-support/client/add_pro.grepix"
+                                        class="form-horizontal" id="ticket_form" enctype="multipart/form-data"
+                                        method="post" accept-charset="utf-8">
+
+                                        <div class="form-group">
+                                            <label for="p-in" class="col-md-3 label-heading">Subject</label>
+                                            <div class="col-md-9 ui-front">
+                                                <input type="text" class="form-control" id='article-title' name="title"
+                                                    value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="p-in" class="col-md-3 label-heading">Department</label>
+                                            <div class="col-md-9 ui-front">
+                                                <select name="catid" id="parent_cat" class="form-control">
+                                                    <option value="0">Select ... </option>
+                                                    <option value="2">PDC</option>
+                                                    <option value="3">Transcript</option>
+                                                    <option value="4">Verification</option>
+                                                    <option value="5">Finance</option>
+                                                    <option value="6">Examination</option>
+                                                </select>
+                                                <div id="sub_cats">
+                                                    <select name="catid" id="parent_cat" class="form-control">
+                                                        <option value="0">Select ... </option>
+                                                        <option value="2">PDC</option>
+                                                        <option value="3">Transcript</option>
+                                                        <option value="4">Verification</option>
+                                                        <option value="5">Finance</option>
+                                                        <option value="6">Examination</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-12 ui-front">
+                                                <textarea name="body" id="ticket-body"></textarea>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div id="custom_fields_extra"></div>
+                                        <hr>
+                                        <h4>Attach Files</h4>
+
+                                        <div id="file_block">
+                                            <div class="form-group">
+                                                <label for="p-in" class="col-md-4 label-heading">Select File</label>
+                                                <div class="col-md-8">
+                                                    <input type="file" name="user_file_1" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <input type="submit" class="btn btn-primary form-control"
+                                            value="Submit Grievance">
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Copyright Grepix Infotech Pvt Ltd 2018.
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
