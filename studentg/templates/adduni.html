@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <form method="POST">
+            {% csrf_token %}
+            University:<br>
+            {{ rbody_form.as_p }}
+            University Head:<br>
+            {{ tuser_form.as_p}}
+            <button type="submit">Add University</button>
+        </form>
+    </body>
+</html>

@@ -57,6 +57,7 @@ class Temp_User(models.Model):
     last_name = models.CharField(max_length=50)
     email=models.EmailField()
     redressal_body = models.ForeignKey(Redressal_Body, on_delete=models.CASCADE)
+    STUDENT = 'ST'
     UNIVERSITY = 'UNI'
     INSTITUTE = 'INS'
     DEPARTMENT = 'DEP'
@@ -64,6 +65,7 @@ class Temp_User(models.Model):
     INS_HEAD = 'INS_H'
     DEP_HEAD = 'DEP_H'
     DESIGNATION_CHOICES = [
+        (STUDENT, 'Student'),
         (UNIVERSITY, 'University'),
         (INSTITUTE, 'Institute'),
         (DEPARTMENT, 'Department'),
