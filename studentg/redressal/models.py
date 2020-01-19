@@ -6,7 +6,9 @@ class Redressal_Body(models.Model):
 
 class Sub_Category(models.Model):
     sub_type=models.CharField(max_length=255)
-    redressal_body=models.ForeignKey(Redressal_Body, on_delete=models.CASCADE)
+    redressal_body=models.ForeignKey(Redressal_Body, on_delete=models.CASCADE, related_name='sub_category')
+    class Meta:
+        unique_together = (("sub_type", "redressal_body"),)
 
 class University(models.Model):
     redressal_body=models.ForeignKey(Redressal_Body, on_delete=models.CASCADE)

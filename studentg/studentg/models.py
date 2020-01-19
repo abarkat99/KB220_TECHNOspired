@@ -1,9 +1,9 @@
 from django.db import models
-from accounts.models import Student
+from accounts.models import User
 from datetime import date as date_fun
 
 class Grievance(models.Model):
-    user=models.ForeignKey(Student, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='grievance')
     date=models.DateField(auto_now_add=True)
 
     def increment_daytoken():
@@ -24,5 +24,12 @@ class Grievance(models.Model):
         (DEPARTMENT, 'Department'),
      ]
     category=models.CharField(max_length=15,choices=CATEGORY_CHOICES)
+    sub_category=models.CharField(max_length=255,choices=[('OTHER','Other')])
     class Meta:
         unique_together = (("date", "daytoken"),)
+
+class Reply(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    grievance=models.ForeignKey(Grievance, on_delete=models.CASCADE, related_name='reply')
+    date_time=models.DateTimeField(auto_now_add=True)
+    message=models.TextField(max_length=1000)
