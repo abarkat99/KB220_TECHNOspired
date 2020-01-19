@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,11 +10,11 @@
   <meta name="author" content="" />
 
   <!-- css -->
-  <link href="css/bootstrap.css" rel="stylesheet" />
-  <link href="css/bootstrap-responsive.css" rel="stylesheet" />
-  <link href="css/prettyPhoto.css" rel="stylesheet" />
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
   <!-- Theme skin -->
   <link id="t-colors" href="color/default.css" rel="stylesheet" />
@@ -340,11 +341,11 @@
                 <div class="span3">
                   <div class="item">
                     <figure>
-                      <div><img src="img/dummies/works/1.jpg" alt=""></div>
+                      <div><img src="{% static 'img/dummies/works/1.jpg' %}" alt=""></div>
                       <figcaption>
                         <h3>Portfolio name</h3>
                         <p>
-                          <a href="img/dummies/works/big.png" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
+                          <a href="{% static 'img/dummies/works/big.png' %}" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
                           <a href="#"><i class="icon-file icon-circled icon-bglight icon-2x active"></i></a>
                         </p>
                       </figcaption>
@@ -354,11 +355,11 @@
                 <div class="span3">
                   <div class="item">
                     <figure>
-                      <div><img src="img/dummies/works/2.jpg" alt=""></div>
+                      <div><img src="{% static 'img/dummies/works/2.jpg' %}" alt=""></div>
                       <figcaption>
                         <h3>Portfolio name</h3>
                         <p>
-                          <a href="img/dummies/works/big.png" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
+                          <a href="{% static 'img/dummies/works/big.png' %}" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
                           <a href="#"><i class="icon-file icon-circled icon-bglight icon-2x active"></i></a>
                         </p>
                       </figcaption>
@@ -368,11 +369,11 @@
                 <div class="span3">
                   <div class="item">
                     <figure>
-                      <div><img src="img/dummies/works/3.jpg" alt=""></div>
+                      <div><img src="{% static 'img/dummies/works/3.jpg' %}" alt=""></div>
                       <figcaption>
                         <h3>Portfolio name</h3>
                         <p>
-                          <a href="img/dummies/works/big.png" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
+                          <a href="{% static 'img/dummies/works/big.png' %}" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
                           <a href="#"><i class="icon-file icon-circled icon-bglight icon-2x active"></i></a>
                         </p>
                       </figcaption>
@@ -382,11 +383,11 @@
                 <div class="span3">
                   <div class="item">
                     <figure>
-                      <div><img src="img/dummies/works/4.jpg" alt=""></div>
+                      <div><img src="{% static 'img/dummies/works/4.jpg' %}" alt=""></div>
                       <figcaption>
                         <h3>Portfolio name</h3>
                         <p>
-                          <a href="img/dummies/works/big.png" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
+                          <a href="{% static 'img/dummies/works/big.png' %}" data-pretty="prettyPhoto[gallery1]" title="Portfolio caption here"><i class="icon-zoom-in icon-circled icon-bglight icon-2x active"></i></a>
                           <a href="#"><i class="icon-file icon-circled icon-bglight icon-2x active"></i></a>
                         </p>
                       </figcaption>
@@ -476,19 +477,19 @@
   <!-- javascript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="js/jquery.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/bootstrap.js"></script>
-  <script src="js/modernizr.custom.js"></script>
-  <script src="js/toucheffects.js"></script>
-  <script src="js/google-code-prettify/prettify.js"></script>
-  <script src="js/jquery.prettyPhoto.js"></script>
-  <script src="js/portfolio/jquery.quicksand.js"></script>
-  <script src="js/portfolio/setting.js"></script>
-  <script src="js/animate.js"></script>
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="{% static 'js/modernizr.custom.js' %}"></script>
+  <script src="{% static 'js/toucheffects.js' %}"></script>
+  <script src="{% static 'js/google-code-prettify/prettify.js' %}"></script>
+  <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
+  <script src="{% static 'js/portfolio/jquery.quicksand.js' %}"></script>
+  <script src="{% static 'js/portfolio/setting.js' %}"></script>
+  <script src="{% static 'js/animate.js' %}"></script>
 
   <!-- Template Custom JavaScript File -->
-  <script src="js/custom.js"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
 
 </body>
 
