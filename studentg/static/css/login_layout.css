@@ -1,0 +1,56 @@
+body { font-size: 13px; font-family: "Open Sans"; background: url(../images/welcome9.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: #7c7c7c;
+}
+.top-margin { margin-top: 70px; }
+.login-page { background: #FFFFFF; padding: 20px; border-radius: 0px 0px 4px 4px; opacity: .95;}
+.login-page-header { background: #f3f3f3; padding: 10px; border-radius: 4px 4px 0px 0px; text-align: center; border-bottom: 1px solid #dadada; font-weight: 600; color: #5c6267; opacity: .95;}
+.align-center { text-align: center; }
+.decent-margin-top { margin-top: 30px; }
+.decent-margin { margin-top: 20px; margin-bottom: 20px;  }
+
+.center-block-e{
+    float: none;
+    margin: 0 auto;
+}
+.login-alert-area { background: #FFFFFF; padding: 10px; margin: 10px;  }
+.social-icon { padding-right: 10px; border-right: 1px solid #EEE; margin-right: 5px;}
+.white-form-bg { background: #FFF !important; }
+.align-center { text-align: center; }
+
+/* new */
+.login-form { border-radius: 8px; background: #FFF; min-height: 450px; margin-top: 50px; box-shadow: 0 2px 44px 0 rgba(0, 0, 0, 0.3); }
+.login-form-inner { padding: 30px 30px 0px 30px; }
+.login-form-bottom { padding: 1px 30px 10px 30px !important; background: #f0f2f2; border-radius: 0px 0px 8px 8px; }
+.login-form h2 { margin-top: 0px; }
+.login-welcome { font-size: 34px; color: #FFF; text-align: center; padding: 20px; margin-top: 20px;}
+.login-form-intro { font-size: 14px; text-align: center; color: #7c7c7c; }
+.login-form-area { width: 100%; margin-top: 30px; margin-bottom: 30px;}
+.btn-flat-login { background: #29a79c; color: #FFF; }
+.btn-flat-login:hover { background: #269b93; color: #FFF; }
+.login-icon-color { color: #a0a0a0; }
+.btn-flat-social { background: #f0f0f0; color: #000 !important;}
+.btn-flat-social-twitter { background: #20a5e2; color: #FFF !important; }
+.btn-flat-social-facebook { background: #3859a2; color: #FFF !important; }
+.btn-flat-social-google { background: #e33500; color: #FFF !important; }
+.small-text { font-size: 11px; }
+.login-footer { color: #FFF; position: fixed; bottom: 20px; width: 100%; }
+
+.has-feedback .form-control-feedback {
+    top: 0px;
+    left: 0;
+}
+.form-horizontal .has-feedback .form-control-feedback {
+    top: 0;
+    left: 0px;
+}
+.form-group.login-form-area.has-feedback input { padding-left: 30px; }
+
+.form-error { margin-top: 10px; margin-bottom: 10px; border: 1px solid #fc1b00; padding: 5px; background: #fcf5f0; color: #864143;}
+.form-error-no-margin { border: 1px solid #fc1b00; padding: 5px; background: #fcf5f0; color: #864143;}
+.errorField { border: 1px solid #fc1b00 !important; }
+.custom-field-register { margin-bottom: 10px; }
+

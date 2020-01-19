@@ -1,0 +1,68 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Styles -->
+    <link href="{% static 'css/login_layout.css' %}" rel="stylesheet"
+      type="text/css">
+  </head>
+
+  <body style="background-image:
+    url(https://images.pexels.com/photos/442574/pexels-photo-442574.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500);">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 top-margin">
+
+          <div class="container">
+            <div class="row">
+              <div class="col-md-5 center-block-e">
+
+                <div class="login-form">
+                  <div class="login-form-inner">
+                    <p class="login-form-intro" style="padding-bottom: 20px;
+                      padding-top: 20px;">
+                      <i class="fas fa-lock text-dark" style="font-size:50px;"></i></p>
+                    <form method="post">
+                      {% csrf_token %}
+                      {% for field in form.visible_fields %}
+                      <div class="form-group login-form-area has-feedback">
+                        {% render_field field class="form-control login-form-area has-feedback" placeholder=field.label %}
+                        {% for error in field.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      {% endfor %}
+
+                      <p><input type="submit" class="btn btn-flat-login
+                          form-control bg-dark" style="font-size: 20px;"
+                          value="Login"></p>
+
+                      <p class="decent-margin small-text" style="padding-bottom:
+                        40px;"><a
+                          href="http://www.stitchmyapp.com/grepix-support/login/forgotpw.grepix"
+                          style="font-size: 17px; color: black;">Forgotten
+                          Password?</a>
+                      </p>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
