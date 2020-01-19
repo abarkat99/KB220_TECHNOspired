@@ -1,0 +1,169 @@
+/*
+Default accent color
+
+*/
+a:hover {
+	color:#c14c4b;
+}
+
+/* menu */
+.navbar nav ul.nav li.dropdown ul.dropdown-menu li a:active,.navbar nav ul.nav li.dropdown ul.dropdown-menu li a:focus {
+  background: #c14c4b;
+}
+ul.topmenu li a:hover {
+	color:#c14c4b;
+}
+
+/* slider */
+.bg-color {
+  background: #c14c4b;
+}
+
+/* layerslider */
+.ls-highlighted-h.color {
+	background: #c14c4b;	
+}
+
+/* form */
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border-color: #c14c4b;
+}
+
+form#contactform .validation {
+	color:#c14c4b;
+}
+#sendmessage {
+	border:1px solid #c14c4b;
+
+}
+
+/* icon */
+[class^="icon-"].active {
+	color:#c14c4b;
+}
+
+a i.icon-bglight:hover,
+a i.icon-bgdark:hover {
+  background: #c14c4b;
+}
+i.icon-bglight.active {
+  background: #c14c4b;
+}
+
+ul.styledlist li:before {
+	color:#c14c4b;
+}
+
+/* logo icon */
+.logo h1 [class^="icon-"] {
+	color:#c14c4b;
+}
+
+.footer_logo h3 [class^="icon-"] {
+	color:#c14c4b;
+}
+
+/* CTA */
+.cta-text h2 span {
+	color:#c14c4b;
+}
+
+/*-- button -- */
+.btn-color {
+  border:1px solid #c14c4b;
+  background: #c14c4b;
+}
+
+/* content */
+.box:hover .text h4 {
+	color:#c14c4b;
+}
+#inner-headline ul.breadcrumb li a:hover {
+	color:#c14c4b;
+}
+
+a.thumbnail:hover,
+a.thumbnail:focus {
+  border-color: #c14c4b;
+}
+
+/* blog */
+article .post-heading h3 a:hover {
+	text-decoration:none;
+	color:#c14c4b;
+}
+
+ul.cat li a:hover, ul.folio-detail li a:hover{
+	color:#c14c4b;
+}
+
+.meta-post a.author:hover,.meta-post a.date:hover {
+  background: #c14c4b;
+}
+
+.about-author {
+	background: #c14c4b;
+}
+
+.meta-bottom li a:hover {
+	color:#c14c4b;
+}
+
+#pagination a:hover {
+  background: #c14c4b;
+}
+
+/* component */
+.pagination ul > .active > a,
+.pagination ul > .active > span {
+  background: #c14c4b;
+  border:1px solid #c14c4b;
+}
+.pagination ul > .active > a:hover,
+.pagination ul > .active > span:hover {
+  background: #c14c4b;
+  border:1px solid #c14c4b;
+}
+.pagination ul > li > a:hover{
+  color:#c14c4b;
+}
+
+.pullquote-left {
+	border-left:5px solid #c14c4b;
+}
+
+.pullquote-right {
+	border-right:5px solid #c14c4b;
+}
+
+.pricing-box-wrap.special .pricing-heading {
+	background: #c14c4b;
+}
+
+/* portfolio */
+ul.portfolio-categ.filter li.active a {
+  color:#c14c4b;
+}
+
+/* footer */
+footer a:hover {
+	color:#c14c4b;
+}
+footer ul.link-list li a:hover {
+	color:#c14c4b;
+}
