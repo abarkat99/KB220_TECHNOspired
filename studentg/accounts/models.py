@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .redressal.models import University, Institute, Department, Redressal_Body
+from redressal.models import University, Institute, Department, Redressal_Body
 # Create your models here.
 
 

@@ -1,5 +1,5 @@
 from django.db import models
-from .accounts.models import User
+from accounts.models import User
 from datetime import date as date_fun
 
 class Grievance(models.Model):
