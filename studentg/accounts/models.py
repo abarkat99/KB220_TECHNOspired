@@ -6,7 +6,7 @@ from redressal.models import University, Institute, Department, Redressal_Body
 
 class Sys_User(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, parent_link=True)
+        User, on_delete=models.CASCADE, parent_link=True, related_name="sys_user")
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     STUDENT = 'ST'
@@ -22,7 +22,7 @@ class Sys_User(models.Model):
         (INSTITUTE, 'Institute'),
         (DEPARTMENT, 'Department'),
         (UNI_HEAD, 'University_H'),
-        (INS_HEAD, 'INSTITUTE_H'),
+        (INS_HEAD, 'Institute_H'),
         (DEP_HEAD, 'Department_H'),
     ]
     designation = models.CharField(max_length=15, choices=DESIGNATION_CHOICES)
@@ -55,6 +55,7 @@ self.token = default_token_generator.make_token(user)
 class Temp_User(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
     email=models.EmailField()
     redressal_body = models.ForeignKey(Redressal_Body, on_delete=models.CASCADE)
     STUDENT = 'ST'
@@ -70,9 +71,13 @@ class Temp_User(models.Model):
         (INSTITUTE, 'Institute'),
         (DEPARTMENT, 'Department'),
         (UNI_HEAD, 'University_H'),
-        (INS_HEAD, 'INSTITUTE_H'),
+        (INS_HEAD, 'Institute_H'),
         (DEP_HEAD, 'Department_H'),
     ]
     designation = models.CharField(max_length=15, choices=DESIGNATION_CHOICES)
     uidb64=models.CharField(max_length=255)
     token=models.CharField(max_length=255)
+
+class Student_Temp_User(models.Model):
+    user = models.ForeignKey(Temp_User, on_delete=models.CASCADE, related_name='student')
+    rollno=models.IntegerField(unique=True)

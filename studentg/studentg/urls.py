@@ -21,6 +21,6 @@ from studentg import views
 urlpatterns = [
     path('', views.home, name="home"),
     path('accounts/',include('accounts.urls')),
-    path('adduni/', r_views.add_uni, name="adduni"),
+    path('add/<str:body_type>', r_views.add_body, name="add_body"),
     path('admin/', admin.site.urls),
 ]
