@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Student Grievance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Student Greviance System" />
+
+  <!-- css -->
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Theme skin -->
+  <link id="t-colors" href="{% static 'color/default.css' %}" rel="stylesheet" />
+
+  <link rel="shortcut icon" href="{% static 'ico/tab.png' %}" />
+
+</head>
+
+<body style="overflow-x: hidden;">
+
+    {% block content %}
+    
+    {% endblock content %}
+
+    <div>
+        <div class="container-fluid bg-dark" >
+          <div class="row" style="margin-bottom: 0px; margin-top: 10px;">
+            
+            <div class="span-6 offset-1">
+              <div class="widget">
+                <div class="footer_logo">
+                  <h4 style="color:whitesmoke;"><p href="#"><i class="fas fa-hands-helping" style="font-size: 20px; color: greenyellow;"></i> Student Greviance<br> Redressal Portal</p></h4>
+                </div>
+              </div>
+            </div>
+            <div class="span-6 offset-2" >
+              <div class="widget">
+                <address>
+                  <strong>Remember company Inc.</strong><br>
+                  Somestreet KW 101, Park Village W.01<br>
+                  Jakarta 13426 Indonesia
+                </address>
+              </div>
+            </div>
+            <div class="span-5 offset-2">
+              <div class="widget">
+                <p>
+                  <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
+                  <i class="icon-envelope-alt"></i> email@domainname.com
+                </p>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+      <div id="sub-footer" style="margin-top:0px ;padding-top: 10px;padding-bottom: 10px;">
+        <div class="container-fluid" >
+          <div class="row">
+            <div class="span2">
+              <div class="copyright">
+                <p>&copy; All right reserved</p>
+              </div>
+  
+            </div>
+  
+            <div class="span9">
+              <div class="credits">
+  
+                <ul class="social-network">
+                  <li><a href="#" data-placement="bottom" title="Facebook"><i
+                        class="icon-circled icon-bglight icon-facebook"></i></a></li>
+                  <li><a href="#" data-placement="bottom" title="Twitter"><i
+                        class="icon-circled icon-bglight icon-twitter"></i></a></li>
+                  <li><a href="#" data-placement="bottom" title="Linkedin"><i
+                        class="icon-circled icon-linkedin icon-bglight"></i></a></li>
+                  <li><a href="#" data-placement="bottom" title="Google +"><i
+                        class="icon-circled icon-google-plus icon-bglight"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </footer>
+    </div>
+    <a href="#" class="scrollup"><i class="icon-angle-up icon-rounded icon-bglight icon-2x"></i></a>
+  
+    <!-- javascript 
+     Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'js/toucheffects.js' %}"></script>
+    <script src="{% static 'js/google-code-prettify/prettify.js' %}"></script>
+    <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
+    <script src="{% static 'js/portfolio/jquery.quicksand.js' %}"></script>
+    <script src="{% static 'js/portfolio/setting.js' %}"></script>
+    <script src="{% static 'js/animate.js' %}"></script>
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  
+    <!-- Template Custom JavaScript File -->
+    <script src="{% static 'js/custom.js' %}"></script>
+  
+  </body>
+  
+  </html>
