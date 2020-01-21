@@ -58,7 +58,7 @@ def add_body(request, body_type):
             elif body_type == "department":
                 temp_user.designation = "Department_H"
             temp_user.created_at = timezone.now()
-            temp_user.uidb64 = urlsafe_base64_encode(force_bytes(six.text_type(temp_user.pk)+six.text_type(temp_user.created_at)))
+            temp_user.uidb64 = urlsafe_base64_encode(force_bytes(six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
             value = six.text_type(temp_user.email)+six.text_type(temp_user.designation) + \
                 six.text_type(temp_user.first_name) + \
                 six.text_type(temp_user.last_name) + \
@@ -106,11 +106,11 @@ def add_subcategory(request):
 def view_grievances(request):
     r_body=None
     if request.user.sys_user.designation=="University" or request.user.sys_user.designation=="University_H":
-        r_body=University_Member.objects.get(user=request.user).redressal_body
+        r_body=University_Member.objects.get(user=request.user).university.redressal_body
     elif request.user.sys_user.designation=="Institute" or request.user.sys_user.designation=="Institute_H":
-        r_body=Institute_Member.objects.get(user=request.user).redressal_body
+        r_body=Institute_Member.objects.get(user=request.user).institute.redressal_body
     elif request.user.sys_user.designation=="Department" or request.user.sys_user.designation=="Department_H":
-        r_body=Department_Member.objects.get(user=request.user).redressal_body
+        r_body=Department_Member.objects.get(user=request.user).department.redressal_body
     else:
         raise Http404()
     gr_list=Grievance.objects.filter(redressal_body=r_body,status="Pending").order_by('last_update')

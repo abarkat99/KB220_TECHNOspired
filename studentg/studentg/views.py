@@ -40,7 +40,7 @@ def add_student(request):
             tuser.designation = "Student"
             tuser.created_at = timezone.now()
             tuser.uidb64 = urlsafe_base64_encode(force_bytes(
-                six.text_type(tuser.pk)+six.text_type(tuser.created_at)))
+                six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
             value = six.text_type(tuser.email)+six.text_type(tuser.designation) + \
                 six.text_type(tuser.first_name) + \
                 six.text_type(tuser.last_name) + \
