@@ -1,0 +1,78 @@
+/* tickets*/
+.ticket-border-left { border-left: 1px solid #DDD; }
+.ticket-reply-options { float: right; }
+#status-button-update { display: none; }
+.content-separator { margin-top: 20px !important; }
+.media-title { margin-top: 0px; }
+.ticket-priority { position: absolute; top: 5px; right: 5px; }
+
+.user-box-name { display: inline-block; font-size: 12px; line-height: 6px; vertical-align: middle;}
+.user-box-name p { margin-bottom: 0px; }
+.user-box-username { font-size: 11px; color: #8c8c8c; line-height: 10px; margin-top: 7px; }
+.task-blob-title { font-size: 11px; margin-bottom: 2px; }
+
+.tool-item { display: inline-block; vertical-align: top; padding: 5px; margin: 5px; text-align: center; border-radius: 4px; border: 1px solid #EEE; }
+
+/* NOTIFICATION BOX */
+.notification-icon { font-size: 18px; }
+.notification-user-icon { width: 30px; height: 30px; border-radius: 15px; }
+#notifications-box { position: absolute; width: 270px; top: 45px; right: 50px; background: #FFF; border: 1px solid #DDD; border-radius: 4px; min-height: 100px; z-index: 2000; display: none; }
+#notifications-box a:hover { background-color: #FFF !important; }
+.notification-box-bit { position: relative; width: 268px; padding: 10px;  }
+.notification-box-bit:hover { background: #E1ECF3; }
+.notification-icon-bit { float: left; margin-right: 5px; width: 33px;}
+.notification-text-bit { float: left; width: 208px; vertical-align: top; color: #000; font-size: 12px;}
+.notification-text-bit a { color: #0B82F9 !important; }
+.notification-text-bit a:hover { color: #0B82F9 !important; }
+.notification-box-title { border-bottom: 1px solid #EEE; font-size: 14px; margin-bottom: 10px; font-weight: 600; padding: 10px; color: #000 !important; }
+.notification-box-footer { border-top: 1px solid #EEE; font-size: 14px; font-weight: 500; padding: 10px; text-align: center; color: #000 !important; }
+.notification-box-footer a { color: #2d89f0 !important; }
+.badge { background: #FC2232 !important; }
+#notifications-scroll { overflow: scroll; height: 150px; }
+.active-noti { border-right: 2px solid #F32838; }
+.notification-datestamp { padding: 0px; margin: 0px; color: #B0B0B0; }
+.click { cursor: pointer; }
+.center-table-data { text-align: center; }
+
+.project-blob { display: inline-block; border: 1px solid #DDD; border-radius: 4px; padding: 10px; text-align: center; margin: 10px; width: 150px; min-height: 100px; vertical-align: top; }
+
+.titan-tab-heading { margin: 0px; margin-bottom: 20px; }
+.titan-tab-item { border-radius: 4px; border: 1px solid #ACACAC; padding: 20px; margin-top: 10px; background: #F9F9F9;}
+.titan-tab-tab { font-size: 18px !important; }
+
+/* spinner */
+.spin{
+     -webkit-transform-origin: 50% 58%;
+     transform-origin:50% 58%;
+     -ms-transform-origin:50% 58%; /* IE 9 */
+     -webkit-animation: spin .8s infinite linear;
+     -moz-animation: spin .8s infinite linear;
+     -o-animation: spin .8s infinite linear;
+     animation: spin .8s infinite linear;
+}
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ticket-label-info { text-align: right; color: #4e4e4e; }

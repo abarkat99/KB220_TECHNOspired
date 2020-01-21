@@ -28,7 +28,7 @@ def signup(request,uidb64,token):
             user_obj=None
             if(t_user.designation=="Student"):
                 user_obj=Student()
-                st_t_user=t_user.student
+                st_t_user=t_user.student.all()[0]
                 user_obj.rollno=st_t_user.rollno
                 user_obj.department=Department.objects.get(redressal_body=t_user.redressal_body)
             elif(t_user.designation=="University" or t_user.designation=="University_H"):

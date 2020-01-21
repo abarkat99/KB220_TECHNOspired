@@ -18,9 +18,20 @@ from django.urls import path, include
 from redressal import views as r_views
 from studentg import views
 
+dashpatterns = [
+    path('', views.dash_home, name="dash_home"),
+    path('add/body/<str:body_type>', r_views.add_body, name="add_body"),
+    path('add/subcategory',r_views.add_subcategory, name="add_subcategory"),
+    path('add/student', views.add_student, name="add_student"),
+    path('view/grievances',r_views.view_grievances, name="view_grievances"),
+
+    path('add/grievance', views.addgrievance, name="addgrievance"),
+    path('mygrievance', views.my_grievances, name="my_grievances"),
+]
 urlpatterns = [
     path('', views.home, name="home"),
     path('accounts/',include('accounts.urls')),
-    path('add/<str:body_type>', r_views.add_body, name="add_body"),
+    path('dashboard/', include(dashpatterns)),
     path('admin/', admin.site.urls),
+    path('load/subcategories', views.load_subcategories,name="load_subcategories"),
 ]

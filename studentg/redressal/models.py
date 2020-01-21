@@ -9,6 +9,9 @@ class Sub_Category(models.Model):
     redressal_body=models.ForeignKey(Redressal_Body, on_delete=models.CASCADE, related_name='sub_category')
     class Meta:
         unique_together = (("sub_type", "redressal_body"),)
+    def __str__(self):
+        return self.sub_type
+    
 
 class University(models.Model):
     redressal_body=models.ForeignKey(Redressal_Body, on_delete=models.CASCADE)

@@ -1,0 +1,45 @@
+{% extends 'dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+Add Grievance
+{% endblock title %}
+
+
+{% block javascript %}
+<script src="{% static 'js/load_subcat.js' %}"></script>
+{% endblock javascript %}
+
+{% block styles %}
+<link href="{% static 'css/client2.css' %}" rel="stylesheet" type="text/css">
+<style>
+    .header-links li:hover {
+        border-radius: 6px;
+        border: 2px solid #302f2f;
+        background: #343434;
+        padding: 2px;
+    }
+
+    .header-links ul li {
+        margin: 13px 20px 13px 20px;
+    }
+</style>
+{% endblock styles %}
+{% block e_content %}
+<form method="post" id="grievance_form" sub-categories-url="{% url 'load_subcategories' %}">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+    <div class="form-group login-form-area has-feedback">
+        {% render_field field class="form-control" placeholder=field.label %}
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <p><input type="submit" class="btn btn-flat-login
+                          form-control bg-dark w-100" id="submit_grievance" style="font-size: 20px;" value="Submit Grievance"></p>
+</form>
+{% endblock e_content %}

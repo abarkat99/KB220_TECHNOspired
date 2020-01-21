@@ -47,7 +47,7 @@ body { font-size: 13px; font-family: "Open Sans"; background: url(../images/welc
     top: 0;
     left: 0px;
 }
-.form-group.login-form-area.has-feedback input { padding-left: 30px; }
+.form-group.login-form-area.has-feedback input { padding-top: 20px; padding-bottom: 20px; padding-left: 30px; }
 
 .form-error { margin-top: 10px; margin-bottom: 10px; border: 1px solid #fc1b00; padding: 5px; background: #fcf5f0; color: #864143;}
 .form-error-no-margin { border: 1px solid #fc1b00; padding: 5px; background: #fcf5f0; color: #864143;}

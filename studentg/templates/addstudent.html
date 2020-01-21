@@ -1,0 +1,25 @@
+{% extends 'dash_base.html' %}
+{% load widget_tweaks %}
+{% block e_content %}
+<form method="POST">
+    {% csrf_token %}
+    Student:<br>
+    {% for field in tuser_form.visible_fields %}
+    <div class="form-group has-feedback">
+        {% render_field field class="form-control" placeholder=field.label %}
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% for field in student_form.visible_fields %}
+    <div class="form-group has-feedback">
+        {% render_field field class="form-control" placeholder=field.label %}
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="form-control btn btn-primary">Add Student</button>
+</form>
+{% endblock e_content %}

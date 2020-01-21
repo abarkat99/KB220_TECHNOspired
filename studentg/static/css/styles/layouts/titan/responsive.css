@@ -1,0 +1,11 @@
+#responsive-menu-links { display: none; }
+
+@media (max-width: 400px) {
+	#responsive-menu-links { display: block; }
+	.dashboard-window { margin-bottom: 10px; margin-bottom: 10px; }
+}
+
+@media (max-width: 767px) {
+	#responsive-menu-links { display: block; margin-bottom: 10px; }
+	.dashboard-window { margin-bottom: 10px; }
+}

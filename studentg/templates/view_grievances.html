@@ -1,0 +1,24 @@
+{% extends 'dash_base.html' %}
+{% load widget_tweaks %}
+{% block e_content %}
+<table>
+<thead>
+<tr>
+<th>Token No</th>
+<th>Last Updated</td>
+<th>Sub-Category</th>
+<th>Subject</th>
+</tr>
+</thead>
+<tbody>
+{% for grievance in gr_list %}
+<tr>
+<td>{{ grievance.date|date:"Ymd" }}{{ grievance.daytoken|stringformat:"04d" }}</td>
+<td>{{ grievance.last_update }}</td>
+<td>{{ grievance.sub_category }}</td>
+<td>{{ grievance.subject }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock e_content %}
