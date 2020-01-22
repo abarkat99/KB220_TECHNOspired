@@ -27,14 +27,14 @@
 <body style="overflow-x: hidden;">
     <div id="wrapper">
         <!-- header -->
-        <header class="navbar-fixed-top">
+        <header>
             <div class="container-fluid">
                 <div class="row nomargin">
 
                     <div class="cols-5 offset-1">
                         <div class="logo" style="margin-top:15px;">
                             <h3>
-                                <p style="color: whitesmoke;"><i class="fas fa-hands-helping text-success"
+                                <p style="color: whitesmoke;"><i class="fas fa-hands-helping"
                                         style="color:greenyellow;"></i> Student Grievance Redressal Portal</p>
                             </h3>
                         </div>
@@ -50,14 +50,14 @@
                                             <a href="{% url 'logout' %}">Logout</a>
                                         </li>
                                         {% else %}
-                                        <li class="active">
-                                            <a href="#">Home</a>
+                                        <li class={% block link %}{% endblock %}>
+                                            <a href="{% url 'home' %}">Home</a>
                                         </li>
-                                        <li class="dropdown">
+                                        <li class={% block link1 %}{% endblock %}>
                                             <a href="#">About Us<i class="icon-angle-down"></i></a>
 
                                         </li>
-                                        <li class="dropdown">
+                                        <li class={% block link2 %}{% endblock %}>
                                             <a href="#">Contact Us<i class="icon-angle-down"></i></a>
 
                                         </li>
@@ -76,81 +76,90 @@
         </header>
         {% block content %}
         {% endblock  %}
-        <footer>
-        <div>
-            <div class="container-fluid bg-dark">
-                <div class="row" style="margin-bottom: 0px; margin-top: 10px;">
+        <footer style="padding-top:0px;">
+            <div>
+                <div class="container-fluid bg-dark">
+                    <div class="row" style="margin-bottom: 0px; margin-top: 10px;">
 
-                    <div class="span-6 offset-1">
-                        <div class="widget">
-                            <div class="footer_logo">
-                                <h4 style="color:whitesmoke;">
-                                    <p href="#"><i class="fas fa-hands-helping"
-                                            style="font-size: 20px; color: greenyellow;"></i> Student Greviance<br>
-                                        Redressal Portal</p>
-                                </h4>
+                        <div class="span-6 offset-1">
+                            <div class="widget">
+                                <div class="footer_logo">
+                                    <h4 style="color:whitesmoke;">
+                                        <p href="#"><i class="fas fa-hands-helping"
+                                                style="font-size: 20px; color: greenyellow;"></i> Student Greviance<br>
+                                            Redressal Portal</p>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span-6 offset-2">
+                            <div class="widget">
+                                <address>
+                                    <strong>Remember company Inc.</strong><br>
+                                    Somestreet KW 101, Park Village W.01<br>
+                                    Jakarta 13426 Indonesia
+                                </address>
+                            </div>
+                        </div>
+                        <div class="span-5 offset-2">
+                            <div class="widget">
+                                <p>
+                                    <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
+                                    <i class="icon-envelope-alt"></i> email@domainname.com
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="sub-footer" style="margin-top:0px ;padding-top: 10px;padding-bottom: 10px;">
+                <div class="container-fluid">
+                    <div class="row nomargin">
+                        <div class="span2">
+                            <div class="copyright">
+                                <p>&copy; All right reserved</p>
+                            </div>
+
+                        </div>
+
+                        <div class="span9">
+                            <div class="credits">
+
+                                <ul class="social-network">
+                                    <li><a href="#" data-placement="bottom" title="Facebook"><i
+                                                class="icon-circled icon-bglight icon-facebook"></i></a></li>
+                                    <li><a href="#" data-placement="bottom" title="Twitter"><i
+                                                class="icon-circled icon-bglight icon-twitter"></i></a></li>
+                                    <li><a href="#" data-placement="bottom" title="Linkedin"><i
+                                                class="icon-circled icon-linkedin icon-bglight"></i></a></li>
+                                    <li><a href="#" data-placement="bottom" title="Google +"><i
+                                                class="icon-circled icon-google-plus icon-bglight"></i></a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="span-6 offset-2">
-                        <div class="widget">
-                            <address>
-                                <strong>Remember company Inc.</strong><br>
-                                Somestreet KW 101, Park Village W.01<br>
-                                Jakarta 13426 Indonesia
-                            </address>
-                        </div>
-                    </div>
-                    <div class="span-5 offset-2">
-                        <div class="widget">
-                            <p>
-                                <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
-                                <i class="icon-envelope-alt"></i> email@domainname.com
-                            </p>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </div>
-        <div id="sub-footer" style="margin-top:0px ;padding-top: 10px;padding-bottom: 10px;">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="span2">
-                        <div class="copyright">
-                            <p>&copy; All right reserved</p>
-                        </div>
-
-                    </div>
-
-                    <div class="span9">
-                        <div class="credits">
-
-                            <ul class="social-network">
-                                <li><a href="#" data-placement="bottom" title="Facebook"><i
-                                            class="icon-circled icon-bglight icon-facebook"></i></a></li>
-                                <li><a href="#" data-placement="bottom" title="Twitter"><i
-                                            class="icon-circled icon-bglight icon-twitter"></i></a></li>
-                                <li><a href="#" data-placement="bottom" title="Linkedin"><i
-                                            class="icon-circled icon-linkedin icon-bglight"></i></a></li>
-                                <li><a href="#" data-placement="bottom" title="Google +"><i
-                                            class="icon-circled icon-google-plus icon-bglight"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         </footer>
     </div>
     <a href="#" class="scrollup"><i class="icon-angle-up icon-rounded icon-bglight icon-2x"></i></a>
+    <!-- javascript 
+   Placed at the end of the document so the pages load faster -->
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+  <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
+  <script src="{% static 'js/all.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+  <!-- Template Custom JavaScript File -->
+  <script src="{% static 'js/custom.js' %}"></script>
 
 
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
     {% block javascript %}
     {% endblock javascript %}
+
 </body>
 
 </html>

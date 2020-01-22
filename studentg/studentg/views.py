@@ -82,7 +82,7 @@ def addgrievance(request):
                 r_body = r_body.redressal_body
             grievance.redressal_body=r_body
         grievance.save()
-        return redirect('dash_home')
+        return redirect('my_grievances')
     else:
         form = NewGrievanceForm()
     return render(request, 'addgrievance.html', {'form': form})

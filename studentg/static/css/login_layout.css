@@ -22,7 +22,7 @@ body { font-size: 13px; font-family: "Open Sans"; background: url(../images/welc
 .align-center { text-align: center; }
 
 /* new */
-.login-form { border-radius: 8px; background: #FFF; min-height: 450px; margin-top: 50px; box-shadow: 0 2px 44px 0 rgba(0, 0, 0, 0.3); }
+.login-form { border-radius: 8px; background: #FFF; min-height: 450px; margin-top:0px; box-shadow: 0 2px 44px 0 rgba(0, 0, 0, 0.3); }
 .login-form-inner { padding: 30px 30px 0px 30px; }
 .login-form-bottom { padding: 1px 30px 10px 30px !important; background: #f0f2f2; border-radius: 0px 0px 8px 8px; }
 .login-form h2 { margin-top: 0px; }

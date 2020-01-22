@@ -13,8 +13,9 @@
 <link href="{% static 'css/login_layout.css' %}" rel="stylesheet" type="text/css">
 {% endblock styles %}
 {% block content %}
+<div class="container-fluid" style="background-image:url('{% static 'img/login.png' %}');background-size:cover;">
   <div class="container">
-    <div class="row">
+    <div class="row nomargin">
       <div class="col-md-12 top-margin">
 
         <div class="container">
@@ -37,7 +38,7 @@
                     {% csrf_token %}
                     {% for field in form.visible_fields %}
                     <div class="form-group login-form-area has-feedback">
-                      {% render_field field class="form-control login-form-area has-feedback" placeholder=field.label %}
+                      {% render_field field class="form-control login-form-area has-feedback mt-1" placeholder=field.label %}
                       {% for error in field.errors %}
                       <span class="help-block">{{ error }}</span>
                       {% endfor %}
@@ -45,7 +46,7 @@
                     {% endfor %}
 
                     <p><input type="submit" class="btn btn-flat-login
-                          form-control bg-dark" style="font-size: 20px;" value="Sign Up"></p>
+                          form-control bg-dark w-100 mb-4" style="font-size: 20px;" value="Sign Up"></p>
                   </form>
                 </div>
               </div>
@@ -55,4 +56,5 @@
       </div>
     </div>
   </div>
+</div>
 {% endblock content %}

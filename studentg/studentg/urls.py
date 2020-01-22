@@ -27,6 +27,7 @@ dashpatterns = [
 
     path('add/grievance', views.addgrievance, name="addgrievance"),
     path('mygrievance', views.my_grievances, name="my_grievances"),
+    path('update/grievance/<pk>', r_views.GrievanceUpdate.as_view(), name="update_grievance")
 ]
 urlpatterns = [
     path('', views.home, name="home"),

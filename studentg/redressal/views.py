@@ -7,8 +7,13 @@ from accounts.models import Temp_User, User, University_Member, Institute_Member
 from django.http import HttpResponseNotFound, Http404
 from django.core.mail import send_mail
 from django.urls import reverse
+from django import forms
+from django.views.generic.edit import UpdateView
+from django.utils.decorators import method_decorator
+from functools import wraps
 
 from studentg.models import Grievance
+from studentg.forms import GrievanceUpdateForm
 
 # One Time Link
 from django.utils.encoding import force_bytes
@@ -58,7 +63,8 @@ def add_body(request, body_type):
             elif body_type == "department":
                 temp_user.designation = "Department_H"
             temp_user.created_at = timezone.now()
-            temp_user.uidb64 = urlsafe_base64_encode(force_bytes(six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
+            temp_user.uidb64 = urlsafe_base64_encode(force_bytes(
+                six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
             value = six.text_type(temp_user.email)+six.text_type(temp_user.designation) + \
                 six.text_type(temp_user.first_name) + \
                 six.text_type(temp_user.last_name) + \
@@ -66,9 +72,9 @@ def add_body(request, body_type):
             temp_user.token = salted_hmac(
                 "%s" % (random.random()), value).hexdigest()[::3]
             temp_user.save()
-            sub_cat=Sub_Category()
-            sub_cat.sub_type="Other"
-            sub_cat.redressal_body=rbody
+            sub_cat = Sub_Category()
+            sub_cat.sub_type = "Other"
+            sub_cat.redressal_body = rbody
             sub_cat.save()
             send_mail(
                 'Sign Up for Student Grievance Portal',
@@ -86,32 +92,88 @@ def add_body(request, body_type):
         tuser_form = NewTempUserForm()
     return render(request, 'addbody.html', {'rbody_form': rbody_form, 'tuser_form': tuser_form, 'body_type': body_type})
 
+
 def add_subcategory(request):
     if request.method == 'POST':
-        form=NewSubCategoryForm(request.POST)
+        form = NewSubCategoryForm(request.POST)
         if form.is_valid():
-            subcat=form.save(commit=False)
-            if request.user.sys_user.designation=="University_H":
-                subcat.redressal_body=University_Member.objects.get(user=request.user).university.redressal_body
-            elif request.user.sys_user.designation=="Institute_H":
-                subcat.redressal_body=Institute_Member.objects.get(user=request.user).institute.redressal_body
-            elif request.user.sys_user.designation=="Department_H":
-                subcat.redressal_body=Department_Member.objects.get(user=request.user).department.redressal_body
+            subcat = form.save(commit=False)
+            if request.user.sys_user.designation == "University_H":
+                subcat.redressal_body = University_Member.objects.get(
+                    user=request.user).university.redressal_body
+            elif request.user.sys_user.designation == "Institute_H":
+                subcat.redressal_body = Institute_Member.objects.get(
+                    user=request.user).institute.redressal_body
+            elif request.user.sys_user.designation == "Department_H":
+                subcat.redressal_body = Department_Member.objects.get(
+                    user=request.user).department.redressal_body
             subcat.save()
             return redirect('dash_home')
     else:
-        form=NewSubCategoryForm()
-    return render(request, 'add_subcategory.html', {'form':form})
+        form = NewSubCategoryForm()
+    return render(request, 'add_subcategory.html', {'form': form})
+
 
 def view_grievances(request):
-    r_body=None
-    if request.user.sys_user.designation=="University" or request.user.sys_user.designation=="University_H":
-        r_body=University_Member.objects.get(user=request.user).university.redressal_body
-    elif request.user.sys_user.designation=="Institute" or request.user.sys_user.designation=="Institute_H":
-        r_body=Institute_Member.objects.get(user=request.user).institute.redressal_body
-    elif request.user.sys_user.designation=="Department" or request.user.sys_user.designation=="Department_H":
-        r_body=Department_Member.objects.get(user=request.user).department.redressal_body
+    r_body = None
+    if request.user.sys_user.designation == "University" or request.user.sys_user.designation == "University_H":
+        r_body = University_Member.objects.get(
+            user=request.user).university.redressal_body
+    elif request.user.sys_user.designation == "Institute" or request.user.sys_user.designation == "Institute_H":
+        r_body = Institute_Member.objects.get(
+            user=request.user).institute.redressal_body
+    elif request.user.sys_user.designation == "Department" or request.user.sys_user.designation == "Department_H":
+        r_body = Department_Member.objects.get(
+            user=request.user).department.redressal_body
     else:
         raise Http404()
-    gr_list=Grievance.objects.filter(redressal_body=r_body,status="Pending").order_by('last_update')
-    return render(request, 'view_grievances.html', {'gr_list': gr_list })
+    gr_list = Grievance.objects.filter(
+        redressal_body=r_body, status="Pending").order_by('last_update')
+    return render(request, 'view_grievances.html', {'gr_list': gr_list})
+
+
+def update_grievance(request, token):
+    if request.method == 'POST':
+        pass
+    else:
+        pass
+    return render(request, '', {'grievance': grievance})
+
+
+def authorized_updater(function):
+    @wraps(function)
+    def wrap(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            raise Http404()
+        designation = request.user.sys_user.designation
+        if designation == 'Student':
+            raise Http404()
+        grievance_pk=kwargs.get('pk')
+        grievance=Grievance.objects.get(pk=grievance_pk)
+        if (designation == "University" or designation == "University_H") and grievance.category=="University":
+            if(grievance.redressal_body!=University_Member.objects.get(user=request.user).university.redressal_body):
+                raise Http404()
+        elif (designation == "Institute" or designation == "Institute_H") and grievance.category=="Institute":
+            if(grievance.redressal_body!=Institute_Member.objects.get(user=request.user).institute.redressal_body):
+                raise Http404()
+        elif (designation == "Department" or designation == "Department_H") and grievance.category=="Department":
+            if(grievance.redressal_body!=Department_Member.objects.get(user=request.user).department.redressal_body):
+                raise Http404()
+        else:
+            raise Http404()
+        return super(GrievanceUpdate, self).dispatch(request, *args, **kwargs)
+    return wrap
+
+class GrievanceUpdate(UpdateView):
+    model = Grievance
+    form_class = GrievanceUpdateForm
+    template_name = 'update_grievance.html'
+    context_object_name = 'grievance'
+    def form_valid(self, form):
+        grievance=form.save(commit=False)
+        grievance.last_update=timezone.now()
+        grievance.save()
+        return redirect('view_grievances')
+    @authorized_updater
+    def dispatch(self, request, *args, **kwargs):
+        return super(GrievanceUpdate, self).dispatch(request, *args, **kwargs)

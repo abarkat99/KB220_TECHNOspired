@@ -1,0 +1,17 @@
+{% extends 'dash_base.html' %}
+{% load widget_tweaks %}
+{% block e_content %}
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+    <div class="form-group">
+        {{ field.label }}
+        {% render_field field class="form-control mt-1" %}
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="form-control btn btn-primary">Submit</button>
+</form>
+{% endblock e_content %}
