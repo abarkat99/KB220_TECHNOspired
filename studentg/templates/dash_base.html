@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 {% load static %}
 {% block styles %}
 <!-- Bootstrap -->
@@ -16,15 +16,14 @@
 Dashboard
 {% endblock title %}
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
+<div class="container-fluid" >
+    <div class="row" style="margin-top: 15px;">
         {% include 'sidenav.html' %}
-        <div class="col-lg-8">
-            <div class="white-area-content">
+        <div class="col-lg-8" >
+            <div class="white-area-content" style=" height:100%;">
                 {% block e_content %}
                 {% endblock e_content %}
                 <hr>
-                <p class="align-center small-text">Made By Grepix Infotech Pvt Ltd</p>
             </div>
         </div>
     </div>

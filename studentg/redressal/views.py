@@ -11,9 +11,10 @@ from django import forms
 from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
 from functools import wraps
+import datetime
 
-from studentg.models import Grievance
-from studentg.forms import GrievanceUpdateForm
+from studentg.models import Grievance,Reply
+from studentg.forms import GrievanceUpdateForm,NewReplyForm
 
 # One Time Link
 from django.utils.encoding import force_bytes
@@ -131,25 +132,15 @@ def view_grievances(request):
         redressal_body=r_body, status="Pending").order_by('last_update')
     return render(request, 'view_grievances.html', {'gr_list': gr_list})
 
-
 def update_grievance(request, token):
-    if request.method == 'POST':
-        pass
-    else:
-        pass
-    return render(request, '', {'grievance': grievance})
-
-
-def authorized_updater(function):
-    @wraps(function)
-    def wrap(self, request, *args, **kwargs):
-        if request.user.is_superuser:
-            raise Http404()
+    if request.user.is_superuser:
+        raise Http404()
         designation = request.user.sys_user.designation
         if designation == 'Student':
             raise Http404()
-        grievance_pk=kwargs.get('pk')
-        grievance=Grievance.objects.get(pk=grievance_pk)
+        date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+        daytoken=int(token[-4:])
+        grievance=get_object_or_404(Grievance,date=date,daytoken=daytoken)
         if (designation == "University" or designation == "University_H") and grievance.category=="University":
             if(grievance.redressal_body!=University_Member.objects.get(user=request.user).university.redressal_body):
                 raise Http404()
@@ -161,19 +152,21 @@ def authorized_updater(function):
                 raise Http404()
         else:
             raise Http404()
-        return super(GrievanceUpdate, self).dispatch(request, *args, **kwargs)
-    return wrap
-
-class GrievanceUpdate(UpdateView):
-    model = Grievance
-    form_class = GrievanceUpdateForm
-    template_name = 'update_grievance.html'
-    context_object_name = 'grievance'
-    def form_valid(self, form):
-        grievance=form.save(commit=False)
-        grievance.last_update=timezone.now()
-        grievance.save()
-        return redirect('view_grievances')
-    @authorized_updater
-    def dispatch(self, request, *args, **kwargs):
-        return super(GrievanceUpdate, self).dispatch(request, *args, **kwargs)
+    date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+    daytoken=int(token[-4:])
+    grievance=get_object_or_404(Grievance, date=date, daytoken=daytoken,status="Pending")
+    replies=Reply.objects.filter(grievance=grievance).order_by('date_time')
+    if request.method == 'POST':
+        gr_upform=GrievanceUpdateForm(request.POST, instance=grievance)
+        reply_form=NewReplyForm(request.POST)
+        if(gr_upform.is_valid() and reply_form.is_valid()):
+            grievance=gr_upform.save()
+            reply=reply_form.save(commit=False)
+            reply.user=request.user
+            reply.grievance=grievance
+            reply.save()
+            return redirect('view_grievances')
+    else:
+        gr_upform = GrievanceUpdateForm(instance=grievance)
+        reply_form=NewReplyForm()
+    return render(request, 'update_grievance.html', {'gr_upform': gr_upform, 'reply_form':reply_form,'replies':replies})

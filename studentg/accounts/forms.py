@@ -17,3 +17,6 @@ class NewStudentForm(forms.ModelForm):
     class Meta:
         model=Student_Temp_User
         fields=('rollno',)
+
+class NewMassStudentForm(forms.Form):
+    file=forms.FileField(allow_empty_file=False)

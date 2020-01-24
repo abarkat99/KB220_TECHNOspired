@@ -1,6 +1,7 @@
 {% extends 'dash_base.html' %}
 {% block e_content %}
-First Name: {{ user.sys_user.first_name }}
-Last Name: {{ user.sys_user.last_name }}
-Email: {{ user.email }}
-{% endblock e_content %}
+<h1 class="text-center">My Account</h1><br>
+<b>First Name:</b> {{ user.sys_user.first_name }}<br>
+<b>Last Name:</b> {{ user.sys_user.last_name }}<br>
+<b>Email:</b> {{ user.email }}<br>
+{% endblock e_content %}k

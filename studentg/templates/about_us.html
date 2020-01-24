@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Student Grievance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Student Greviance System" />
+
+    <!-- css -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Theme skin -->
+    <link id="t-colors" href="{% static 'color/default.css' %}" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="{% static 'ico/favicon.png' %}" />
+
+</head>
+
+<body style="overflow-x: hidden;">
+    <div id="wrapper">
+        <!-- header -->
+        <header>
+            <div class="container-fluid">
+                <div class="row nomargin">
+
+                    <div class="cols-5 offset-1">
+                        <div class="logo" style="margin-top:15px;">
+                            <h3>
+                                <p style="color: whitesmoke;"><i class="fas fa-hands-helping"
+                                        style="color:greenyellow;"></i> Student Grievance Redressal Portal</p>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="cols-3 offset-3">
+                        <div class="navbar navbar-static-top ">
+                            <div class="navigation" style="margin-top:15px;">
+                                <nav>
+                                    <ul class="nav topnav">
+                                        <li class="active">
+                                            <a href="#">Home</a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#">About Us<i class="icon-angle-down"></i></a>
+
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#">Contact Us<i class="icon-angle-down"></i></a>
+
+                                        </li>
+
+                                        <li>
+                                            <a href="#">Login </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <!-- end navigation -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- end header -->
+        <section id="inner-headline">
+      <div class="container-fluid">
+        <div class="row nomargin">
+          <div class="span2 offset-5">
+            <div class="inner-heading">
+              <h2 style="margin:15px 0px">About us</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="content">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="span5 offset-2">
+            <h4>Vision</h4>
+            <p>
+              Ei mel semper vocent persequeris, nominavi patrioque vituperata id vim, cu eam gloriatur philosophia deterruisset. Meliore perfecto repudiare ea nam, ne mea duis temporibus. Id quo accusam consequuntur, eum ea debitis urbanitas. Nibh reformidans vim ne.
+            </p>
+            <p>
+              Iudico definiebas eos ea, dicat inermis hendrerit vel ei, legimus copiosae quo at. Per utinam corrumpit prodesset te, liber praesent eos an. An prodesset neglegentur qui, usu ancillae posidonium in, mea ex eros animal scribentur. Et simul fabellas sit.
+              Populo inimicus ne est.
+            </p>
+
+          </div>
+
+          <div class="span5">
+            <img src="{% static 'img/aboutus.jpeg'%}">
+          </div>
+        </div>
+
+        <!-- divider -->
+      <hr>
+        <!-- end divider -->
+      
+        <div class="row nomargin pb-3">
+          <div class="span11 offset-1">
+            <h4 style="padding-top: -10px;text-align: center;padding-left: 100px;">Our Team</h4>
+          </div>
+        </div>
+        <div class="row nomargin offset-2 pb-3">
+          <div class="cols-2 ml-4 ">
+            <div class="team-box" style="width: 200px;height:250px;">
+            <img src="{% static 'img/User1.jpg'%}" alt="" style="height: 150px; width: 150px;" />
+              <div class="roles aligncenter">
+                <p class="lead"><strong>User1</strong></p>
+                
+                <p>
+                  <a href="#"><i class="icon-facebook icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-twitter icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-linkedin icon-circled icon-bglight active"></i></a>
+                </p>
+
+              </div>
+            </div>
+          </div>
+          <div class="cols-2 ml-4 ">
+            <div class="team-box" style="width: 200px;height:250px;">
+              <img src="{% static 'img/User2.jpg'%}" alt="" style="height: 150px; width: 150px;"/>
+              <div class="roles aligncenter">
+                <p class="lead"><strong>User2</strong></p>
+                
+                <p>
+                  <a href="#"><i class="icon-facebook icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-twitter icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-linkedin icon-circled icon-bglight active"></i></a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="cols-2 ml-4 ">
+            <div class="team-box" style="width: 200px;height:250px;">
+              <img src="{% static 'img/User1.jpg'%}" alt="" style="height: 150px; width: 150px;"/>
+              <div class="roles aligncenter">
+                <p class="lead"><strong>User3</strong></p>
+               
+                <p>
+                  <a href="#"><i class="icon-facebook icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-twitter icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-linkedin icon-circled icon-bglight active"></i></a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="cols-2 ml-4">
+            <div class="team-box" style="width: 200px;height:250px;">
+              <img src="{% static 'img/User2.jpg'%}" alt="" style="height: 150px; width: 150px;"/>
+              <div class="roles aligncenter">
+                <p class="lead"><strong>User4</strong></p>
+                
+                  <a href="#"><i class="icon-facebook icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-twitter icon-circled icon-bglight active"></i></a>
+                  <a href="#"><i class="icon-linkedin icon-circled icon-bglight active"></i></a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+         <!--footer-->
+         <div>
+            <div class="container-fluid bg-dark">
+                <div class="row" style="margin-bottom: 0px; margin-top: 10px;">
+
+                    <div class="span-6 offset-1">
+                        <div class="widget">
+                            <div class="footer_logo">
+                                <h4 style="color:whitesmoke;">
+                                    <p href="#"><i class="fas fa-hands-helping"
+                                            style="font-size: 20px; color: greenyellow;"></i> Student
+                                        Greviance<br>
+                                        Redressal Portal</p>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span-6 offset-2">
+                        <div class="widget">
+                            <address>
+                            
+                                Somestreet KW 101, Park Village W.01<br>
+                                Jakarta 13426 Indonesia
+                            </address>
+                        </div>
+                    </div>
+                    <div class="span-5 offset-2">
+                        <div class="widget">
+                            <p>
+                                <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
+                                <i class="icon-envelope-alt"></i> email@domainname.com
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="sub-footer" style="margin-top: 0px; padding-top: 10px;padding-bottom:10px;">
+            <div class="container-fluid" style="height: 20px;">
+                <div class="row nomargin">
+                    <div class="span2">
+                        <div class="copyright">
+                            <p>&copy; All right reserved</p>
+                        </div>
+
+                    </div>
+
+                    <div class="span9">
+                        <div class="credits">
+
+                            <ul class="social-network">
+                                <li><a href="#" data-placement="bottom" title="Facebook"><i
+                                            class="icon-circled icon-bglight icon-facebook"></i></a></li>
+                                <li><a href="#" data-placement="bottom" title="Twitter"><i
+                                            class="icon-circled icon-bglight icon-twitter"></i></a></li>
+                                <li><a href="#" data-placement="bottom" title="Linkedin"><i
+                                            class="icon-circled icon-linkedin icon-bglight"></i></a></li>
+                                <li><a href="#" data-placement="bottom" title="Google +"><i
+                                            class="icon-circled icon-google-plus icon-bglight"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <a href="#" class="scrollup"><i class="icon-angle-up icon-rounded icon-bglight icon-2x"></i></a>
+    <!-- javascript  -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'js/toucheffects.js' %}"></script>
+    <script src="{% static 'js/google-code-prettify/prettify.js' %}"></script>
+    <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
+    <script src="{% static 'js/portfolio/jquery.quicksand.js' %}"></script>
+    <script src="{% static 'js/portfolio/setting.js' %}"></script>
+    <script src="{% static 'js/animate.js' %}"></script>
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Template Custom JavaScript File -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+
+</html>

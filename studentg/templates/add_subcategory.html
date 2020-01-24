@@ -1,6 +1,7 @@
 {% extends 'dash_base.html' %}
 {% load widget_tweaks %}
 {% block e_content %}
+<h1 class="text-center">Subcategory</h1>
 <form method="POST">
     {% csrf_token %}
     {% for field in form.visible_fields %}

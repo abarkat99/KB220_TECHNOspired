@@ -20,7 +20,7 @@ class Grievance(models.Model):
 
     message=models.TextField(max_length=1000)
     subject=models.CharField(max_length=255)
-    image=models.ImageField(null=True,blank=True)
+    image=models.ImageField(null=True,blank=True,upload_to='images/')
     CATEGORY_CHOICES = [
         ('University', 'University'),
         ('Institute', 'Institute'),

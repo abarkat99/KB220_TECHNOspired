@@ -1,6 +1,7 @@
 {% extends 'dash_base.html' %}
 {% load widget_tweaks %}
 {% block e_content %}
+<h1 class="text-center">Details</h1>
 <form method="POST">
     {% csrf_token %}
     {{ body_type|capfirst }}:<br>
@@ -12,6 +13,7 @@
         {% endfor %}
     </div>
     {% endfor %}
+    <br>
     {{ body_type|capfirst }} Head:<br>
     {% for field in tuser_form.visible_fields %}
     <div class="form-group has-feedback">
@@ -20,7 +22,7 @@
         <span class="help-block">{{ error }}</span>
         {% endfor %}
     </div>
-    {% endfor %}
+    {% endfor %}<br>
     <button type="submit" class="form-control btn btn-primary">Add {{ body_type|capfirst }}</button>
 </form>
 {% endblock e_content %}

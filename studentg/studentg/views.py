@@ -1,8 +1,8 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.http import HttpResponseNotFound, Http404
 
-from accounts.forms import NewTempUserForm, NewStudentForm
-from accounts.models import Student, Department_Member
+from accounts.forms import NewTempUserForm, NewStudentForm, NewMassStudentForm
+from accounts.models import Student, Department_Member, Temp_User, Student_Temp_User
 
 from redressal.models import Sub_Category
 
@@ -15,6 +15,8 @@ from django.utils.crypto import salted_hmac
 import six
 import random
 from django.utils import timezone
+import openpyxl
+import pandas as pd
 
 from django.core.mail import send_mail
 
@@ -33,7 +35,46 @@ def add_student(request):
     if request.method == 'POST':
         tuser_form = NewTempUserForm(request.POST)
         student_form = NewStudentForm(request.POST)
-        if tuser_form.is_valid() and student_form.is_valid():
+        mass_student_form = NewMassStudentForm(request.POST,request.FILES)
+        if mass_student_form.is_valid():
+            excel_file = request.FILES['file']
+            data = pd.read_csv(excel_file)
+            df = pd.DataFrame(
+                data, columns=['Fname', 'Lname', 'Email', 'Rollno'])
+            for i, j in df.iterrows():
+                tuser = Temp_User()
+                tuser.first_name = j['Fname']
+                tuser.last_name = j['Lname']
+                tuser.email = j['Email']
+                tuser.created_at = timezone.now()
+                tuser.redressal_body = Department_Member.objects.get(
+                    user=request.user.pk).department.redressal_body
+                tuser.designation = "Student"
+                tuser.uidb64 = urlsafe_base64_encode(force_bytes(
+                    six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
+                value = six.text_type(tuser.email)+six.text_type(tuser.designation) + \
+                    six.text_type(tuser.first_name) + \
+                    six.text_type(tuser.last_name) + \
+                    six.text_type(tuser.created_at)
+                tuser.token = salted_hmac(
+                    "%s" % (random.random()), value).hexdigest()[::3]
+                tuser.save()
+                stuser = Student_Temp_User()
+                stuser.rollno = j['Rollno']
+                stuser.user = tuser
+                stuser.save()
+                send_mail(
+                    'Sign Up for Student Grievance Portal',
+                    'Click this link to sign up %s' % (reverse('signup', kwargs={
+                        'uidb64': tuser.uidb64,
+                        'token': tuser.token
+                    })),
+                    'from@example.com',
+                    [tuser.email],
+                    fail_silently=False,
+                )
+
+        elif tuser_form.is_valid() and student_form.is_valid():
             tuser = tuser_form.save(commit=False)
             tuser.redressal_body = Department_Member.objects.get(
                 user=request.user.pk).department.redressal_body
@@ -64,12 +105,13 @@ def add_student(request):
     else:
         tuser_form = NewTempUserForm()
         student_form = NewStudentForm()
-    return render(request, 'addstudent.html', {'tuser_form': tuser_form, 'student_form': student_form})
+        mass_student_form = NewMassStudentForm(request.POST)
+    return render(request, 'addstudent.html', {'tuser_form': tuser_form, 'student_form': student_form, 'mass_student_form': mass_student_form})
 
 
 def addgrievance(request):
     if request.method == 'POST':
-        form = NewGrievanceForm(request.POST)
+        form = NewGrievanceForm(request.POST, request.FILES)
         if form.is_valid():
             grievance = form.save(commit=False)
             grievance.user = request.user
@@ -80,8 +122,8 @@ def addgrievance(request):
                 r_body = r_body.institute.redressal_body
             elif(grievance.category == "Department"):
                 r_body = r_body.redressal_body
-            grievance.redressal_body=r_body
-        grievance.save()
+            grievance.redressal_body = r_body
+            grievance.save()
         return redirect('my_grievances')
     else:
         form = NewGrievanceForm()
@@ -90,7 +132,6 @@ def addgrievance(request):
 
 def load_subcategories(request):
     category = request.GET.get('category')
-    print(category)
     st_dept = Student.objects.get(user=request.user).department
     r_body = st_dept
     if(category == "University"):
@@ -108,3 +149,8 @@ def my_grievances(request):
     grievance_list = Grievance.objects.filter(
         user=request.user).order_by('-last_update')
     return render(request, 'my_grievances.html', {'grievance_list': grievance_list})
+
+def contact(request):
+    return render(request,"contact.html")
+def about_us(request):
+    return render(request,"about_us.html")

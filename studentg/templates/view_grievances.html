@@ -1,6 +1,9 @@
 {% extends 'dash_base.html' %}
 {% load widget_tweaks %}
+{% load studentg_extras %}
 {% block e_content %}
+<h1 class="text-center">Grievances</h1>
+
 <table>
     <thead>
         <tr>
@@ -13,7 +16,15 @@
     <tbody>
         {% for grievance in gr_list %}
         <tr>
-            <td><a href="{% url 'update_grievance' grievance.pk %}">{{ grievance.date|date:"Ymd" }}{{ grievance.daytoken|stringformat:"04d" }}</a></td>
+            {% with grievance.date|date:"Ymd" as date %}
+            {% with grievance.daytoken|stringformat:"04d" as daytoken %}
+            {% with date|addstr:daytoken as token %}
+            <td><a
+                    href="{% url 'update_grievance' token %}">{{ grievance.date|date:"Ymd" }}{{ grievance.daytoken|stringformat:"04d" }}</a>
+            </td>
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
             <td>{{ grievance.last_update }}</td>
             <td>{{ grievance.sub_category }}</td>
             <td>{{ grievance.subject }}</td>

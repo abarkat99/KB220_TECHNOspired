@@ -20,6 +20,9 @@
     <link id="t-colors" href="{% static 'color/default.css' %}" rel="stylesheet" />
 
     <link rel="shortcut icon" href="{% static 'ico/favicon.png' %}" />
+    <style>
+    li{ width:100%; }
+    </style>
     {% block styles %}
     {% endblock styles %}
 </head>
@@ -54,11 +57,11 @@
                                             <a href="{% url 'home' %}">Home</a>
                                         </li>
                                         <li class={% block link1 %}{% endblock %}>
-                                            <a href="{% url 'about_us' %}">About Us</a>
+                                            <a href="#">About Us</a>
 
                                         </li>
                                         <li class={% block link2 %}{% endblock %}>
-                                            <a href="{% url 'contact' %}">Contact Us</a>
+                                            <a href="#">Contact Us</a>
 
                                         </li>
                                         <li>
@@ -79,7 +82,7 @@
         <footer style="padding-top:0px;"  >
             <div>
                 <div class="container-fluid bg-dark">
-                    <div class="row" style="margin-bottom: 0px; margin-top: 10px;">
+                    <div class="row" style="margin-bottom: 0px; margin-top: 10px; height: 60px;">
 
                         <div class="span-6 offset-1">
                             <div class="widget">
@@ -96,16 +99,16 @@
                             <div class="widget">
                                 <address>
                                     
-                                    Saboo Siddik<br>
-                                    Byculla, Mumbai
+                                    Somestreet KW 101, Park Village W.01<br>
+                                    Jakarta 13426 Indonesia
                                 </address>
                             </div>
                         </div>
                         <div class="span-5 offset-2">
                             <div class="widget">
                                 <p>
-                                    <i class="icon-phone"></i> (022) 23012922 <br>
-                                    <i class="icon-envelope-alt"></i> mhssce@yahoo.in
+                                    <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
+                                    <i class="icon-envelope-alt"></i> email@domainname.com
                                 </p>
                             </div>
                         </div>

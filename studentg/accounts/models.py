@@ -32,6 +32,8 @@ class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     rollno=models.IntegerField(unique=True)
+    class Meta:
+        unique_together=(("department", "rollno"),)
 
 class University_Member(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -80,4 +82,4 @@ class Temp_User(models.Model):
 
 class Student_Temp_User(models.Model):
     user = models.ForeignKey(Temp_User, on_delete=models.CASCADE, related_name='student')
-    rollno=models.IntegerField(unique=True)
+    rollno=models.IntegerField()

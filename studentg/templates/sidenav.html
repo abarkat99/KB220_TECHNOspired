@@ -1,10 +1,10 @@
-<div class="col-lg-3 sidebar">
-    <ul class="newnav nav nav-sidebar">
+<div class="cols-3 sidebar ml-4" style="width: 280px;height:600px;">
+    <ul class="newnav nav nav-sidebar w-100" style="margin-left: 0px;">
         <li>
             <p
                 style="background:black; color: white; padding:8px;padding-left: 30px; font-size: 25px; margin-bottom: 0px;">
                 Dashboard</p>
-            <ul class="inner-sidebar-links">
+            <ul class="inner-sidebar-links" >
                 <li><a href="{% url 'dash_home' %}">My Account</a></li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'add_body' 'university' %}">Add University</a></li>

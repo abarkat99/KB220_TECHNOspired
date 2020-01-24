@@ -15,6 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 from redressal import views as r_views
 from studentg import views
 
@@ -27,12 +32,17 @@ dashpatterns = [
 
     path('add/grievance', views.addgrievance, name="addgrievance"),
     path('mygrievance', views.my_grievances, name="my_grievances"),
-    path('update/grievance/<pk>', r_views.GrievanceUpdate.as_view(), name="update_grievance")
+    path('update/grievance/<token>', r_views.update_grievance, name="update_grievance")
 ]
 urlpatterns = [
     path('', views.home, name="home"),
     path('accounts/',include('accounts.urls')),
     path('dashboard/', include(dashpatterns)),
     path('admin/', admin.site.urls),
-    path('load/subcategories', views.load_subcategories,name="load_subcategories"),
+    path('load/subcategories/', views.load_subcategories,name="load_subcategories"),
+    path('contact/', views.contact,name="contact"),
+    path('about_us/',views.about_us,name="about_us"),
 ]
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

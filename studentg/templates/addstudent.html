@@ -22,4 +22,16 @@
     {% endfor %}
     <button type="submit" class="form-control btn btn-primary">Add Student</button>
 </form>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{% for field in mass_student_form.visible_fields %}
+    <div class="form-group has-feedback">
+        {% render_field field class="form-control" placeholder=field.label %}
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    </div>
+{% endfor %}
+    <button type="submit" class="form-control btn btn-primary">Add all Students</button>
+</form>
 {% endblock e_content %}
