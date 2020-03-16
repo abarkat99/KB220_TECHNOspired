@@ -8,29 +8,29 @@
                 <li><a href="{% url 'dash_home' %}">My Account</a></li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'add_body' 'university' %}">Add University</a></li>
-                {% elif user.sys_user.designation == "University_H" %}
+                {% elif user.designation == "UNI_H" %}
                 <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
                 <li><a href="{% url 'add_body' 'institute' %}">Add Institute</a></li>
                 <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
-                {% elif user.sys_user.designation == "University" %}
+                {% elif user.designation == "UNI" %}
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
-                {% elif user.sys_user.designation == "Institute_H" %}
+                {% elif user.designation == "INS_H" %}
                 <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
                 <li><a href="{% url 'add_body' 'department' %}">Add Department</a></li>
                 <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
-                {% elif user.sys_user.designation == "Institute" %}
+                {% elif user.designation == "INS" %}
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
-                {% elif user.sys_user.designation == "Department_H" %}
+                {% elif user.designation == "DEP_H" %}
                 <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
                 <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
                 <li><a href="{% url 'add_student' %}">Add Student</a></li>
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
-                {% elif user.sys_user.designation == "Department" %}
+                {% elif user.designation == "DEP" %}
                 <li><a href="{% url 'add_student' %}">Add Student</a></li>
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
-                {% elif user.sys_user.designation == "Student" %}
+                {% elif user.designation == "STU" %}
                 <li><a href="{% url 'my_grievances' %}">My Grievances</a></li>
                 <li><a href="{% url 'addgrievance' %}">Add Grievance</a></li>
                 {% endif %}

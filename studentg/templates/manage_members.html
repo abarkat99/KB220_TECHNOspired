@@ -17,7 +17,7 @@
 </form>
 Members:-<br>
 {% for member in members %}
-Name: {{member.sys_user.first_name}} {{member.sys_user.last_name}}
+Name: {{member.first_name}} {{member.last_name}}
 {% if request.user != member %}
 <a href="{% url 'remove_member' member.pk %}" class="btn btn-danger member-delete-link">Delete</a>
 {% endif %}

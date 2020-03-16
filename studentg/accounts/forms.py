@@ -1,11 +1,11 @@
 from django import forms
-from .models import Temp_User,User,Student_Temp_User
+from .models import TempUser,User,StudentTempUser
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import inlineformset_factory
 
 class NewTempUserForm(forms.ModelForm):
     class Meta:
-        model = Temp_User
+        model = TempUser
         fields = ['first_name', 'last_name', 'email']
 
 class SignUpForm(UserCreationForm):
@@ -15,7 +15,7 @@ class SignUpForm(UserCreationForm):
 
 class NewStudentForm(forms.ModelForm):
     class Meta:
-        model=Student_Temp_User
+        model=StudentTempUser
         fields=('rollno',)
 
 class NewMassStudentForm(forms.Form):

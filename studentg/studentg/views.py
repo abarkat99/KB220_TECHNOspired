@@ -2,9 +2,9 @@ from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.http import HttpResponseNotFound, Http404
 
 from accounts.forms import NewTempUserForm, NewStudentForm, NewMassStudentForm
-from accounts.models import Student, Department_Member, Temp_User, Student_Temp_User
+from accounts.models import Student, DepartmentMember, TempUser, StudentTempUser
 
-from redressal.models import Sub_Category
+from redressal.models import SubCategory
 
 import datetime
 
@@ -47,14 +47,13 @@ def add_student(request):
             df = pd.DataFrame(
                 data, columns=['Fname', 'Lname', 'Email', 'Rollno'])
             for i, j in df.iterrows():
-                tuser = Temp_User()
+                tuser = TempUser()
                 tuser.first_name = j['Fname']
                 tuser.last_name = j['Lname']
                 tuser.email = j['Email']
                 tuser.created_at = timezone.now()
-                tuser.redressal_body = Department_Member.objects.get(
-                    user=request.user.pk).department.redressal_body
-                tuser.designation = "Student"
+                tuser.redressal_body = request.user.get_redressal_body()
+                tuser.designation = TempUser.STUDENT
                 tuser.uidb64 = urlsafe_base64_encode(force_bytes(
                     six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
                 value = six.text_type(tuser.email)+six.text_type(tuser.designation) + \
@@ -64,7 +63,7 @@ def add_student(request):
                 tuser.token = salted_hmac(
                     "%s" % (random.random()), value).hexdigest()[::3]
                 tuser.save()
-                stuser = Student_Temp_User()
+                stuser = StudentTempUser()
                 stuser.rollno = j['Rollno']
                 stuser.user = tuser
                 stuser.save()
@@ -81,9 +80,8 @@ def add_student(request):
 
         elif tuser_form.is_valid() and student_form.is_valid():
             tuser = tuser_form.save(commit=False)
-            tuser.redressal_body = Department_Member.objects.get(
-                user=request.user.pk).department.redressal_body
-            tuser.designation = "Student"
+            tuser.redressal_body = request.user.get_redressal_body()
+            tuser.designation = TempUser.STUDENT
             tuser.created_at = timezone.now()
             tuser.uidb64 = urlsafe_base64_encode(force_bytes(
                 six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
@@ -120,13 +118,13 @@ def addgrievance(request):
         if form.is_valid():
             grievance = form.save(commit=False)
             grievance.user = request.user
-            r_body = Student.objects.get(user=request.user).department
-            if(grievance.category == "University"):
-                r_body = r_body.institute.university.redressal_body
-            elif(grievance.category == "Institute"):
-                r_body = r_body.institute.redressal_body
-            elif(grievance.category == "Department"):
-                r_body = r_body.redressal_body
+            r_body=request.user.get_redressal_body()
+            if grievance.category != 'Department':
+                r_body=r_body.department.institute.redressal_body
+                if grievance.category != 'Institute':
+                    r_body=r_body.institute.university.redressal_body
+                    if grievance.category != 'University':
+                        raise Http404
             grievance.redressal_body = r_body
             grievance.save()
         return redirect('my_grievances')
@@ -137,15 +135,14 @@ def addgrievance(request):
 
 def load_subcategories(request):
     category = request.GET.get('category')
-    st_dept = Student.objects.get(user=request.user).department
-    r_body = st_dept
-    if(category == "University"):
-        r_body = r_body.institute.university.redressal_body
-    elif(category == "Institute"):
-        r_body = r_body.institute.redressal_body
-    elif(category == "Department"):
-        r_body = r_body.redressal_body
-    subcats = Sub_Category.objects.filter(
+    r_body = request.user.get_redressal_body()
+    if(category != "Department"):
+        r_body = r_body.department.institute.redressal_body
+        if(category != "Institute"):
+            r_body = r_body.institute.university.redressal_body
+            if(category != "University"):
+                raise Http404()
+    subcats = SubCategory.objects.filter(
         redressal_body=r_body).order_by('sub_type')
     return render(request, 'subcat_options.html', {'subcats': subcats})
 

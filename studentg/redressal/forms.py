@@ -1,12 +1,12 @@
 from django import forms
-from .models import Redressal_Body,Sub_Category
+from .models import RedressalBody,SubCategory
 
 class NewRedressalBodyForm(forms.ModelForm):
     class Meta:
-        model = Redressal_Body
+        model = RedressalBody
         fields = ['name']
 
 class NewSubCategoryForm(forms.ModelForm):
     class Meta:
-        model=Sub_Category
+        model=SubCategory
         fields=['sub_type']

@@ -1,9 +1,9 @@
 from studentg.models import Grievance
-from .models import Sub_Category
+from .models import SubCategory
 import django_filters
 
 def sub_cats(request):
-    return Sub_Category.objects.filter(redressal_body=request.user.sys_user.get_redressal_body())
+    return SubCategory.objects.filter(redressal_body=request.user.get_redressal_body())
 class GrievanceFilter(django_filters.FilterSet):
     sub_category=django_filters.ModelChoiceFilter(queryset=sub_cats)
     o = django_filters.OrderingFilter(

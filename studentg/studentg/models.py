@@ -1,19 +1,34 @@
 from django.db import models
+from django.db import transaction
 from accounts.models import User
 from datetime import date as date_fun
-from redressal.models import Sub_Category, Redressal_Body
+from redressal.models import SubCategory, RedressalBody
+
+#Concurrency controlled generation of tokens Singleton table
+class DayToken(models.Model):
+    counter=models.IntegerField(default=0)
+    last_update=models.DateField(auto_now_add=True)
+    @classmethod
+    def get_new_token(cls):
+        with transaction.atomic():
+            daytoken=cls.objects.select_for_update().first()
+            if daytoken==None:
+                daytoken=cls()
+            if daytoken.last_update!=date_fun.today():
+                daytoken.last_update=date_fun.today()
+                daytoken.counter=0
+            daytoken.counter=daytoken.counter+1
+            daytoken.save()
+            return daytoken.counter
+    def save(self, *args, **kwargs):
+        self.__class__.objects.exclude(id=self.id).delete()
+        super(DayToken, self).save(*args, **kwargs)
 
 class Grievance(models.Model):
-    user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='grievance')
+    user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='grievances')
     date=models.DateField(auto_now_add=True)
-    redressal_body=models.ForeignKey(Redressal_Body, on_delete=models.CASCADE, related_name='grievance')
-
-    def increment_daytoken():
-        gr_obj=Grievance.objects.all().filter(date__exact=date_fun.today()).order_by('-daytoken')
-        if (gr_obj):
-            return gr_obj[0].daytoken+1
-        return 1
-    daytoken=models.IntegerField(default=increment_daytoken)
+    redressal_body=models.ForeignKey(RedressalBody, on_delete=models.CASCADE, related_name='grievances')
+    daytoken=models.IntegerField(default=DayToken.get_new_token)
     
     last_update=models.DateField(auto_now_add=True)
     status=models.CharField(max_length=10, choices=[('Pending', 'Pending'),('Resolved', 'Resolved'),], default='Pending')
@@ -27,7 +42,7 @@ class Grievance(models.Model):
         ('Department', 'Department'),
      ]
     category=models.CharField(max_length=15,choices=CATEGORY_CHOICES)
-    sub_category=models.ForeignKey(Sub_Category,on_delete=models.CASCADE)
+    sub_category=models.ForeignKey(SubCategory,on_delete=models.CASCADE)
     class Meta:
         unique_together = (("date", "daytoken"),)
 

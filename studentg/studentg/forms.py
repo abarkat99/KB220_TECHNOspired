@@ -1,6 +1,6 @@
 from django import forms
 from .models import Grievance, Reply
-from redressal.models import Sub_Category
+from redressal.models import SubCategory
 
 class NewGrievanceForm(forms.ModelForm):
     class Meta:
@@ -11,7 +11,7 @@ class GrievanceUpdateForm(forms.ModelForm):
     class Meta:
         model = Grievance
         fields = ['sub_category','subject','message','image','status']
-    sub_category = forms.ModelChoiceField(queryset=Sub_Category.objects.all(),disabled=True)
+    sub_category = forms.ModelChoiceField(queryset=SubCategory.objects.all(),disabled=True)
     subject = forms.CharField(disabled=True)
     message = forms.CharField(disabled=True,widget=forms.Textarea)
     image= forms.ImageField(disabled=True,required=False)

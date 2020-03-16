@@ -1,18 +1,14 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404
-from django.forms import inlineformset_factory
 from .forms import NewRedressalBodyForm, NewSubCategoryForm
-from .models import Redressal_Body, University, Institute, Department, Sub_Category
+from .models import RedressalBody, University, Institute, Department, SubCategory
 from .filters import GrievanceFilter
 from accounts.forms import NewTempUserForm
-from accounts.models import Temp_User, User, University_Member, Institute_Member, Department_Member
+from accounts.models import TempUser, User, UniversityMember, InstituteMember, DepartmentMember
 from django.http import HttpResponseNotFound, Http404
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
 from django import forms
-from django.views.generic.edit import UpdateView
-from django.utils.decorators import method_decorator
-from functools import wraps
 import datetime
 
 from studentg.models import Grievance,Reply
@@ -30,14 +26,14 @@ from django.utils import timezone
 
 def add_body(request, body_type):
     if request.user.is_superuser != True:
-        if request.user.sys_user.designation != "University_H" and request.user.sys_user.designation != "Institute_H":
+        if request.user.designation != User.UNI_HEAD and request.user.designation != User.INS_HEAD:
             raise Http404()
     elif request.user.is_superuser == True and body_type != "university":
         raise Http404()
     elif request.user.is_superuser != True:
-        if request.user.sys_user.designation == "University_H" and body_type != "institute":
+        if request.user.designation == "University_H" and body_type != "institute":
             raise Http404()
-        elif request.user.sys_user.designation == "Institute_H" and body_type != "department":
+        elif request.user.designation == "Institute_H" and body_type != "department":
             raise Http404()
     if request.method == 'POST':
         rbody_form = NewRedressalBodyForm(request.POST)
@@ -49,22 +45,20 @@ def add_body(request, body_type):
                 body_object = University()
             elif body_type == "institute":
                 body_object = Institute()
-                body_object.university = University_Member.objects.get(
-                    user=request.user.pk).university
+                body_object.university = request.user.universitymember.redressal_body.university
             elif body_type == "department":
                 body_object = Department()
-                body_object.institute = Institute_Member.objects.get(
-                    user=request.user.pk).institute
+                body_object.institute = request.user.institutemember.redressal_body.institute
             body_object.redressal_body = rbody
             body_object.save()
             temp_user = tuser_form.save(commit=False)
             temp_user.redressal_body = rbody
             if body_type == "university":
-                temp_user.designation = "University_H"
+                temp_user.designation = TempUser.UNI_HEAD
             elif body_type == "institute":
-                temp_user.designation = "Institute_H"
+                temp_user.designation = TempUser.INS_HEAD
             elif body_type == "department":
-                temp_user.designation = "Department_H"
+                temp_user.designation = TempUser.DEP_HEAD
             temp_user.created_at = timezone.now()
             temp_user.uidb64 = urlsafe_base64_encode(force_bytes(
                 six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
@@ -75,7 +69,7 @@ def add_body(request, body_type):
             temp_user.token = salted_hmac(
                 "%s" % (random.random()), value).hexdigest()[::3]
             temp_user.save()
-            sub_cat = Sub_Category()
+            sub_cat = SubCategory()
             sub_cat.sub_type = "Other"
             sub_cat.redressal_body = rbody
             sub_cat.save()
@@ -100,8 +94,8 @@ def manage_members(request):
         form = NewTempUserForm(request.POST)
         if form.is_valid():
             temp_user = form.save(commit=False)
-            temp_user.redressal_body = request.user.sys_user.get_redressal_body()
-            temp_user.designation=request.user.sys_user.designation[:-2]
+            temp_user.redressal_body = request.user.get_redressal_body()
+            temp_user.designation=request.user.designation[:-2]
             temp_user.created_at = timezone.now()
             temp_user.uidb64 = urlsafe_base64_encode(force_bytes(
                 six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
@@ -124,8 +118,8 @@ def manage_members(request):
             )
     else:
         form = NewTempUserForm()
-    members=request.user.sys_user.get_designation_object().get_body_members()
-    in_members=Temp_User.objects.filter(redressal_body=request.user.sys_user.get_redressal_body())
+    members=request.user.get_designation_object().get_body_members()
+    in_members=TempUser.objects.filter(redressal_body=request.user.get_redressal_body())
     return render(request, 'manage_members.html',{'form':form,'members':members,'in_members':in_members})
 
 def remove_member(request,pk):
@@ -138,17 +132,17 @@ def add_subcategory(request):
         form = NewSubCategoryForm(request.POST)
         if form.is_valid():
             subcat = form.save(commit=False)
-            subcat.redressal_body=request.user.sys_user.get_redressal_body()
+            subcat.redressal_body=request.user.get_redressal_body()
             subcat.save()
             return redirect('dash_home')
     else:
         form = NewSubCategoryForm()
-    subcats=Sub_Category.objects.filter(redressal_body=request.user.sys_user.get_redressal_body())
+    subcats=SubCategory.objects.filter(redressal_body=request.user.get_redressal_body())
     return render(request, 'add_subcategory.html', {'form': form,'subcats':subcats})
 
 
 def view_grievances(request):
-    r_body=request.user.sys_user.get_redressal_body()
+    r_body=request.user.get_redressal_body()
     gr_list = Grievance.objects.filter(
         redressal_body=r_body, status="Pending").order_by('last_update')
     gr_filter=GrievanceFilter(request.GET,queryset=gr_list,request=request)
@@ -166,23 +160,14 @@ def view_grievances(request):
 def update_grievance(request, token):
     if request.user.is_superuser:
         raise Http404()
-        designation = request.user.sys_user.designation
-        if designation == 'Student':
-            raise Http404()
-        date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
-        daytoken=int(token[-4:])
-        grievance=get_object_or_404(Grievance,date=date,daytoken=daytoken)
-        if (designation == "University" or designation == "University_H") and grievance.category=="University":
-            if(grievance.redressal_body!=University_Member.objects.get(user=request.user).university.redressal_body):
-                raise Http404()
-        elif (designation == "Institute" or designation == "Institute_H") and grievance.category=="Institute":
-            if(grievance.redressal_body!=Institute_Member.objects.get(user=request.user).institute.redressal_body):
-                raise Http404()
-        elif (designation == "Department" or designation == "Department_H") and grievance.category=="Department":
-            if(grievance.redressal_body!=Department_Member.objects.get(user=request.user).department.redressal_body):
-                raise Http404()
-        else:
-            raise Http404()
+    designation = request.user.designation
+    if designation == User.STUDENT:
+        raise Http404()
+    date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+    daytoken=int(token[-4:])
+    grievance=get_object_or_404(Grievance,date=date,daytoken=daytoken)
+    if (grievance.redressal_body != request.user.get_redressal_body()):
+        raise Http404
     date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
     daytoken=int(token[-4:])
     grievance=get_object_or_404(Grievance, date=date, daytoken=daytoken,status="Pending")
