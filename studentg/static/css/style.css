@@ -93,7 +93,7 @@ h2.errortitle {
 
 
 .row {
-	margin-bottom:30px;
+	margin-bottom:0px;
 }
 
 .row .row{
@@ -136,15 +136,14 @@ img.img-polaroid {
 
 /* --- header -- */
 header{
-	background: url(../img/header-pattern-150.png) repeat;
+	/*background: url(../img/header-pattern-150.png) repeat;*/
 	margin:0;
-	padding:0 0 20px;
 	position:relative;
 	z-index:2000;
 }
 
 header .top {
-	padding:10px 0 10px;
+	padding:0px 0 0px;
 	margin:0 0 30px;
 	background: url(../img/top-pattern-150.png) repeat;
 -webkit-box-shadow: 0 4px 4px -2px #222;
@@ -215,21 +214,15 @@ ul.social-network li a:hover {
 
 /* --- menu --- */
 
-header .navigation {
-	float:right;
-}
 
-header ul.nav li {
-	border:none;
-	margin:0;
-}
 
-header ul.nav li a {
+
+header nav  a {
 	border:none;
 	font-weight:400;
 }
 .navbar .nav > li > a {
-	font-size:13px;
+  font-size:13px;
   color: #fdfdfd;
   text-shadow: none;
 }
@@ -328,7 +321,7 @@ ul.nav li.dropdown ul li i {
 }
 
 .intro-content {
-	background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.65);
   position: absolute;
   position: absolute;
   bottom: 0;
@@ -341,7 +334,7 @@ ul.nav li.dropdown ul li i {
   align-items: center;
   flex-direction: column;
   text-align: center;
-	padding: 0 15px;
+	padding: 0 0px;
 }
 
 .intro-content  h2 {
@@ -572,7 +565,7 @@ ul.lush-slider {
 	position:relative;
 	background:#fff;
 	border-top:1px solid #ddd;
-	padding:50px 0 0 0;
+	padding:20px;
 }
 
 /*-- background --*/

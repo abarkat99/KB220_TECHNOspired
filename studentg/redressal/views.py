@@ -2,10 +2,12 @@ from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.forms import inlineformset_factory
 from .forms import NewRedressalBodyForm, NewSubCategoryForm
 from .models import Redressal_Body, University, Institute, Department, Sub_Category
+from .filters import GrievanceFilter
 from accounts.forms import NewTempUserForm
 from accounts.models import Temp_User, User, University_Member, Institute_Member, Department_Member
 from django.http import HttpResponseNotFound, Http404
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
 from django import forms
 from django.views.generic.edit import UpdateView
@@ -93,44 +95,73 @@ def add_body(request, body_type):
         tuser_form = NewTempUserForm()
     return render(request, 'addbody.html', {'rbody_form': rbody_form, 'tuser_form': tuser_form, 'body_type': body_type})
 
+def manage_members(request):
+    if request.method == 'POST':
+        form = NewTempUserForm(request.POST)
+        if form.is_valid():
+            temp_user = form.save(commit=False)
+            temp_user.redressal_body = request.user.sys_user.get_redressal_body()
+            temp_user.designation=request.user.sys_user.designation[:-2]
+            temp_user.created_at = timezone.now()
+            temp_user.uidb64 = urlsafe_base64_encode(force_bytes(
+                six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
+            value = six.text_type(temp_user.email)+six.text_type(temp_user.designation) + \
+                six.text_type(temp_user.first_name) + \
+                six.text_type(temp_user.last_name) + \
+                six.text_type(temp_user.created_at)
+            temp_user.token = salted_hmac(
+                "%s" % (random.random()), value).hexdigest()[::3]
+            temp_user.save()
+            send_mail(
+                'Sign Up for Student Grievance Portal',
+                'Click this link to sign up %s' % (reverse('signup', kwargs={
+                    'uidb64': temp_user.uidb64,
+                    'token': temp_user.token
+                })),
+                'from@example.com',
+                [temp_user.email],
+                fail_silently=False,
+            )
+    else:
+        form = NewTempUserForm()
+    members=request.user.sys_user.get_designation_object().get_body_members()
+    in_members=Temp_User.objects.filter(redressal_body=request.user.sys_user.get_redressal_body())
+    return render(request, 'manage_members.html',{'form':form,'members':members,'in_members':in_members})
+
+def remove_member(request,pk):
+    user=get_object_or_404(User,pk=pk)
+    user.delete()
+    return redirect('manage_members')
 
 def add_subcategory(request):
     if request.method == 'POST':
         form = NewSubCategoryForm(request.POST)
         if form.is_valid():
             subcat = form.save(commit=False)
-            if request.user.sys_user.designation == "University_H":
-                subcat.redressal_body = University_Member.objects.get(
-                    user=request.user).university.redressal_body
-            elif request.user.sys_user.designation == "Institute_H":
-                subcat.redressal_body = Institute_Member.objects.get(
-                    user=request.user).institute.redressal_body
-            elif request.user.sys_user.designation == "Department_H":
-                subcat.redressal_body = Department_Member.objects.get(
-                    user=request.user).department.redressal_body
+            subcat.redressal_body=request.user.sys_user.get_redressal_body()
             subcat.save()
             return redirect('dash_home')
     else:
         form = NewSubCategoryForm()
-    return render(request, 'add_subcategory.html', {'form': form})
+    subcats=Sub_Category.objects.filter(redressal_body=request.user.sys_user.get_redressal_body())
+    return render(request, 'add_subcategory.html', {'form': form,'subcats':subcats})
 
 
 def view_grievances(request):
-    r_body = None
-    if request.user.sys_user.designation == "University" or request.user.sys_user.designation == "University_H":
-        r_body = University_Member.objects.get(
-            user=request.user).university.redressal_body
-    elif request.user.sys_user.designation == "Institute" or request.user.sys_user.designation == "Institute_H":
-        r_body = Institute_Member.objects.get(
-            user=request.user).institute.redressal_body
-    elif request.user.sys_user.designation == "Department" or request.user.sys_user.designation == "Department_H":
-        r_body = Department_Member.objects.get(
-            user=request.user).department.redressal_body
-    else:
-        raise Http404()
+    r_body=request.user.sys_user.get_redressal_body()
     gr_list = Grievance.objects.filter(
         redressal_body=r_body, status="Pending").order_by('last_update')
-    return render(request, 'view_grievances.html', {'gr_list': gr_list})
+    gr_filter=GrievanceFilter(request.GET,queryset=gr_list,request=request)
+    gr_list=gr_filter.qs
+    page=request.GET.get('page',1)
+    paginator=Paginator(gr_list,10)
+    try:
+        gr_list = paginator.page(page)
+    except PageNotAnInteger:
+        gr_list = paginator.page(1)
+    except EmptyPage:
+        gr_list = paginator.page(paginator.num_pages)
+    return render(request, 'view_grievances.html', {'gr_list': gr_list,'paginator':paginator, 'filter':gr_filter})
 
 def update_grievance(request, token):
     if request.user.is_superuser:
@@ -163,10 +194,9 @@ def update_grievance(request, token):
             grievance=gr_upform.save()
             reply=reply_form.save(commit=False)
             reply.user=request.user
-            reply.grievance=grievance
             reply.save()
             return redirect('view_grievances')
     else:
         gr_upform = GrievanceUpdateForm(instance=grievance)
-        reply_form=NewReplyForm()
+        reply_form=NewReplyForm(initial={'grievance': grievance})
     return render(request, 'update_grievance.html', {'gr_upform': gr_upform, 'reply_form':reply_form,'replies':replies})

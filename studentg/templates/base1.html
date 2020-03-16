@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %} Student Grievance
-        {% endblock  %}</title>
+        {% endblock  %}</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Student Greviance System" />
 
@@ -32,7 +32,7 @@
         <!-- header -->
         <header>
             <div class="container-fluid">
-                <div class="row nomargin">
+                <div class="row nomargin  bg-dark text-light">
 
                     <div class="cols-5 offset-1">
                         <div class="logo" style="margin-top:15px;">
@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="cols-3 offset-3">
-                        <div class="navbar navbar-static-top ">
+                        <div class="navbar navbar-static-top">
                             <div class="navigation" style="margin-top:15px;">
                                 <nav>
                                     <ul class="nav topnav">
@@ -57,15 +57,17 @@
                                             <a href="{% url 'home' %}">Home</a>
                                         </li>
                                         <li class={% block link1 %}{% endblock %}>
-                                            <a href="#">About Us</a>
+                                            <a href="{% url 'about_us' %}">About Us</a>
 
                                         </li>
                                         <li class={% block link2 %}{% endblock %}>
-                                            <a href="#">Contact Us</a>
-
+                                            <a href="{% url 'contact' %}">Contact Us</a>
                                         </li>
                                         <li>
                                             <a href="{% url 'login' %}">Login </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'faq' %}">FAQs </a>
                                         </li>
                                         {% endif %}
                                     </ul>
@@ -82,7 +84,7 @@
         <footer style="padding-top:0px;"  >
             <div>
                 <div class="container-fluid bg-dark">
-                    <div class="row" style="margin-bottom: 0px; margin-top: 10px; height: 60px;">
+                    <div class="row" style="margin-bottom: 0px; margin-top: 10px;">
 
                         <div class="span-6 offset-1">
                             <div class="widget">
@@ -99,16 +101,16 @@
                             <div class="widget">
                                 <address>
                                     
-                                    Somestreet KW 101, Park Village W.01<br>
-                                    Jakarta 13426 Indonesia
+                                    Saboo Siddik<br>
+                                    Byculla, Mumbai
                                 </address>
                             </div>
                         </div>
                         <div class="span-5 offset-2">
                             <div class="widget">
                                 <p>
-                                    <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
-                                    <i class="icon-envelope-alt"></i> email@domainname.com
+                                    <i class="icon-phone"></i> (022) 23012922 <br>
+                                    <i class="icon-envelope-alt"></i> mhssce@yahoo.in
                                 </p>
                             </div>
                         </div>
@@ -149,7 +151,8 @@
     <a href="#" class="scrollup"><i class="icon-angle-up icon-rounded icon-bglight icon-2x"></i></a>
     <!-- javascript 
    Placed at the end of the document so the pages load faster -->
-  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
   <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
   <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
   <script src="{% static 'js/all.min.js' %}"></script>

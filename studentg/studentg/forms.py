@@ -19,4 +19,7 @@ class GrievanceUpdateForm(forms.ModelForm):
 class NewReplyForm(forms.ModelForm):
     class Meta:
         model=Reply
-        fields= ['message']
+        fields= ['message','grievance']
+    grievance = forms.ModelChoiceField(
+            queryset=Grievance.objects.all(),
+            widget=forms.HiddenInput())

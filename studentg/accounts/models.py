@@ -6,7 +6,7 @@ from redressal.models import University, Institute, Department, Redressal_Body
 
 class Sys_User(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, parent_link=True, related_name="sys_user")
+        User, on_delete=models.CASCADE, related_name="sys_user")
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     STUDENT = 'ST'
@@ -26,7 +26,17 @@ class Sys_User(models.Model):
         (DEP_HEAD, 'Department_H'),
     ]
     designation = models.CharField(max_length=15, choices=DESIGNATION_CHOICES)
-
+    def get_designation_object(self):
+        if self.designation=='Student':
+            return Student.objects.get(user=self.user)
+        elif self.designation=='University' or self.designation=='University_H':
+            return University_Member.objects.get(user=self.user)
+        elif self.designation=='Institute' or self.designation=='Institute_H':
+            return Institute_Member.objects.get(user=self.user)
+        elif self.designation=='Department' or self.designation=='Department_H':
+            return Department_Member.objects.get(user=self.user)
+    def get_redressal_body(self):
+        return self.get_designation_object().get_redressal_body()
 
 class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -34,26 +44,34 @@ class Student(models.Model):
     rollno=models.IntegerField(unique=True)
     class Meta:
         unique_together=(("department", "rollno"),)
+        
+    def get_redressal_body(self):
+        return self.department.redressal_body
 
 class University_Member(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     university = models.ForeignKey(University, on_delete=models.CASCADE)
+    def get_redressal_body(self):
+        return self.university.redressal_body
+    def get_body_members(self):
+        return User.objects.filter(university_member__in=self.university.university_member_set.all())
 
 class Institute_Member(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     institute = models.ForeignKey(Institute, on_delete=models.CASCADE)
+    def get_redressal_body(self):
+        return self.institute.redressal_body
+    def get_body_members(self):
+        return User.objects.filter(institute_member__in=self.institute.institute_member_set.all())
 
 class Department_Member(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    def get_redressal_body(self):
+        return self.department.redressal_body
+    def get_body_members(self):
+        return User.objects.filter(department_member__in=self.department.department_member_set.all())
 
-'''
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-self.uid = urlsafe_base64_encode(force_bytes(user.pk))
-self.token = default_token_generator.make_token(user)
-'''
 class Temp_User(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)

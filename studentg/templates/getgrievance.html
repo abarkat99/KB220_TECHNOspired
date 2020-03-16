@@ -1,0 +1,48 @@
+{% load widget_tweaks %}
+<div class="modal-header">
+    <h4 class="modal-title">Grievance No. {{ token }}</h4>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+</div>
+<div class="modal-body">
+    <div>
+        Submitted on: {{ grievance.date }}
+    Status: {{ grievance.status }}
+    Subject: {{ grievance.subject }}
+    Message: {{ grievance.message }}
+    </div>
+    <div>
+        Replies:-<br>
+    </div>
+    <div style="overflow:auto;height:300px;">
+    {% for reply in replies %}
+    <br>
+    {% if reply.user == request.user %}
+    <div class="bg-primary text-dark rounded " style="float:right;">
+    {{ reply.message }}{{ reply.date_time }}
+    </div>
+    {% else %}
+    <div class="bg-dark text-light rounded" style="float:left;">
+    {{ reply.message }}{{ reply.date_time }}
+    </div>
+    {% endif %}
+    <br>
+    {% endfor %}
+    </div>
+    {% if reply_form %}
+    <form method="POST">
+        {% csrf_token %}
+        {% for hidden in reply_form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+        {% for field in reply_form.visible_fields %}
+        <div class="form-group has-feedback">
+            {% render_field field class="form-control" placeholder=field.label %}
+            {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="form-control btn btn-primary">Reply</button>
+    </form>
+    {% endif %}
+</div>

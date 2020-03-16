@@ -1,0 +1,35 @@
+{% extends 'dash_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block e_content %}
+<h1 class="text-center">Member</h1>
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+    <div class="form-group has-feedback">
+        {% render_field field class="form-control" placeholder=field.label %}
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="form-control btn btn-primary">Add Member</button>
+</form>
+Members:-<br>
+{% for member in members %}
+Name: {{member.sys_user.first_name}} {{member.sys_user.last_name}}
+{% if request.user != member %}
+<a href="{% url 'remove_member' member.pk %}" class="btn btn-danger member-delete-link">Delete</a>
+{% endif %}
+<br>
+{% endfor %}
+{% if in_members %}
+Invited Members:-
+{% for member in in_members %}
+Name: {{member.first_name}} {{member.last_name}}<br>
+{% endfor %}
+{% endif %}
+{% endblock e_content %}
+{% block javascript %}
+<script src="{% static 'js/site-js/intercept_link.js' %}"></script>
+{% endblock javascript %}

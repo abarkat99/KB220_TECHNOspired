@@ -14,4 +14,8 @@
     {% endfor %}
     <button type="submit" class="form-control btn btn-primary">Add Subcategory</button>
 </form>
+Subcategories:-<br>
+{% for subcat in subcats %}
+{{subcat.sub_type}}<br>
+{% endfor %}
 {% endblock e_content %}

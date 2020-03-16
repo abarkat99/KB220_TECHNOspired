@@ -35,6 +35,9 @@
         {% endfor %}
     </div>
 
+    {% for hidden in reply_form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
     {% for field in reply_form.visible_fields %}
     <div class="form-group has-feedback">
         {% render_field field class="form-control" placeholder=field.label %}
@@ -46,8 +49,12 @@
     <button type="submit" class="form-control btn btn-primary">Submit</button>
 </form>
 <div>
-{% for reply in replies %}
-{{ reply.message }}
-{% endfor %}
+    Chat:-
+    {% for reply in replies %}
+    <div>
+        {{ reply.message }}
+        {{ reply.date_time}}
+    </div>
+    {% endfor %}
 </div>
 {% endblock e_content %}

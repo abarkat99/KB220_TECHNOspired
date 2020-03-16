@@ -1,7 +1,42 @@
 {% extends 'dash_base.html' %}
 {% block e_content %}
-<h1 class="text-center">My Account</h1><br>
-<b>First Name:</b> {{ user.sys_user.first_name }}<br>
-<b>Last Name:</b> {{ user.sys_user.last_name }}<br>
-<b>Email:</b> {{ user.email }}<br>
-{% endblock e_content %}k
+<div class="bg-dark">
+<h1 class="text-center" style="color:#99FF33;margin-bottom:-10px;">My Account</h1><br>
+</div>
+<div>
+<b style="font-size:20px;">First Name:</b><p style="font-size:20px;display:inline;"> {{ user.sys_user.first_name }}</p><br>
+</div>
+<hr style="border: 1px solid #99FF33;">
+<div>
+<b style="font-size:20px;">Last Name:</b><p style="font-size:20px;display:inline;">{{ user.sys_user.last_name }}</p><br>
+</div>
+<hr style="border: 1px solid #99FF33;">
+<b style="font-size:20px;">Email:</b><p style="font-size:20px;display:inline;"> {{ user.email }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+{% if user.sys_user.designation == "University" or user.sys_user.designation == "University_H" %}
+<b style="font-size:20px;">University:</b><p style="font-size:20px;display:inline;"> {{ user.university_member_set.first.university.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+{% endif %}
+{% if user.sys_user.designation == "Institute" or user.sys_user.designation == "Institute_H" %}
+<b style="font-size:20px;">University:</b><p style="font-size:20px;display:inline;"> {{ user.institute_member_set.first.institute.university.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+<b style="font-size:20px;">Institute:</b><p style="font-size:20px;display:inline;"> {{ user.institute_member_set.first.institute.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+{% endif %}
+{% if user.sys_user.designation == "Department" or user.sys_user.designation == "Department_H" %}
+<b style="font-size:20px;">University:</b><p style="font-size:20px;display:inline;"> {{ user.department_member_set.first.department.institute.university.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+<b style="font-size:20px;">Institute:</b><p style="font-size:20px;display:inline;"> {{ user.department_member_set.first.department.institute.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+<b style="font-size:20px;">Department:</b><p style="font-size:20px;display:inline;"> {{ user.department_member_set.first.department.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+{% endif %}
+{% if user.sys_user.designation == "Student" %}
+<b style="font-size:20px;">University:</b><p style="font-size:20px;display:inline;"> {{ user.student_set.first.department.institute.university.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+<b style="font-size:20px;">Institute:</b><p style="font-size:20px;display:inline;"> {{ user.student_set.first.department.institute.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+<b style="font-size:20px;">Department:</b><p style="font-size:20px;display:inline;"> {{ user.student_set.first.department.redressal_body.name }}</p><br>
+<hr style="border: 1px solid #99FF33;">
+{% endif %}
+{% endblock e_content %}

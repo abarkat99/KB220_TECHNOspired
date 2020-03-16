@@ -1,27 +1,73 @@
 {% extends 'dash_base.html' %}
 {% load widget_tweaks %}
+{% load static %}
+{% load studentg_extras %}
+{% block estyles %}
+<link href="{% static 'css/styles/elements.css' %}" rel="stylesheet" type="text/css">
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #000000;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    
+{% endblock estyles %}
 {% block e_content %}
 <h1 class="text-center">My Grievances</h1>
 <table>
-<thead>
-<tr>
-<th>Token No</th>
-<th>Status</th>
-<th>Category</th>
-<th>Sub-Category</th>
-<th>Subject</th>
-</tr>
-</thead>
-<tbody>
-{% for grievance in grievance_list %}
-<tr>
-<td>{{ grievance.date|date:"Ymd" }}{{ grievance.daytoken|stringformat:"04d" }}</td>
-<td>{{ grievance.status }}</td>
-<td>{{ grievance.category }}</td>
-<td>{{ grievance.sub_category }}</td>
-<td>{{ grievance.subject }}</td>
-</tr>
-{% endfor %}
-</tbody>
+    <thead>
+        <tr>
+            <th>Token No</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Sub-Category</th>
+            <th>Subject</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for grievance in grievance_list %}
+        <tr>
+            {% with grievance.date|date:"Ymd" as date %}
+            {% with grievance.daytoken|stringformat:"04d" as daytoken %}
+            {% with date|addstr:daytoken as token %}
+            <td><button class="grievance-btn btn {% if grievance.status == "Pending" %}btn-primary{% elif grievance.status == "Resolved" %}btn-success{% endif %}" token-url="{% url 'getgrievance' token %}">{{ token }}</button></td>
+            {% endwith %}{% endwith %}{% endwith %}
+            <td>{{ grievance.status }}</td>
+            <td>{{ grievance.category }}</td>
+            <td>{{ grievance.sub_category }}</td>
+            <td>{{ grievance.subject }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
+
+{% with grievance_list as page_obj %}
+    {% include 'includes/pagination.html' %}
+{% endwith %}
+<div class="modal fade" id="grievanceModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="grivance-details">
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock e_content %}
+{% block javascript %}
+<script src="{% static 'js/getgrievance.js' %}"></script>
+{% endblock javascript %}

@@ -6,8 +6,10 @@ from accounts.models import Student, Department_Member, Temp_User, Student_Temp_
 
 from redressal.models import Sub_Category
 
-from .forms import NewGrievanceForm
-from .models import Grievance
+import datetime
+
+from .forms import NewGrievanceForm,NewReplyForm
+from .models import Grievance,Reply
 
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -19,6 +21,7 @@ import openpyxl
 import pandas as pd
 
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def home(request):
@@ -26,6 +29,8 @@ def home(request):
         return redirect('dash_home')
     return render(request, 'home.html')
 
+def faq(request):
+    return render(request, 'faq.html')
 
 def dash_home(request):
     return render(request, 'dash_home.html')
@@ -148,7 +153,28 @@ def load_subcategories(request):
 def my_grievances(request):
     grievance_list = Grievance.objects.filter(
         user=request.user).order_by('-last_update')
-    return render(request, 'my_grievances.html', {'grievance_list': grievance_list})
+    page=request.GET.get('page',1)
+    paginator=Paginator(grievance_list,10)
+    try:
+        grievance_list = paginator.page(page)
+    except PageNotAnInteger:
+        grievance_list = paginator.page(1)
+    except EmptyPage:
+        grievance_list = paginator.page(paginator.num_pages)
+    return render(request, 'my_grievances.html', {'grievance_list': grievance_list,'paginator':paginator})
+
+def getgrievance(request,token):
+    date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+    daytoken=int(token[-4:])
+    grievance = get_object_or_404(Grievance, date=date, daytoken=daytoken)
+    replies = Reply.objects.filter(grievance=grievance)
+    reply_form=None
+    if(request.user!=grievance.user):
+        raise Http404()
+    if (replies):
+        if(request.user != replies.last().user):
+            reply_form=NewReplyForm(initial={'grievance': grievance})
+    return render(request, 'getgrievance.html', {'grievance': grievance, 'replies': replies,'token': token,'reply_form': reply_form})
 
 def contact(request):
     return render(request,"contact.html")

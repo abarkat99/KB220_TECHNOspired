@@ -9,18 +9,21 @@
                 {% if user.is_superuser %}
                     <li><a href="{% url 'add_body' 'university' %}">Add University</a></li>
                 {% elif user.sys_user.designation == "University_H" %}
+                <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
                 <li><a href="{% url 'add_body' 'institute' %}">Add Institute</a></li>
                 <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
                 {% elif user.sys_user.designation == "University" %}
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
                 {% elif user.sys_user.designation == "Institute_H" %}
+                <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
                 <li><a href="{% url 'add_body' 'department' %}">Add Department</a></li>
                 <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
                 {% elif user.sys_user.designation == "Institute" %}
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
                 {% elif user.sys_user.designation == "Department_H" %}
+                <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
                 <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
                 <li><a href="{% url 'add_student' %}">Add Student</a></li>
                 <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
