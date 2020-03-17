@@ -25,7 +25,7 @@ class User(AbstractUser):
         (DEP_HEAD, 'Department Head'),
     ]
     designation = models.CharField(max_length=5, choices=DESIGNATION_CHOICES)
-    
+    REQUIRED_FIELDS = ['first_name','last_name']
     def get_designation_object(self):
         if self.designation==self.STUDENT:
             return self.student

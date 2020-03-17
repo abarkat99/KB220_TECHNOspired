@@ -9,7 +9,7 @@ from redressal.models import SubCategory
 import datetime
 
 from .forms import NewGrievanceForm,NewReplyForm
-from .models import Grievance,Reply
+from .models import DayToken,Grievance,Reply
 
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -23,6 +23,8 @@ import pandas as pd
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from rules.contrib.views import permission_required,objectgetter
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     if request.user.is_authenticated:
@@ -32,6 +34,7 @@ def home(request):
 def faq(request):
     return render(request, 'faq.html')
 
+@login_required
 def dash_home(request):
     return render(request, 'dash_home.html')
 
@@ -126,6 +129,7 @@ def addgrievance(request):
                     if grievance.category != 'University':
                         raise Http404
             grievance.redressal_body = r_body
+            grievance.daytoken=DayToken.get_new_token()
             grievance.save()
         return redirect('my_grievances')
     else:
