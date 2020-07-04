@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'rules.apps.AutodiscoverRulesConfig',
 
@@ -91,8 +92,8 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'rules.permissions.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    # 'rules.permissions.ObjectPermissionBackend',
+    'accounts.auth_backend.SiteBackend',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'

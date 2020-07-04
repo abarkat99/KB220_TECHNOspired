@@ -39,82 +39,6 @@ def dash_home(request):
     return render(request, 'dash_home.html')
 
 
-def add_student(request):
-    if request.method == 'POST':
-        tuser_form = NewTempUserForm(request.POST)
-        student_form = NewStudentForm(request.POST)
-        mass_student_form = NewMassStudentForm(request.POST,request.FILES)
-        if mass_student_form.is_valid():
-            excel_file = request.FILES['file']
-            data = pd.read_csv(excel_file)
-            df = pd.DataFrame(
-                data, columns=['Fname', 'Lname', 'Email', 'Rollno'])
-            for i, j in df.iterrows():
-                tuser = TempUser()
-                tuser.first_name = j['Fname']
-                tuser.last_name = j['Lname']
-                tuser.email = j['Email']
-                tuser.created_at = timezone.now()
-                tuser.redressal_body = request.user.get_redressal_body()
-                tuser.designation = TempUser.STUDENT
-                tuser.uidb64 = urlsafe_base64_encode(force_bytes(
-                    six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
-                value = six.text_type(tuser.email)+six.text_type(tuser.designation) + \
-                    six.text_type(tuser.first_name) + \
-                    six.text_type(tuser.last_name) + \
-                    six.text_type(tuser.created_at)
-                tuser.token = salted_hmac(
-                    "%s" % (random.random()), value).hexdigest()[::3]
-                tuser.save()
-                stuser = StudentTempUser()
-                stuser.rollno = j['Rollno']
-                stuser.user = tuser
-                stuser.save()
-                send_mail(
-                    'Sign Up for Student Grievance Portal',
-                    'Click this link to sign up %s' % (reverse('signup', kwargs={
-                        'uidb64': tuser.uidb64,
-                        'token': tuser.token
-                    })),
-                    'from@example.com',
-                    [tuser.email],
-                    fail_silently=False,
-                )
-
-        elif tuser_form.is_valid() and student_form.is_valid():
-            tuser = tuser_form.save(commit=False)
-            tuser.redressal_body = request.user.get_redressal_body()
-            tuser.designation = TempUser.STUDENT
-            tuser.created_at = timezone.now()
-            tuser.uidb64 = urlsafe_base64_encode(force_bytes(
-                six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
-            value = six.text_type(tuser.email)+six.text_type(tuser.designation) + \
-                six.text_type(tuser.first_name) + \
-                six.text_type(tuser.last_name) + \
-                six.text_type(tuser.created_at)
-            tuser.token = salted_hmac(
-                "%s" % (random.random()), value).hexdigest()[::3]
-            tuser.save()
-            student = student_form.save(commit=False)
-            student.user = tuser
-            student.save()
-            send_mail(
-                'Sign Up for Student Grievance Portal',
-                'Click this link to sign up %s' % (reverse('signup', kwargs={
-                    'uidb64': tuser.uidb64,
-                    'token': tuser.token
-                })),
-                'from@example.com',
-                [tuser.email],
-                fail_silently=False,
-            )
-    else:
-        tuser_form = NewTempUserForm()
-        student_form = NewStudentForm()
-        mass_student_form = NewMassStudentForm(request.POST)
-    return render(request, 'addstudent.html', {'tuser_form': tuser_form, 'student_form': student_form, 'mass_student_form': mass_student_form})
-
-
 def addgrievance(request):
     if request.method == 'POST':
         form = NewGrievanceForm(request.POST, request.FILES)
@@ -179,5 +103,6 @@ def getgrievance(request,token):
 
 def contact(request):
     return render(request,"contact.html")
+
 def about_us(request):
     return render(request,"about_us.html")

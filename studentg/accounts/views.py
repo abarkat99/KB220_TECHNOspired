@@ -1,14 +1,13 @@
 from django.contrib.auth import login
 from rules.contrib.views import permission_required
 from django.shortcuts import render, reverse, redirect, get_object_or_404
-from .models import TempUser, User, Student, UniversityMember, InstituteMember, DepartmentMember, StudentTempUser
 from .forms import SignUpForm
+from .models import TempUser, User, Student, UniversityMember, InstituteMember, DepartmentMember, StudentTempUser
 from redressal.models import RedressalBody, University, Institute, Department
 from django.utils import timezone
 import datetime
 
 # Create your views here.
-@permission_required('accounts.sign_up',raise_exception=True)
 def signup(request,uidb64,token):
     t_user=get_object_or_404(TempUser, uidb64=uidb64, token=token)
     if (t_user.created_at < timezone.now() - datetime.timedelta(days=1)):

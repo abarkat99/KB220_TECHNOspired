@@ -1,0 +1,13 @@
+.btn.btn-success.text-center.shadow-lg {
+  color: white;
+  background-color: green;
+}
+
+.btn.btn-success.text-center.shadow-lg:hover {
+  border-color: green;
+  background-color: transparent;
+  /*margin-bottom: 3%;*/
+  /*background-color: rgb(121,205,106);*/
+  /*color: black;*/
+}
+

@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from redressal import views as r_views
-from studentg import views
+from . import views
 
 dashpatterns = [
     path('', views.dash_home, name="dash_home"),
@@ -36,7 +36,7 @@ dashpatterns = [
     path('load/subcategories/', views.load_subcategories,name="load_subcategories"),
     path('mygrievance/', views.my_grievances, name="my_grievances"),
     path('getgrievance/<token>/',views.getgrievance, name="getgrievance"),
-    path('update/grievance/<token>/', r_views.update_grievance, name="update_grievance"),
+
 ]
 urlpatterns = [
     path('', views.home, name="home"),
