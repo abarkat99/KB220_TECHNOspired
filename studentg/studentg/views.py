@@ -17,13 +17,11 @@ from django.utils.crypto import salted_hmac
 import six
 import random
 from django.utils import timezone
-import openpyxl
 import pandas as pd
 
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from rules.contrib.views import permission_required,objectgetter
 from django.contrib.auth.decorators import login_required
 
 def home(request):

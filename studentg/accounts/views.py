@@ -1,5 +1,4 @@
 from django.contrib.auth import login
-from rules.contrib.views import permission_required
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from .forms import SignUpForm
 from .models import TempUser, User, Student, UniversityMember, InstituteMember, DepartmentMember, StudentTempUser

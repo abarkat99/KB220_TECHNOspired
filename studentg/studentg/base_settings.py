@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    'rules.apps.AutodiscoverRulesConfig',
-
     'redressal',
     'accounts',
     'studentg',
