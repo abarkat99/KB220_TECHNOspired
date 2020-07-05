@@ -1,5 +1,6 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404
-from .decorators import is_committee_head, is_committee_member, is_committee_head_of_super_body_type, is_committee_member_of_grievance, is_department_member, is_committee_head_of
+from .decorators import is_committee_head, is_committee_member, is_committee_head_of_super_body_type, \
+    is_committee_member_of_grievance, is_department_member, is_committee_head_of
 from .filters import GrievanceFilter
 from .forms import NewRedressalBodyForm, NewSubCategoryForm
 from .models import RedressalBody, University, Institute, Department, SubCategory
@@ -28,6 +29,7 @@ from django.utils import timezone
 from django.db.models.functions import TruncMonth
 from django.db.models import Count, Q
 
+
 # Create your views here.
 @is_committee_head_of_super_body_type(raise_denied=True)
 def add_body(request, body_type):
@@ -38,14 +40,14 @@ def add_body(request, body_type):
             rbody = rbody_form.save(commit=False)
             body_object = None
             if body_type == "university":
-                rbody.body_type=RedressalBody.UNIVERSITY
+                rbody.body_type = RedressalBody.UNIVERSITY
                 body_object = University()
             elif body_type == "institute":
-                rbody.body_type=RedressalBody.INSTITUTE
+                rbody.body_type = RedressalBody.INSTITUTE
                 body_object = Institute()
                 body_object.university = request.user.universitymember.redressal_body.university
             elif body_type == "department":
-                rbody.body_type=RedressalBody.DEPARTMENT
+                rbody.body_type = RedressalBody.DEPARTMENT
                 body_object = Department()
                 body_object.institute = request.user.institutemember.redressal_body.institute
             rbody.save()
@@ -61,11 +63,11 @@ def add_body(request, body_type):
                 temp_user.designation = TempUser.DEP_HEAD
             temp_user.created_at = timezone.now()
             temp_user.uidb64 = urlsafe_base64_encode(force_bytes(
-                six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
-            value = six.text_type(temp_user.email)+six.text_type(temp_user.designation) + \
-                six.text_type(temp_user.first_name) + \
-                six.text_type(temp_user.last_name) + \
-                six.text_type(temp_user.created_at)
+                six.text_type(temp_user.pk) + six.text_type(temp_user.created_at))[::3])
+            value = six.text_type(temp_user.email) + six.text_type(temp_user.designation) + \
+                    six.text_type(temp_user.first_name) + \
+                    six.text_type(temp_user.last_name) + \
+                    six.text_type(temp_user.created_at)
             temp_user.token = salted_hmac(
                 "%s" % (random.random()), value).hexdigest()[::3]
             temp_user.save()
@@ -89,6 +91,7 @@ def add_body(request, body_type):
         tuser_form = NewTempUserForm()
     return render(request, 'addbody.html', {'rbody_form': rbody_form, 'tuser_form': tuser_form, 'body_type': body_type})
 
+
 @is_committee_head(raise_denied=True)
 def manage_members(request):
     if request.method == 'POST':
@@ -96,14 +99,14 @@ def manage_members(request):
         if form.is_valid():
             temp_user = form.save(commit=False)
             temp_user.redressal_body = request.user.get_redressal_body()
-            temp_user.designation=request.user.designation[:-2]
+            temp_user.designation = request.user.designation[:-2]
             temp_user.created_at = timezone.now()
             temp_user.uidb64 = urlsafe_base64_encode(force_bytes(
-                six.text_type(temp_user.pk)+six.text_type(temp_user.created_at))[::3])
-            value = six.text_type(temp_user.email)+six.text_type(temp_user.designation) + \
-                six.text_type(temp_user.first_name) + \
-                six.text_type(temp_user.last_name) + \
-                six.text_type(temp_user.created_at)
+                six.text_type(temp_user.pk) + six.text_type(temp_user.created_at))[::3])
+            value = six.text_type(temp_user.email) + six.text_type(temp_user.designation) + \
+                    six.text_type(temp_user.first_name) + \
+                    six.text_type(temp_user.last_name) + \
+                    six.text_type(temp_user.created_at)
             temp_user.token = salted_hmac(
                 "%s" % (random.random()), value).hexdigest()[::3]
             temp_user.save()
@@ -119,15 +122,17 @@ def manage_members(request):
             )
     else:
         form = NewTempUserForm()
-    members=request.user.get_designation_object().get_body_members()
-    in_members=TempUser.objects.filter(redressal_body=request.user.get_redressal_body())
-    return render(request, 'manage_members.html',{'form':form,'members':members,'in_members':in_members})
+    members = request.user.get_designation_object().get_body_members()
+    in_members = TempUser.objects.filter(redressal_body=request.user.get_redressal_body())
+    return render(request, 'manage_members.html', {'form': form, 'members': members, 'in_members': in_members})
+
 
 @is_committee_head_of(raise_denied=True)
 def remove_member(request, pk):
-    user=get_object_or_404(User,pk=pk)
+    user = get_object_or_404(User, pk=pk)
     user.delete()
     return redirect('manage_members')
+
 
 @is_committee_head(raise_denied=True)
 def add_subcategory(request):
@@ -135,13 +140,13 @@ def add_subcategory(request):
         form = NewSubCategoryForm(request.POST)
         if form.is_valid():
             subcat = form.save(commit=False)
-            subcat.redressal_body=request.user.get_redressal_body()
+            subcat.redressal_body = request.user.get_redressal_body()
             subcat.save()
             return redirect('dash_home')
     else:
         form = NewSubCategoryForm()
-    subcats=SubCategory.objects.filter(redressal_body=request.user.get_redressal_body())
-    return render(request, 'add_subcategory.html', {'form': form,'subcats':subcats})
+    subcats = SubCategory.objects.filter(redressal_body=request.user.get_redressal_body())
+    return render(request, 'add_subcategory.html', {'form': form, 'subcats': subcats})
 
 
 @is_department_member(raise_denied=True)
@@ -149,7 +154,7 @@ def add_student(request):
     if request.method == 'POST':
         tuser_form = NewTempUserForm(request.POST)
         student_form = NewStudentForm(request.POST)
-        mass_student_form = NewMassStudentForm(request.POST,request.FILES)
+        mass_student_form = NewMassStudentForm(request.POST, request.FILES)
         if mass_student_form.is_valid():
             excel_file = request.FILES['file']
             data = pd.read_csv(excel_file)
@@ -164,11 +169,11 @@ def add_student(request):
                 tuser.redressal_body = request.user.get_redressal_body()
                 tuser.designation = TempUser.STUDENT
                 tuser.uidb64 = urlsafe_base64_encode(force_bytes(
-                    six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
-                value = six.text_type(tuser.email)+six.text_type(tuser.designation) + \
-                    six.text_type(tuser.first_name) + \
-                    six.text_type(tuser.last_name) + \
-                    six.text_type(tuser.created_at)
+                    six.text_type(tuser.pk) + six.text_type(tuser.created_at))[::3])
+                value = six.text_type(tuser.email) + six.text_type(tuser.designation) + \
+                        six.text_type(tuser.first_name) + \
+                        six.text_type(tuser.last_name) + \
+                        six.text_type(tuser.created_at)
                 tuser.token = salted_hmac(
                     "%s" % (random.random()), value).hexdigest()[::3]
                 tuser.save()
@@ -193,11 +198,11 @@ def add_student(request):
             tuser.designation = TempUser.STUDENT
             tuser.created_at = timezone.now()
             tuser.uidb64 = urlsafe_base64_encode(force_bytes(
-                six.text_type(tuser.pk)+six.text_type(tuser.created_at))[::3])
-            value = six.text_type(tuser.email)+six.text_type(tuser.designation) + \
-                six.text_type(tuser.first_name) + \
-                six.text_type(tuser.last_name) + \
-                six.text_type(tuser.created_at)
+                six.text_type(tuser.pk) + six.text_type(tuser.created_at))[::3])
+            value = six.text_type(tuser.email) + six.text_type(tuser.designation) + \
+                    six.text_type(tuser.first_name) + \
+                    six.text_type(tuser.last_name) + \
+                    six.text_type(tuser.created_at)
             tuser.token = salted_hmac(
                 "%s" % (random.random()), value).hexdigest()[::3]
             tuser.save()
@@ -218,25 +223,26 @@ def add_student(request):
         tuser_form = NewTempUserForm()
         student_form = NewStudentForm()
         mass_student_form = NewMassStudentForm(request.POST)
-    return render(request, 'addstudent.html', {'tuser_form': tuser_form, 'student_form': student_form, 'mass_student_form': mass_student_form})
+    return render(request, 'addstudent.html',
+                  {'tuser_form': tuser_form, 'student_form': student_form, 'mass_student_form': mass_student_form})
 
 
 @is_committee_member(raise_denied=True)
 def view_grievances(request):
-    r_body=request.user.get_redressal_body()
+    r_body = request.user.get_redressal_body()
     gr_list = Grievance.objects.filter(
         redressal_body=r_body, status="Pending").order_by('last_update')
-    gr_filter=GrievanceFilter(request.GET,queryset=gr_list,request=request)
-    gr_list=gr_filter.qs
-    page=request.GET.get('page',1)
-    paginator=Paginator(gr_list,10)
+    gr_filter = GrievanceFilter(request.GET, queryset=gr_list, request=request)
+    gr_list = gr_filter.qs
+    page = request.GET.get('page', 1)
+    paginator = Paginator(gr_list, 10)
     try:
         gr_list = paginator.page(page)
     except PageNotAnInteger:
         gr_list = paginator.page(1)
     except EmptyPage:
         gr_list = paginator.page(paginator.num_pages)
-    return render(request, 'view_grievances.html', {'gr_list': gr_list,'paginator':paginator, 'filter':gr_filter})
+    return render(request, 'view_grievances.html', {'gr_list': gr_list, 'paginator': paginator, 'filter': gr_filter})
 
 
 @is_committee_member_of_grievance(raise_denied=True)
@@ -246,28 +252,29 @@ def update_grievance(request, token):
     designation = request.user.designation
     if designation == User.STUDENT:
         raise Http404()
-    date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
-    daytoken=int(token[-4:])
-    grievance=get_object_or_404(Grievance, date=date, daytoken=daytoken)
+    date = datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+    daytoken = int(token[-4:])
+    grievance = get_object_or_404(Grievance, date=date, daytoken=daytoken)
     if (grievance.redressal_body != request.user.get_redressal_body()):
         raise Http404
-    date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
-    daytoken=int(token[-4:])
-    grievance=get_object_or_404(Grievance, date=date, daytoken=daytoken,status="Pending")
-    replies=Reply.objects.filter(grievance=grievance).order_by('date_time')
+    date = datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+    daytoken = int(token[-4:])
+    grievance = get_object_or_404(Grievance, date=date, daytoken=daytoken, status="Pending")
+    replies = Reply.objects.filter(grievance=grievance).order_by('date_time')
     if request.method == 'POST':
-        gr_upform=GrievanceUpdateForm(request.POST, instance=grievance)
-        reply_form=NewReplyForm(request.POST)
-        if(gr_upform.is_valid() and reply_form.is_valid()):
-            grievance=gr_upform.save()
-            reply=reply_form.save(commit=False)
-            reply.user=request.user
+        gr_upform = GrievanceUpdateForm(request.POST, instance=grievance)
+        reply_form = NewReplyForm(request.POST)
+        if (gr_upform.is_valid() and reply_form.is_valid()):
+            grievance = gr_upform.save()
+            reply = reply_form.save(commit=False)
+            reply.user = request.user
             reply.save()
             return redirect('view_grievances')
     else:
         gr_upform = GrievanceUpdateForm(instance=grievance)
-        reply_form=NewReplyForm(initial={'grievance': grievance})
-    return render(request, 'update_grievance.html', {'gr_upform': gr_upform, 'reply_form':reply_form,'replies':replies})
+        reply_form = NewReplyForm(initial={'grievance': grievance})
+    return render(request, 'update_grievance.html',
+                  {'gr_upform': gr_upform, 'reply_form': reply_form, 'replies': replies})
 
 
 @is_committee_member(raise_denied=True)
@@ -284,7 +291,8 @@ def grievances_line_chart(request):
     total_count = Count('id')
     resolved_count = Count('id', filter=Q(status='Resolved'))
     gr_list = Grievance.objects.filter(
-        redressal_body=r_body).order_by('last_update').values('last_update').annotate(t_count=total_count, r_count=resolved_count)
+        redressal_body=r_body).order_by('last_update').values('last_update').annotate(t_count=total_count,
+                                                                                      r_count=resolved_count)
     for entry in gr_list:
         labels.append(entry['last_update'])
         data_t.append(entry['t_count'])

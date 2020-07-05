@@ -29,7 +29,7 @@
     {% endfor %}
     </div>
     {% if reply_form %}
-    <form method="POST">
+    <form method="POST" action="{% url 'getgrievance' token %}" id="grievance-reply-form">
         {% csrf_token %}
         {% for hidden in reply_form.hidden_fields %}
         {{ hidden }}
@@ -42,7 +42,7 @@
             {% endfor %}
         </div>
         {% endfor %}
-        <button type="submit" class="form-control btn btn-primary">Reply</button>
+        <button type="button" class="form-control btn btn-primary" id="grievance-reply-submit">Reply</button>
     </form>
     {% endif %}
 </div>
