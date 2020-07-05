@@ -87,7 +87,7 @@ def my_grievances(request):
     return render(request, 'my_grievances.html', {'grievance_list': grievance_list,'paginator':paginator})
 
 def getgrievance(request,token):
-    date=datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+    date=datetime.datetime.strptime(token[:-4], "%stY%m%d").date()
     daytoken=int(token[-4:])
     grievance = get_object_or_404(Grievance, date=date, daytoken=daytoken)
     replies = Reply.objects.filter(grievance=grievance)

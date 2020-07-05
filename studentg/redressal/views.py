@@ -238,6 +238,7 @@ def view_grievances(request):
         gr_list = paginator.page(paginator.num_pages)
     return render(request, 'view_grievances.html', {'gr_list': gr_list,'paginator':paginator, 'filter':gr_filter})
 
+
 @is_committee_member_of_grievance(raise_denied=True)
 def update_grievance(request, token):
     if request.user.is_superuser:
@@ -268,28 +269,32 @@ def update_grievance(request, token):
         reply_form=NewReplyForm(initial={'grievance': grievance})
     return render(request, 'update_grievance.html', {'gr_upform': gr_upform, 'reply_form':reply_form,'replies':replies})
 
+
+@is_committee_member(raise_denied=True)
 def charts(request):
     return render(request, 'charts.html')
 
+
+@is_committee_member(raise_denied=True)
 def grievances_line_chart(request):
     r_body = request.user.get_redressal_body()
     labels = []
-    data_p = []
+    data_t = []
     data_r = []
-    pending_count = Count('id')
+    total_count = Count('id')
     resolved_count = Count('id', filter=Q(status='Resolved'))
     gr_list = Grievance.objects.filter(
-        redressal_body=r_body).order_by('last_update').values('last_update').annotate(p_count=pending_count, r_count=resolved_count)
+        redressal_body=r_body).order_by('last_update').values('last_update').annotate(t_count=total_count, r_count=resolved_count)
     for entry in gr_list:
         labels.append(entry['last_update'])
-        data_p.append(entry['p_count'])
+        data_t.append(entry['t_count'])
         data_r.append(entry['r_count'])
     data = {
         'labels': labels,
         'datasets': [
             {
-                'label': 'Pending Grievances',
-                'data': data_p,
+                'label': 'Total Grievances',
+                'data': data_t,
                 'borderColor': "#3e95cd",
             },
             {
