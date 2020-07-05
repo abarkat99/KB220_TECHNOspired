@@ -289,6 +289,10 @@ def grievances_line_chart(request):
         labels.append(entry['last_update'])
         data_t.append(entry['t_count'])
         data_r.append(entry['r_count'])
+    len_n = len(data_r)
+    for i in range(1, len_n):
+        data_r[i] += data_r[i - 1]
+        data_t[i] += data_t[i - 1]
     data = {
         'labels': labels,
         'datasets': [
