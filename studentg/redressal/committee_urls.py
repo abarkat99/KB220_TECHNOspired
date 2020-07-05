@@ -33,6 +33,8 @@ dashpatterns = [
     path('view/grievances/',r_views.view_grievances, name="view_grievances"),
 
     path('update/grievance/<token>/', r_views.update_grievance, name="update_grievance"),
+    path('charts/', r_views.charts, name="charts"),
+    path('grievance-chart/', r_views.grievances_line_chart, name="grievance-chart"),
 ]
 urlpatterns = [
     path('', views.home, name="home"),

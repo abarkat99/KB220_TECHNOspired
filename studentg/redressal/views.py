@@ -5,7 +5,7 @@ from .forms import NewRedressalBodyForm, NewSubCategoryForm
 from .models import RedressalBody, University, Institute, Department, SubCategory
 from accounts.forms import NewTempUserForm, NewStudentForm, NewMassStudentForm
 from accounts.models import TempUser, StudentTempUser, User, UniversityMember, InstituteMember, DepartmentMember
-from django.http import HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound, Http404, JsonResponse
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
@@ -23,6 +23,10 @@ import six
 import pandas as pd
 import random
 from django.utils import timezone
+
+# Charts
+from django.db.models.functions import TruncMonth
+from django.db.models import Count, Q
 
 # Create your views here.
 @is_committee_head_of_super_body_type(raise_denied=True)
@@ -263,3 +267,36 @@ def update_grievance(request, token):
         gr_upform = GrievanceUpdateForm(instance=grievance)
         reply_form=NewReplyForm(initial={'grievance': grievance})
     return render(request, 'update_grievance.html', {'gr_upform': gr_upform, 'reply_form':reply_form,'replies':replies})
+
+def charts(request):
+    return render(request, 'charts.html')
+
+def grievances_line_chart(request):
+    r_body = request.user.get_redressal_body()
+    labels = []
+    data_p = []
+    data_r = []
+    pending_count = Count('id', filter=Q(status='Pending'))
+    resolved_count = Count('id', filter=Q(status='Resolved'))
+    gr_list = Grievance.objects.filter(
+        redressal_body=r_body).order_by('date').values('date').annotate(p_count=pending_count, r_count=resolved_count)
+    for entry in gr_list:
+        labels.append(entry['date'])
+        data_p.append(entry['p_count'])
+        data_r.append(entry['r_count'])
+    data = {
+        'labels': labels,
+        'datasets': [
+            {
+                'label': 'Pending Grievances',
+                'data': data_p,
+                'borderColor': "#3e95cd",
+            },
+            {
+                'label': 'Resolved Grievances',
+                'data': data_r,
+                'borderColor': "#8e5ea2",
+            }
+        ]
+    }
+    return JsonResponse(data=data)

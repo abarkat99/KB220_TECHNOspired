@@ -2,37 +2,43 @@
     <ul class="newnav nav nav-sidebar w-100" style="margin-left: 0px;">
         <li>
             <p
-                style="background:black; color: white; padding:8px;padding-left: 30px; font-size: 25px; margin-bottom: 0px;">
+                    style="background:black; color: white; padding:8px;padding-left: 30px; font-size: 25px; margin-bottom: 0px;">
                 Dashboard</p>
-            <ul class="inner-sidebar-links" >
+            <ul class="inner-sidebar-links">
                 <li><a href="{% url 'dash_home' %}">My Account</a></li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'add_body' 'university' %}">Add University</a></li>
                 {% elif user.designation == "UNI_H" %}
-                <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
-                <li><a href="{% url 'add_body' 'institute' %}">Add Institute</a></li>
-                <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
-                <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
+                    <li><a href="{% url 'add_body' 'institute' %}">Add Institute</a></li>
+                    <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
+                    <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'charts' %}">View Charts</a></li>
                 {% elif user.designation == "UNI" %}
-                <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'charts' %}">View Charts</a></li>
                 {% elif user.designation == "INS_H" %}
-                <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
-                <li><a href="{% url 'add_body' 'department' %}">Add Department</a></li>
-                <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
-                <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
+                    <li><a href="{% url 'add_body' 'department' %}">Add Department</a></li>
+                    <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
+                    <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'charts' %}">View Charts</a></li>
                 {% elif user.designation == "INS" %}
-                <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'charts' %}">View Charts</a></li>
                 {% elif user.designation == "DEP_H" %}
-                <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
-                <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
-                <li><a href="{% url 'add_student' %}">Add Student</a></li>
-                <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'manage_members' %}">Manage Members</a></li>
+                    <li><a href="{% url 'add_subcategory' %}">Add Subcategory</a></li>
+                    <li><a href="{% url 'add_student' %}">Add Student</a></li>
+                    <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'charts' %}">View Charts</a></li>
                 {% elif user.designation == "DEP" %}
-                <li><a href="{% url 'add_student' %}">Add Student</a></li>
-                <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'add_student' %}">Add Student</a></li>
+                    <li><a href="{% url 'view_grievances' %}">View Grievances</a></li>
+                    <li><a href="{% url 'charts' %}">View Charts</a></li>
                 {% elif user.designation == "STU" %}
-                <li><a href="{% url 'my_grievances' %}">My Grievances</a></li>
-                <li><a href="{% url 'addgrievance' %}">Add Grievance</a></li>
+                    <li><a href="{% url 'my_grievances' %}">My Grievances</a></li>
+                    <li><a href="{% url 'addgrievance' %}">Add Grievance</a></li>
                 {% endif %}
             </ul>
         </li>

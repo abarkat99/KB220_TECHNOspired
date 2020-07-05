@@ -30,7 +30,7 @@ class Grievance(models.Model):
     redressal_body=models.ForeignKey(RedressalBody, on_delete=models.CASCADE, related_name='grievances')
     daytoken=models.IntegerField()
     
-    last_update=models.DateField(auto_now_add=True)
+    last_update=models.DateField(auto_now=True)
     status=models.CharField(max_length=10, choices=[('Pending', 'Pending'),('Resolved', 'Resolved'),], default='Pending')
 
     message=models.TextField(max_length=1000)
