@@ -276,12 +276,12 @@ def grievances_line_chart(request):
     labels = []
     data_p = []
     data_r = []
-    pending_count = Count('id', filter=Q(status='Pending'))
+    pending_count = Count('id')
     resolved_count = Count('id', filter=Q(status='Resolved'))
     gr_list = Grievance.objects.filter(
-        redressal_body=r_body).order_by('date').values('date').annotate(p_count=pending_count, r_count=resolved_count)
+        redressal_body=r_body).order_by('last_update').values('last_update').annotate(p_count=pending_count, r_count=resolved_count)
     for entry in gr_list:
-        labels.append(entry['date'])
+        labels.append(entry['last_update'])
         data_p.append(entry['p_count'])
         data_r.append(entry['r_count'])
     data = {
