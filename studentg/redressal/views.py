@@ -285,24 +285,22 @@ def charts(request):
 @is_committee_member(raise_denied=True)
 def grievances_line_chart(request):
     r_body = request.user.get_redressal_body()
-    labels = []
     data_t = []
     data_r = []
-    total_count = Count('id')
-    resolved_count = Count('id', filter=Q(status='Resolved'))
     gr_list = Grievance.objects.filter(
-        redressal_body=r_body).order_by('last_update').values('last_update').annotate(t_count=total_count,
-                                                                                      r_count=resolved_count)
+        redressal_body=r_body).order_by('date').values('date').annotate(t_count=Count('id'))
+    gr_list_2 = Grievance.objects.filter(
+        redressal_body=r_body, status='Resolved').order_by('last_update').values('last_update').annotate(
+        r_count=Count('id'))
     for entry in gr_list:
-        labels.append(entry['last_update'])
-        data_t.append(entry['t_count'])
-        data_r.append(entry['r_count'])
-    len_n = len(data_r)
-    for i in range(1, len_n):
-        data_r[i] += data_r[i - 1]
-        data_t[i] += data_t[i - 1]
+        data_t.append({'x': entry['date'], 'y': entry['t_count']})
+    for entry in gr_list_2:
+        data_r.append({'x': entry['last_update'], 'y': entry['r_count']})
+    for idx, val in enumerate(data_t):
+        val['y'] += data_t[idx - 1]['y']
+    for idx, val in enumerate(data_r):
+        val['y'] += data_r[idx - 1]['y']
     data = {
-        'labels': labels,
         'datasets': [
             {
                 'label': 'Total Grievances',
