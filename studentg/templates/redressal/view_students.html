@@ -1,4 +1,5 @@
 {% extends 'redressal/dashboard_base.html' %}
+{% load hosts %}
 {% load static %}
 {% block page_title %}List of Students{% endblock page_title %}
 {% block page_heading %}Students{% endblock page_heading %}
@@ -94,7 +95,7 @@
                                                 </td>
                                                 <td colspan="3">
                                                     <div style="" class=" mb-2 ">
-                                                        <a href="{% url 'delete_member' pk=student.user.pk %}">
+                                                        <a href="{% host_url 'delete_member' pk=student.user.pk host request.host.name %}">
                                                             <button class="btn btn-danger mt-1">Delete Student</button>
                                                         </a>
                                                     </div>
@@ -117,7 +118,7 @@
                             <h5 class="my-3 card-custom-title" style="">Invited Student</h5>
                         </div>
                         <div style="text-align: center" class=" mb-2 mr-5">
-                            <a href="{% url 'add_student' %}">
+                            <a href="{% host_url 'add_student' host request.host.name %}">
                                 <button class="btn btn-outline"
                                         style="color: #252766; border-color: #252766;"><i
                                         style=" font-size: small"
@@ -195,7 +196,7 @@
                                                 </td>
                                                 <td colspan="3">
                                                     <div style="" class=" mb-2 ">
-                                                        <a href="{% url 'delete_invited_member' pk=student.user.pk %}">
+                                                        <a href="{% host_url 'delete_invited_member' pk=student.user.pk host request.host.name %}">
                                                             <button class="btn btn-danger mt-1">Delete Member</button>
                                                         </a>
                                                     </div>

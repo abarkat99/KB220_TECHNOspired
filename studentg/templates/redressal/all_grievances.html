@@ -1,4 +1,5 @@
 {% extends 'redressal/dashboard_base.html' %}
+{% load hosts %}
 {% load static %}
 {% load widget_tweaks %}
 {% block page_title %}All Grievances{% endblock page_title %}
@@ -67,7 +68,7 @@
                         </div>
                         <table class="table step3-table filter-this-table">
                             <thead>
-                            <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
+                            <canvas id="grievance-status-chart" data-url="{% host_url 'status_stats_chart' host request.host.name %}"></canvas>
                             </thead>
                             <tbody>
                             <!--========== ROW 1 STARTS =========-->

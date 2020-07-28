@@ -1,3 +1,4 @@
+{% load hosts %}
 {% load static %}
 {% load gravatar %}
 <!-- Navbar-->
@@ -5,13 +6,13 @@
     <nav class="navbar active navbar-expand-lg fixed-top py-lg-4 py-3">
         <div class="container">
 
-            <a class="navbar-brand p-0 mr-0" href="{% url 'home' %}">
+            <a class="navbar-brand p-0 mr-0" href="{% host_url 'home' host request.host.name %}">
                 <img class="navbar-logo" src="{% static 'assets/img/Logos/govt-logo.jpeg' %}" height="40" alt="">
             </a>
-            <a class="navbar-brand p-0 d-lg-none d-block mr-0" href="{% url 'home' %}">
+            <a class="navbar-brand p-0 d-lg-none d-block mr-0" href="{% host_url 'home' host request.host.name %}">
                 <img class="navbar-logo" src="{% static 'assets/img/Logos/govt-title.png' %}" height="20" alt="">
             </a>
-            <a href="{% url 'home' %}">
+            <a href="{% host_url 'home' host request.host.name %}">
                 <div class="navbar-brand p-0 ml-2 d-none d-lg-block ml-4">
                     <div class="row justify-content-center">
                         <h5 style="text-align: center" class="mb-0 font-weight-bolder">STUDENT GRIEVANCE REDRESSAL
@@ -32,12 +33,12 @@
                 <ul class="navbar-nav ml-auto align-items-lg-center align-items-md-start">
                     <li class="nav-item active"><a href="#" class="nav-link  font-weight-bold">Home</a></li>
                     {% if not request.user.is_authenticated %}
-                        <li class="nav-item"><a href="{% url 'home' %}#login" class="nav-link  ">Login</a></li>
+                        <li class="nav-item"><a href="{% host_url 'home' host request.host.name %}#login" class="nav-link  ">Login</a></li>
                     {% endif %}
-                    <li class="nav-item"><a href="{% url 'home' %}#process" class="nav-link  ">Process</a></li>
-                    <li class="nav-item"><a href="{% url 'home' %}#faq" class="nav-link  ">FAQ</a></li>
-                    <li class="nav-item"><a href="{% url 'home' %}#contact" class="nav-link  ">Contact</a></li>
-                    <li class="nav-item"><a href="{% url 'home' %}#about" class="nav-link  ">About</a></li>
+                    <li class="nav-item"><a href="{% host_url 'home' host request.host.name %}#process" class="nav-link  ">Process</a></li>
+                    <li class="nav-item"><a href="{% host_url 'home' host request.host.name %}#faq" class="nav-link  ">FAQ</a></li>
+                    <li class="nav-item"><a href="{% host_url 'home' host request.host.name %}#contact" class="nav-link  ">Contact</a></li>
+                    <li class="nav-item"><a href="{% host_url 'home' host request.host.name %}#about" class="nav-link  ">About</a></li>
                     <li class="nav-item dropdown mr-2 d-none d-lg-block">
                         <select onchange="doGTranslate(this);" style="border-radius: 5px; padding: 8px 16px !important; ::ms-expand{ display: none}; -webkit-appearance: none;
     -moz-appearance: none;
@@ -73,17 +74,17 @@
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'dashboard' %}"><i style="font-size:large"
+                                <a class="dropdown-item" href="{% host_url 'dashboard' host request.host.name %}"><i style="font-size:large"
                                                                                           class="fa fa-home"
                                                                                           aria-hidden="true"></i>&nbsp;&nbsp;Dashboard</a>
                                 {% if request.user.designation == request.user.STUDENT %}
-                                    <a class="dropdown-item" href="{% url 'add_grievance' %}"><i style="font-size:large"
+                                    <a class="dropdown-item" href="{% host_url 'add_grievance' host request.host.name %}"><i style="font-size:large"
                                                                                                  class="fa fa-plus"
                                                                                                  aria-hidden="true"></i>&nbsp;&nbsp;Lodge
                                         Grievance</a>
                                 {% endif %}
                                 {% if not request.user.is_superuser %}
-                                    <a class="dropdown-item" href="{% url 'all_grievances' %}"><i
+                                    <a class="dropdown-item" href="{% host_url 'all_grievances' host request.host.name %}"><i
                                             style="font-size:large"
                                             class="fa fa-comments"
                                             aria-hidden="true"></i>&nbsp;&nbsp;
@@ -107,11 +108,11 @@
                                                                          aria-hidden="true"></i>&nbsp;&nbsp;Students</a>
                                 {% endif %}
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'password_change' %}"><i style="font-size:large"
+                                <a class="dropdown-item" href="{% host_url 'password_change' host request.host.name %}"><i style="font-size:large"
                                                                                                class="fa fa-user"
                                                                                                aria-hidden="true"></i>&nbsp;&nbsp;My
                                     Profile</a>
-                                <a class="dropdown-item" href="{% url 'logout' %}"><i style="font-size:large"
+                                <a class="dropdown-item" href="{% host_url 'logout' host request.host.name %}"><i style="font-size:large"
                                                                                       class="fa fa-sign-out"
                                                                                       aria-hidden="true"></i>&nbsp;&nbsp;Logout</a>
                             </div>
@@ -128,12 +129,12 @@
                                 {{ request.user.first_name }} {{ request.user.last_name }}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+                                <a class="dropdown-item" href="{% host_url 'dashboard' host request.host.name %}">Dashboard</a>
                                 {% if request.user.designation == request.user.STUDENT %}
-                                    <a class="dropdown-item" href="{% url 'add_grievance' %}">Lodge Grievance</a>
+                                    <a class="dropdown-item" href="{% host_url 'add_grievance' host request.host.name %}">Lodge Grievance</a>
                                 {% endif %}
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                <a class="dropdown-item" href="{% host_url 'logout' host request.host.name %}">Logout</a>
                             </div>
                         </li>
                     {% endif %}

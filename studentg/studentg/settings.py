@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    'django_hosts',
+    # 'django.contrib.sites',
 
     'redressal',
     'accounts',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,9 +56,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
-ROOT_URLCONF = 'studentg.urls'
+PARENT_HOST = 'localhost:8000'
+ROOT_HOSTCONF = 'studentg.hosts'
+DEFAULT_HOST = 'www'
+
+ROOT_URLCONF = 'studentg.student_urls'
 
 TEMPLATES = [
     {
@@ -91,7 +98,8 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = [
     # 'rules.permissions.ObjectPermissionBackend',
-    'accounts.auth_backend.SiteBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
+    'accounts.auth_backend.HostsBackend',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -142,7 +150,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

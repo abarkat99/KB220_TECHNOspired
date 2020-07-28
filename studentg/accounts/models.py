@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.sites.models import Site
+# from django.contrib.sites.models import Site
 from redressal.models import RedressalBody
 
 # TempUser defaults
@@ -37,7 +37,7 @@ class User(AbstractUser):
         (INS_HEAD, 'Institute Head'),
         (DEP_HEAD, 'Department Head'),
     ]
-    site = models.ForeignKey(Site, on_delete=models.CASCADE, default=Site.objects.get_current)
+    # site = models.ForeignKey(Site, on_delete=models.CASCADE, default=Site.objects.get_current)
     designation = models.CharField(max_length=5, choices=DESIGNATION_CHOICES)
     REQUIRED_FIELDS = ['first_name', 'last_name']
 

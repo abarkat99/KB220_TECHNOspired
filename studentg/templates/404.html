@@ -1,4 +1,5 @@
 {% extends 'common/home_base.html' %}
+{% load hosts %}
 {% load static %}
 {% load widget_tweaks %}
 {% block page_title %}404- Page Not Found{% endblock page_title %}
@@ -16,7 +17,7 @@
                             <h5 class="mt-2" style="text-align: center">Page not found!</h5>
                             <p style="text-align: center">Sorry we couldn't find this page. But you can find plenty of
                                 other
-                                things on our <a href="{% url 'home' %}">homepage</a>.
+                                things on our <a href="{% host_url 'home' host request.host.name %}">homepage</a>.
                             </p>
                         </div>
                     </div>

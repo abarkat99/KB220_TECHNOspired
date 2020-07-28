@@ -1,10 +1,11 @@
+{% load hosts %}
 {% load static %}
 <div class="sidebar">
-    <a class="p-0" href="{% url 'home' %}" style="text-align: center">
+    <a class="p-0" href="{% host_url 'home' host request.host.name %}" style="text-align: center">
         <img class="navbar-logo" src="{% static 'assets/img/Logos/govt-logo-trans.png' %}" height="75" alt="">
     </a>
     <hr>
-    <a href="{% url 'dashboard' %}">
+    <a href="{% host_url 'dashboard' host request.host.name %}">
         <div class="mb-2 mt-4" style="cursor: pointer">
             <button class="sidebar-button active">
                 <i style="font-size:large" class="fa fa-home" aria-hidden="true"></i>
@@ -15,7 +16,7 @@
         </div>
     </a>
     {% if request.user.designation == request.user.STUDENT %}
-        <a href="{% url 'add_grievance' %}">
+        <a href="{% host_url 'add_grievance' host request.host.name %}">
             <div class="mb-2 mt-4" style="cursor: pointer">
                 <button class="sidebar-button">
                     <i style="font-size:large" class="fa fa-plus" aria-hidden="true"></i>
@@ -59,7 +60,7 @@
             </p>
         </div>
     {% endif %}
-    <a href="{% url 'password_change' %}">
+    <a href="{% host_url 'password_change' host request.host.name %}">
         <div class="mb-2 mt-4" style="cursor: pointer">
             <button class="sidebar-button">
                 <i style="font-size:large" class="fa fa-user" aria-hidden="true"></i>
@@ -70,7 +71,7 @@
         </div>
     </a>
     <hr>
-    <a href="{% url 'logout' %}">
+    <a href="{% host_url 'logout' host request.host.name %}">
         <div class="mb-2 mt-4" style="cursor: pointer">
             <button class="sidebar-button">
                 <i style="font-size:large" class="fa fa-sign-out" aria-hidden="true"></i>

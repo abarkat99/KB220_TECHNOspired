@@ -1,3 +1,4 @@
+{% load hosts %}
 {% for grievance in grievances %}
     <tr aria-rowspan='2' class='card-row'>
         <td class='align-middle pb-0 pt-0'>
@@ -168,21 +169,21 @@
                     <td colspan='3'>
                         <div style='' class=' mb-2 '>
                             <button type='button' class='btn btn-primary mt-1 view-message-btn'
-                                    data-url="{% url 'view_messages' grievance.token %}">
+                                    data-url="{% host_url 'view_messages' grievance.token host request.host.name %}">
                                 <i
                                         style=' font-size: small'
                                         class='fa fa-envelope'
                                         aria-hidden='true'></i>&nbsp;Messages
                             </button>
                             {% if grievance.status == grievance.REVIEW %}
-                                <a href='{% url 'set_status_pending' token=grievance.token %}'>
+                                <a href='{% host_url 'set_status_pending' token=grievance.token host request.host.name %}'>
                                     <button class='btn btn-success mt-1 ml-2'><i
                                             style=' font-size: small'
                                             class='fa fa-check'
                                             aria-hidden='true'></i>&nbsp;Approve
                                     </button>
                                 </a>
-                                <a href='{% url 'set_status_rejected' token=grievance.token %}'>
+                                <a href='{% host_url 'set_status_rejected' token=grievance.token host request.host.name %}'>
                                     <button class='btn btn-danger mt-1 ml-2'><i
                                             style=' font-size: small'
                                             class='fa fa-times'
@@ -190,14 +191,14 @@
                                     </button>
                                 </a>
                             {% elif grievance.status == grievance.PENDING %}
-                                <a href='{% url 'set_status_resolved' token=grievance.token %}'>
+                                <a href='{% host_url 'set_status_resolved' token=grievance.token host request.host.name %}'>
                                     <button class='btn btn-success mt-1 ml-2'><i
                                             style=' font-size: small'
                                             class='fa fa-check'
                                             aria-hidden='true'></i>&nbsp;Resolve
                                     </button>
                                 </a>
-                                <a href='{% url 'set_status_review' token=grievance.token %}'>
+                                <a href='{% host_url 'set_status_review' token=grievance.token host request.host.name %}'>
                                     <button class='btn btn-primary mt-1 ml-2'><i
                                             style=' font-size: small'
                                             class='fa fa-check'
