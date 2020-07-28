@@ -1,0 +1,224 @@
+{% load static %}
+{% load gravatar %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>
+        {% block page_title %}Dashboard{% endblock page_title %}
+    </title>
+    <link rel="icon" sizes="76x76" href="{% static 'assets/img/Logos/govt-logo-trans.png' %}">
+
+    <!----Custom Files--- -->
+    <link href="{% static 'assets/css/custom-css/index.css' %}" rel="stylesheet"/>
+
+    <!---JQuery--- -->
+
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
+
+    <!---Bootstrap--- -->
+    {#    <link href="{% static 'assets/bootstrap-4.4.1-dist/css/bootstrap.min.css' %}">#}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <!-----Fonts--- -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet"/>
+
+</head>
+
+<body class="landing-page"
+      style="background-color: #f5f9fe">
+
+<!-- Navbar -->
+<div class="partials_navbar_import d-block d-lg-none">
+    {% include "studentg/includes/partial_navbar.html" %}
+</div>
+<!--End Navbar -->
+
+<!-- Sidebar -->
+<div class="partials_sidebar_import d-none d-lg-block">
+    {% include "studentg/includes/partial_sidebar.html" %}
+</div>
+<!--End Sidebar -->
+
+<!---New Page Title- -->
+<div class="container pl-lg-5 mt-4 mt-lg-0 mb-2">
+    <div class="col page-title mt-5 mt-lg-0" style="padding-top: 50px; padding-bottom: 5px;">
+        <div class="row align-items-center" align="center">
+            <div class="col">
+                <h1 class="font-weight-bold" style="color:#252766; text-align: left">{% block page_heading %}
+                    Your Dashboard
+                {% endblock page_heading %}</h1>
+            </div>
+            <div class="col justify-content-end d-none d-lg-block">
+                <h6 class="font-weight-bold" style="color:#252766; text-align: end">
+                    <select onchange="doGTranslate(this);" style="border-radius: 5px; font-size: x-small; padding: 8px 16px !important; ::ms-expand{ display: none}; -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: ''; border: none; cursor: pointer">
+                        <option class="lang notranslate" value="en|en">English</option>
+                        <option class="lang notranslate" value="en|te">తెలుగు</option>
+                        <option class="lang notranslate" value="en|hi">हिन्दी</option>
+                        <option class="lang notranslate" value="en|mr">मराठी</option>
+                        <option class="lang notranslate" value="en|ur">اردو</option>
+                        <option class="lang notranslate" value="en|fa">فارسی</option>
+                        <option class="lang notranslate" value="en|bn">বাংলা</option>
+                        <option class="lang notranslate" value="en|gu">ગુજરાતી</option>
+                        <option class="lang notranslate" value="en|kn">ಕನ್ನಡ</option>
+                        <option class="lang notranslate" value="en|ne">नेपाली</option>
+                        <option class="lang notranslate" value="en|pa">ਪੰਜਾਬੀ</option>
+                        <option class="lang notranslate" value="en|ta">தமிழ்</option>
+                        <option class="lang notranslate" value="en|ar">ﻋﹷﺮﹶﺑﹻﻲ</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    <img src="{{ request.user|gravatar }}" class="profile-pic-dashboard" height="50">
+                    &nbsp;
+                    {{ request.user.first_name }} {{ request.user.last_name }}
+                    <span class="badge badge-secondary"
+                          style="background-color:#252766">{{ request.user.get_designation_display }}</span>
+                </h6>
+            </div>
+        </div>
+    </div>
+</div>
+<!---New Page Title Ends--->
+
+<!-- Page Content -->
+{% block page_content %}
+
+{% endblock page_content %}
+<!-- Page Content Ends -->
+
+<!-- Footer -->
+<div class="partials_footer">
+    {% include "includes/partial_footer.html" %}
+</div>
+<!-- End Footer -->
+
+<script>
+    $('table button i').click(function () {
+        if ($(this).hasClass('fa-angle-down')) {
+            $(this).removeClass('fa-angle-down');
+            $(this).addClass('fa-angle-up');
+        } else {
+            $(this).removeClass('fa-angle-up');
+            $(this).addClass('fa-angle-down');
+        }
+    });
+
+    // Modal function//
+    function fun_Modal(d) {
+        $('.link-modal-title').html(d['title']);
+        $('.link-modal-description').html(d['description']);
+        $('.link-modal-eligibility').html(d['eligibility']);
+        $('.link-modal-documents').html(d['documents']);
+        $('.link-modal-duration').html(d['duration']);
+        var contact = '';
+        console.log(d['phone']);
+        for (var i = 0; i < d['phone'].length; i++)
+            contact += "<a href='tel:" + d['phone'][i] + "'> <button class='btn btn-sm btn-outline-primary my-1'>" + d['phone'][i] + "</button> </a>";
+        $('.link-modal-contact').html(contact);
+        $('.link-modal-sources').html("<a href='" + d['source'] + "'>View Source</a>");
+    }
+
+</script>
+
+<style type="text/css">
+    <!--
+    a.gflag {
+        vertical-align: middle;
+        font-size: 16px;
+        padding: 1px 0;
+        background-repeat: no-repeat;
+        background-image: url(//gtranslate.net/flags/16.png);
+    }
+
+    a.gflag img {
+        border: 0;
+    }
+
+    a.gflag:hover {
+        background-image: url(//gtranslate.net/flags/16a.png);
+    }
+
+    #goog-gt-tt {
+        display: none !important;
+    }
+
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+
+    .goog-te-menu-value:hover {
+        text-decoration: none !important;
+    }
+
+    body {
+        top: 0 !important;
+    }
+
+    #google_translate_element2 {
+        display: none !important;
+    }
+
+    -->
+</style>
+
+<div id="google_translate_element2"></div>
+<script type="text/javascript">
+    function googleTranslateElementInit2() {
+        new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element2');
+    }
+</script>
+<script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+
+
+<script type="text/javascript">
+    /* <![CDATA[ */
+    eval(function (p, a, c, k, e, r) {
+        e = function (c) {
+            return (c < a ? '' : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36))
+        };
+        if (!''.replace(/^/, String)) {
+            while (c--) r[e(c)] = k[c] || e(c);
+            k = [function (e) {
+                return r[e]
+            }];
+            e = function () {
+                return '\\w+'
+            };
+            c = 1
+        }
+        ;
+        while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]);
+        return p
+    }('6 7(a,b){n{4(2.9){3 c=2.9("o");c.p(b,f,f);a.q(c)}g{3 c=2.r();a.s(\'t\'+b,c)}}u(e){}}6 h(a){4(a.8)a=a.8;4(a==\'\')v;3 b=a.w(\'|\')[1];3 c;3 d=2.x(\'y\');z(3 i=0;i<d.5;i++)4(d[i].A==\'B-C-D\')c=d[i];4(2.j(\'k\')==E||2.j(\'k\').l.5==0||c.5==0||c.l.5==0){F(6(){h(a)},G)}g{c.8=b;7(c,\'m\');7(c,\'m\')}}', 43, 43, '||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'.split('|'), 0, {}))
+    /* ]]> */
+</script>
+
+
+{% block javascript %}{% endblock javascript %}
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load gravatar %}
+<div class="container mt-0 pl-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-12 px-lg-3 order-lg-1 order-2">
+
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col">
+                        <h5 class="my-3 card-custom-title" style="">Basic Details
+                        </h5>
+                    </div>
+
+                </div>
+                <div class="form-group mb-3 ">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" class="form-control"
+                           placeholder="{{ request.user.first_name }} {{ request.user.last_name }}"
+                           aria-label="Username"
+                           aria-describedby="basic-addon1" disabled>
+                </div>
+                <div class="form-group mb-3 ">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control" placeholder="{{ request.user.email }}"
+                           aria-label="Username"
+                           aria-describedby="basic-addon1" disabled>
+                </div>
+                {% with body_names=request.user.get_body_dict %}
+                    <div class="form-group mb-3  volunteer-field">
+                        <label for="exampleInputEmail1">University</label>
+                        <input type="text" class="form-control" placeholder="{{ body_names.uni }}"
+                               aria-label="Username"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    {% if body_names.inst %}
+                        <div class="form-group mb-3  volunteer-field">
+                            <label for="exampleInputEmail1">Institute</label>
+                            <input type="text" class="form-control"
+                                   placeholder="{{ body_names.inst }}"
+                                   aria-label="Username"
+                                   aria-describedby="basic-addon1" disabled>
+                        </div>
+                    {% endif %}
+                    {% if body_names.dept %}
+                        <div class="form-group mb-3  volunteer-field">
+                            <label for="exampleInputEmail1">Department</label>
+                            <input type="text" class="form-control" placeholder="{{ body_names.dept }}"
+                                   aria-label="Username"
+                                   aria-describedby="basic-addon1" disabled>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="card-custom mt-2 help-card d-block d-lg-none">
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <p{% if forloop.last %} class="mb-0" {% endif %}>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <h6 class="my-3" style="">Change Password</h6>
+                    <div class="form-group mb-3 ">
+                        {% render_field form.old_password id="id_old_password_small" class="form-control" placeholder="Current Password" aria-label="Current Password" %}
+                        {% for error in form.old_password.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group mb-3 ">
+                        <div class="row">
+                            <div class="col">
+                                {% render_field form.new_password1 id="id_new_password1_small" class="form-control" placeholder="New Password" aria-label="New Password" %}
+                                {% for error in form.new_password1.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col">
+                                {% render_field form.new_password2 id="id_new_password2_small" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" %}
+                                {% for error in form.new_password2.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center" class=" mb-3 ">
+                        <button type="submit" class="btn btn-danger" style="width: 100%">Change Password</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-6 col-12 px-lg-3 order-lg-2 order-md-1 order-1">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="profile-placeholder mb-3">
+                    <img src="{{ request.user|gravatar }}"
+                         class="profile-pic" alt="{{ request.user.username }}">
+                </div>
+                <div style="text-align: center" class=" mb-3  ">
+                    <h5 class="font-weight-bold card-custom-title mb-0">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+                    <span class="badge badge-secondary"
+                          style="background-color:#252766">{{ request.user.get_designation_display }}</span>
+                </div>
+            </div>
+            <div class="card-custom mt-2 help-card d-none d-lg-block">
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <p{% if forloop.last %} class="mb-0" {% endif %}>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <h6 class="my-3" style="">Change Password</h6>
+                    <div class="form-group mb-3 ">
+                        {% render_field form.old_password class="form-control" placeholder="Current Password" aria-label="Current Password" %}
+                        {% for error in form.old_password.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group mb-3 ">
+                        <div class="row">
+                            <div class="col">
+                                {% render_field form.new_password1 class="form-control" placeholder="New Password" aria-label="New Password" %}
+                                {% for error in form.new_password1.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col">
+                                {% render_field form.new_password2 class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" %}
+                                {% for error in form.new_password2.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center" class=" mb-3 ">
+                        <button type="submit" class="btn btn-danger" style="width: 100%">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

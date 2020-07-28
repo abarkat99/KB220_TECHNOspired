@@ -1,0 +1,106 @@
+{% extends 'studentg/dashboard_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}Edit Grievance{% endblock page_title %}
+{% block page_heading %}Edit Grievance{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-12 px-lg-3">
+
+                <div class="card-custom mt-2 mt-lg-1 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title">Enter your grievance below</h5>
+                        </div>
+                    </div>
+                    <form method="post" enctype="multipart/form-data" class="form-loads-subcategories"
+                          data-sub-categories-url="{% url 'load_subcategories' %}">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <div class="form-group mb-3  volunteer-field">
+                            <div class="row">
+                                <div class="col">
+                                    {{ form.category.label_tag }}
+                                    {% render_field form.category class="custom-select" %}
+                                </div>
+                                <div class="col">
+                                    {{ form.sub_category.label_tag }}
+                                    {% render_field form.sub_category class="custom-select" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            {{ form.subject.label_tag }}
+                            {% render_field form.subject class="form-control" placeholder="Subject" %}
+                        </div>
+                        {#                <div class="form-group mb-3  volunteer-field" hidden>#}
+                        {#                    <div class="row">#}
+                        {#                        <div class="col">#}
+                        {#                            <label for="exampleInputEmail1">No. of Volunteers required</label>#}
+                        {#                            <input type="number" class="form-control" placeholder="No. of Volunteers required"#}
+                        {#                                   aria-label="Username"#}
+                        {#                                   aria-describedby="basic-addon1">#}
+                        {#                        </div>#}
+                        {#                        <div class="col">#}
+                        {#                            <label for="exampleInputEmail1">Task type</label>#}
+                        {#                            <select class="custom-select" id="inputGroupSelect03">#}
+                        {#                                <option selected>--- Task type ---</option>#}
+                        {#                                <option value="1">Food</option>#}
+                        {#                                <option value="2">Healthcare</option>#}
+                        {#                                <option value="3">Shelter</option>#}
+                        {#                                <option value="4">Clothing</option>#}
+                        {#                                <option value="5">Medical Equipments</option>#}
+                        {#                                <option value="6">Others</option>#}
+                        {#                            </select>#}
+                        {#                        </div>#}
+                        {#                    </div>#}
+                        {#                </div>#}
+                        {#                <div class="form-group mb-3  volunteer-field" hidden>#}
+                        {#                    <div class="row">#}
+                        {#                        <div class="col">#}
+                        {#                            <label for="exampleInputEmail1">Pincode</label>#}
+                        {#                            <input type="number" class="form-control" placeholder="Pincode" aria-label="Username"#}
+                        {#                                   aria-describedby="basic-addon1">#}
+                        {#                        </div>#}
+                        {#                        <div class="col">#}
+                        {#                            <label for="exampleInputEmail1">Phone No</label>#}
+                        {#                            <input type="tel" class="form-control" placeholder="Phone No" aria-label="Username"#}
+                        {#                                   aria-describedby="basic-addon1">#}
+                        {#                        </div>#}
+                        {#                    </div>#}
+                        {#                </div>#}
+                        <div class="form-group my-3">
+                            {{ form.message.label_tag }}
+                            {% render_field form.message class="form-control" placeholder="Description..." %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.image.label_tag }}
+                            {% render_field form.image class="form-control" %}
+                        </div>
+                        <div style="text-align: center" class=" mb-3 ">
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-dark submit_grievance" name="draft_submit"
+                                            style="width: 100%">
+                                        Save as Draft
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-success submit_grievance" name="true_submit"
+                                            style="width: 100%">Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+{% block javascript %}
+    <script src="{% static 'studentg/js/load_subcat.js' %}"></script>
+{% endblock javascript %}

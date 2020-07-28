@@ -1,0 +1,27 @@
+{% extends 'common/home_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}404- Page Not Found{% endblock page_title %}
+{% block page_content %}
+    <div class="container mt-lg-5 mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card-columns" style="column-count: 1">
+                    <div class="card p-4 mb-4" style="border: none">
+                        <div class="card-block justify-content-center">
+                            <h1 style="text-align: center"><i class="fa fa-frown-o" style="font-size: 150px"
+                                                              aria-hidden="true"></i></h1>
+                            <h1 class="mt-2 font-weight-bold" style="text-transform: uppercase; text-align: center">
+                                404</h1>
+                            <h5 class="mt-2" style="text-align: center">Page not found!</h5>
+                            <p style="text-align: center">Sorry we couldn't find this page. But you can find plenty of
+                                other
+                                things on our <a href="{% url 'home' %}">homepage</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}

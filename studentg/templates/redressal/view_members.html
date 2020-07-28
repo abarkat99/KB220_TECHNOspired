@@ -1,0 +1,202 @@
+{% extends 'redressal/dashboard_base.html' %}
+{% load static %}
+{% block page_title %}List of Members{% endblock page_title %}
+{% block page_heading %}Members{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title" style="">Registered Members</h5>
+                        </div>
+                        <table class="table step3-table filter-this-table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><h6>Name</h6></th>
+                                <th scope="col"><h6>Email</h6></th>
+                                <th scope="col"><h6>Details</h6></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for member in members %}
+                                <tr aria-rowspan="2" class="card-row">
+                                    <td class="align-middle">
+                                        <p class="m-0">{{ member.first_name }} {{ member.last_name }}</p>
+                                    </td>
+                                    <td class="align-middle">
+                                        <p class="m-0">{{ member.email }}</p>
+                                    </td>
+                                    <td class="align-middle">
+                                        <button type="button" class="btn btn-sm btn-outline-dark" data-toggle="collapse"
+                                                data-target="#collapse-m-{{ forloop.counter }}"
+                                                aria-expanded="false" aria-controls="collapseExample">
+                                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="sub-td">
+                                        <table class="collapse sub-table" id="collapse-m-{{ forloop.counter }}">
+                                            <tr>
+                                                <td colspan="1">
+                                                    Name
+                                                </td>
+                                                <td colspan="3">
+                                                    <div class="initiative-description">
+                                                        <p class="text-muted"
+                                                           align="left">{{ member.first_name }} {{ member.last_name }}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    Email
+                                                </td>
+                                                <td colspan="3">
+                                                    <div class="initiative-description">
+                                                        <p class="text-muted" align="left">{{ member.email }}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    Date Created
+                                                </td>
+                                                <td colspan="2">
+                                                    <div class="initiative-description">
+                                                        <p class="text-muted" align="left">{{ member.date_joined }}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <p class="mt-1">Action</p>
+                                                </td>
+                                                <td colspan="3">
+                                                    <div style="" class=" mb-2 ">
+                                                        <a href="{% url 'delete_member' pk=member.pk %}">
+                                                            <button class="btn btn-danger mt-1">Delete Member</button>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title" style="">Invited Members</h5>
+                        </div>
+                        <div style="text-align: center" class=" mb-2 mr-5">
+                            <a href="{% url 'add_member' %}">
+                                <button class="btn btn-outline"
+                                        style="color: #252766; border-color: #252766;"><i
+                                        style=" font-size: small"
+                                        class="fa fa-user-plus"
+                                        aria-hidden="true"></i>&nbsp;Invite
+                                </button>
+                            </a>
+                        </div>
+                        <table class="table step3-table filter-this-table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><h6>Name</h6></th>
+                                <th scope="col"><h6>Email</h6></th>
+                                <th scope="col"><h6>Details</h6></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for member in in_members %}
+                                <tr aria-rowspan="2" class="card-row">
+                                    <td class="align-middle">
+                                        <p class="m-0">{{ member.first_name }} {{ member.last_name }}</p>
+                                    </td>
+                                    <td class="align-middle">
+                                        <p class="m-0">{{ member.email }}</p>
+                                    </td>
+                                    <td class="align-middle">
+                                        <button type="button" class="btn btn-sm btn-outline-dark" data-toggle="collapse"
+                                                data-target="#collapse-im-{{ forloop.counter }}"
+                                                aria-expanded="false" aria-controls="collapseExample">
+                                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="sub-td">
+                                        <table class="collapse sub-table" id="collapse-im-{{ forloop.counter }}">
+                                            <tr>
+                                                <td colspan="1">
+                                                    Name
+                                                </td>
+                                                <td colspan="3">
+                                                    <div class="initiative-description">
+                                                        <p class="text-muted"
+                                                           align="left">{{ member.first_name }} {{ member.last_name }}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    Email
+                                                </td>
+                                                <td colspan="3">
+                                                    <div class="initiative-description">
+                                                        <p class="text-muted" align="left">{{ member.email }}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    Date Invited
+                                                </td>
+                                                <td colspan="2">
+                                                    <div class="initiative-description">
+                                                        <p class="text-muted" align="left">{{ member.created_at }}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <p class="mt-1">Action</p>
+                                                </td>
+                                                <td colspan="3">
+                                                    <div style="" class=" mb-2 ">
+                                                        <a href="{% url 'delete_invited_member' pk=member.pk %}">
+                                                            <button class="btn btn-danger mt-1">Delete Member</button>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}

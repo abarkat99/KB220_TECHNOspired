@@ -20,25 +20,34 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from redressal import views as r_views
+from django.views.defaults import page_not_found, server_error, permission_denied
 from . import views
+from accounts.views import CustomPasswordChangeView, SignupView
 
 dashpatterns = [
-    path('', views.dash_home, name="dash_home"),
+    path('', views.DashboardView.as_view(), name="dashboard"),
+    path('add/grievance/', views.CreateGrievance.as_view(), name="add_grievance"),
+    path('edit-draft/grievance/<token>/', views.EditDraftGrievance.as_view(), name="edit_grievance"),
+    path('load/subcategories/', views.LoadSubcategories.as_view(), name="load_subcategories"),
+    path('all/grievances/', views.AllGrievances.as_view(), name="all_grievances"),
+    path('view/messages/<token>/', views.ViewGrievanceMessages.as_view(), name="view_messages"),
 
-    path('add/grievance/', views.addgrievance, name="addgrievance"),
-    path('load/subcategories/', views.load_subcategories,name="load_subcategories"),
-    path('mygrievance/', views.my_grievances, name="my_grievances"),
-    path('getgrievance/<token>/',views.getgrievance, name="getgrievance"),
+    path('stats/status-chart/', views.status_stats_chart, name="status_stats_chart"),
+
+    path('my/account/', CustomPasswordChangeView.as_view(template_name="studentg/view_profile.html"),
+         name="password_change"),
+    # path('getgrievance/<token>/',views.getgrievance, name="getgrievance"),
 ]
 urlpatterns = [
-    path('', views.home, name="home"),
-    path('faq/', views.faq, name="faq"),
-    path('accounts/',include('accounts.urls')),
+    path('', views.HomeView.as_view(), name="home"),
+    path('404/', lambda request: page_not_found(request, None)),
+    # path('faq/', views.faq, name="faq"),
+    path('accounts/signup/<uidb64>/<token>/', SignupView.as_view(template_name="studentg/signup.html"), name='signup'),
+    path('accounts/', include('accounts.urls')),
     path('dashboard/', include(dashpatterns)),
-    path('admin/', admin.site.urls),
-    path('contact/', views.contact,name="contact"),
-    path('about_us/',views.about_us,name="about_us"),
+    # path('admin/', admin.site.urls),
+    # path('contact/', views.contact,name="contact"),
+    # path('about_us/',views.about_us,name="about_us"),
 ]
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()

@@ -1,0 +1,475 @@
+{% extends 'common/home_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}Student Grievance Redressal Portal - Govt. of AP{% endblock page_title %}
+{% block partial_navbar %}
+{% include "studentg/includes/partial_navbar.html" %}
+{% endblock %}
+{% block page_content %}
+    <div class="container mt-lg-5 mt-5 pt-5">
+        <div class="row mb-4 d-none d-lg-block">
+            <div class="col">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" style="border-radius: 5px">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="{% static 'assets/img/SIH%20-%20SGRP%20(3).png' %}"
+                                 alt="First slide" height="250">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Got any grievances?</h5>
+                                <div class="row justify-content-center">
+                                    <div class="col" style="text-align: right">
+                                        <a href="{% url 'home' %}#login">
+                                            <button class="px-3 py-2"
+                                                    style=" border-radius: 5px; border: none; background-color: #4caa67; color: white">
+                                                <i
+                                                        style="font-size: xx-large" class="fa fa-comments-o"
+                                                        aria-hidden="true"></i><br>
+                                                Lodge Grievance
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="col" style="text-align: left">
+                                        {#                                    TODO#}
+                                        <button class="px-3 py-2" onclick="location.href='#';"
+                                                style=" border-radius: 5px; border: none; background-color:white ; color: #4caa67">
+                                            <i style="font-size: xx-large" class="fa fa-map-marker"
+                                               aria-hidden="true"></i><br>
+                                            Track Grievance
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <br>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{% static 'assets/img/SIH%20-%20SGRP%20(3)%20(copy).png' %}"
+                                 alt="Second slide" height="250">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Over 10,300 grievances were resolved in the previous month!</h5>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100"
+                                 src="{% static 'assets/img/SIH%20-%20SGRP%20(3)%20(another%20copy).png' %}"
+                                 alt="Third slide" height="250">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Our average response time is 2 hours!</h5>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {#    <div class="row mb-4" hidden>#}
+        {#        <div class="col">#}
+        {#            <img style="width: 100%; border-radius: 5px" src="{% static 'assets/img/SIH%20-%20SGRP.png' %}">#}
+        {#        </div>#}
+        {#    </div>#}
+        <div class="row">
+            <div class="col-lg-7 col-12">
+                <div class="card-columns" style="column-count: 1">
+                    <div class="card p-4 mb-4  d-block d-lg-none    ">
+                        <div class="card-block">
+                            <div class="row justify-content-center">
+                                <h5 style="text-transform: uppercase">Got any grievances?</h5>
+                            </div>
+                            <div class="row mb-2 justify-content-center">
+                                <h6 class="text-muted">We are there for you!</h6>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col" style="text-align: right">
+                                    <button class="px-3 py-2"
+                                            style=" border-radius: 5px; border: none; background-color: #4caa67; color: white">
+                                        <i
+                                                style="font-size: xx-large" class="fa fa-comments-o"
+                                                aria-hidden="true"></i><br>
+                                        Submit a Grievance
+                                    </button>
+                                </div>
+                                <div class="col" style="text-align: left">
+                                    {#                                TODO#}
+                                    <button class="px-3 py-2" onclick="location.href='#';"
+                                            style=" border-radius: 5px; border: #4caa67 1px solid; background-color:white ; color: #4caa67">
+                                        <i style="font-size: xx-large" class="fa fa-map-marker"
+                                           aria-hidden="true"></i><br>
+                                        Track Grievance
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div style="text-align: center" class=" my-3 px-lg-3 " hidden>
+                                <p>Already submitted? Login</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% if not request.user.is_authenticated %}
+                        <span class="jump-link" id="login"></span>
+                        <div class="card p-4 mb-4 d-lg-none">
+
+                            <div class="card-block">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {% for error in form.non_field_errors %}
+                                            <p{% if forloop.last %} class="mb-0" {% endif %}>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <div class="row justify-content-center">
+                                        <h5 style="text-transform: uppercase">Already Registered?</h5>
+                                    </div>
+                                    <div class="row mb-2 justify-content-center" hidden>
+                                        <h6 class="text-muted">We are there for you!</h6>
+                                    </div>
+                                    <h5 class="mt-2" style="text-transform: uppercase; text-align: center" hidden>
+                                        Login</h5>
+                                    <h6 class="mb-4 mt-1 text-muted" style="text-align: center">Please login to access
+                                        your
+                                        dashboard</h6>
+                                    <div class="input-group mb-3 px-lg-3">
+                                        {% render_field form.username id="id_username_small" class="form-control" placeholder="Enter your Username" aria-label="Username" aria-describedby="basic-addon1" %}
+                                        {#                                <input type="email" class="form-control" placeholder="Enter your ID"#}
+                                        {#                                                     aria-label="Username"#}
+                                        {#                                                     aria-describedby="basic-addon1">#}
+                                    </div>
+                                    <div class="input-group mb-3 px-lg-3">
+                                        {% render_field form.password id="id_password_small" class="form-control" placeholder="Enter your Password" aria-label="Password" aria-describedby="basic-addon1" %}
+                                        {#                                    <input type="password" class="form-control" placeholder="Enter your Password"#}
+                                        {#                                           aria-label="Username"#}
+                                        {#                                           aria-describedby="basic-addon1">#}
+                                    </div>
+                                    <div style="text-align: center" class=" mb-3 px-lg-3">
+                                        <button type="submit" class="btn btn-success" style="width: 100%">Login</button>
+                                    </div>
+                                    {#                                <div style="text-align: center" class=" mb-3 px-lg-3">#}
+                                    {#                                    <button onclick="location.href='signup.html';" type="button" class="btn btn-success"#}
+                                    {#                                            style="width: 100%">Signup (temp)#}
+                                    {#                                    </button>#}
+                                    {#                                </div>#}
+                                    <div style="text-align: center" class=" px-lg-3 ">
+                                        {#                                TODO#}
+                                        <a href="#" class><p>Forgot Password?</p></a>
+                                    </div>
+                                    <div style="" class="text-muted my-3 px-lg-3 ">
+                                        <p>If you are a student, please note:</p>
+                                        <ul class="text-muted">
+                                            <li>
+                                                If you don't have login credentials, please contact your department
+                                                staff.
+                                                You will receive them via email.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="card p-4 mb-4">
+                        <span class="jump-link" id="process"></span>
+                        <div class="card-block">
+                            <h5 class="mt-2" style="text-transform: uppercase; text-align: center">THE PROCESS</h5>
+                            <h6 class="mb-4 mt-1 text-muted" style="text-align: center">Get your grievances resolved in
+                                just 5 steps!</h6>
+                            <p class="card-text" style="text-align: center">
+                                <img src="{% static 'assets/img/process-4.png' %}" height="450" alt="process">
+                            </p>
+                            <p class="mb-0 mt-3 card-text text-muted" style="">
+                                For verification purpose, we need the following documents:<br>
+                            <ul class="text-muted">
+                                <li> College ID Card (Front and back Image)</li>
+                                <li> University Admission Letter</li>
+                            </ul>
+                            <p class="mb-3 mt-2 card-text text-muted">
+                                We will try our best to resolve your grievances as soon as possible.
+                            </p>
+                            <a href="https://www.facebook.com/URHope.team/" hidden>Learn More</a>
+                        </div>
+                    </div>
+
+                    <div class="card p-4 mb-4">
+                        <span class="jump-link" id="faq"></span>
+                        <div class="card-block">
+                            <h4 class="card-title mb-4">FAQs</h4>
+                            <!-- Begin Accordion Snippet -->
+                            <div class="so-accordion-wrapper">
+                                <div class="so-tab">
+                                    <input id="so-tab-1" type="checkbox" name="tabs">
+                                    <label for="so-tab-1">What is the purpose of Student Grievance Redressal
+                                        Portal?</label>
+                                    <div class="so-tab-content">
+                                        <p class="text-muted">
+                                            The portal has been created to provide convenience to student by
+                                            allowing
+                                            them to lodge a grievance through their mobile phones or computers. This
+                                            removes
+                                            the
+                                            need for them to appear at any location and file a physical grievance. In
+                                            addition,
+                                            it provides them the facility of tracking the live status of their
+                                            complaint.
+                                        </p>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="so-tab"><input id="so-tab-3" type="checkbox" name="tabs"> <label
+                                        for="so-tab-3">What
+                                    is the objective of Student Grievance Redressal
+                                    Portal?</label>
+                                    <div class="so-tab-content">
+                                        <p class="text-muted">The objective of the portal is to ensure speedy,
+                                            convenient
+                                            and
+                                            effective
+                                            redressal of student issues by the administration.
+                                        </p>
+                                        <br>
+                                    </div>
+                                </div>
+
+                                <div class="so-tab"><input id="so-tab-2" type="checkbox" name="tabs"> <label
+                                        for="so-tab-2">What
+                                    kind of grievances can I post?</label>
+                                    <div class="so-tab-content">
+                                        <p>
+                                            You can post grievances related to your department, college or university.
+                                        </p>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="so-tab"><input id="so-tab-6" type="checkbox" name="tabs"> <label
+                                        for="so-tab-6">Help
+                                    PDF</label>
+                                    <div class="so-tab-content">
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                            Lorem
+                                            Ipsum has been the industry's standard dummy text ever since the 1500s, when
+                                            an
+                                            unknown printer took a galley of type and scrambled it to make a type
+                                            specimen
+                                            book. It has survived not only five centuries, but also the leap into
+                                            electronic
+                                            typesetting, remaining essentially unchanged. It was popularised in the
+                                            1960s
+                                            with the release of Letraset sheets containing Lorem Ipsum passages, and
+                                            more
+                                            recently with desktop publishing software like Aldus PageMaker including
+                                            versions of Lorem Ipsum.</p>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="so-tab"><input id="so-tab-4" type="checkbox" name="tabs"> <label
+                                        for="so-tab-4">Tab4</label>
+                                    <div class="so-tab-content">
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                            Lorem
+                                            Ipsum has been the industry's standard dummy text ever since the 1500s, when
+                                            an
+                                            unknown printer took a galley of type and scrambled it to make a type
+                                            specimen
+                                            book. It has survived not only five centuries, but also the leap into
+                                            electronic
+                                            typesetting, remaining essentially unchanged. It was popularised in the
+                                            1960s
+                                            with the release of Letraset sheets containing Lorem Ipsum passages, and
+                                            more
+                                            recently with desktop publishing software like Aldus PageMaker including
+                                            versions of Lorem Ipsum.</p>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="so-tab"><input id="so-tab-5" type="checkbox" name="tabs"> <label
+                                        for="so-tab-5">Tab5</label>
+                                    <div class="so-tab-content">
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                            Lorem
+                                            Ipsum has been the industry's standard dummy text ever since the 1500s, when
+                                            an
+                                            unknown printer took a galley of type and scrambled it to make a type
+                                            specimen
+                                            book. It has survived not only five centuries, but also the leap into
+                                            electronic
+                                            typesetting, remaining essentially unchanged. It was popularised in the
+                                            1960s
+                                            with the release of Letraset sheets containing Lorem Ipsum passages, and
+                                            more
+                                            recently with desktop publishing software like Aldus PageMaker including
+                                            versions of Lorem Ipsum.</p>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="https://www.facebook.com/URHope.team/" hidden>Learn More</a>
+                        </div>
+                    </div>
+                    <div class="card p-4 mb-4">
+                        <span class="jump-link" id="contact"></span>
+                        <div class="card-block">
+                            <h4 class="card-title mb-2">Contact Us</h4>
+                            <p class="text-muted">
+                                Address: M.H. Saboo Siddik College of Engineering 8, Saboo Siddik Polytechnic Road,
+                                Byculla,
+                                Mumbai, Maharashtra 400008. <br>
+                                Phone : (022) 23012922 <br>
+                                Fax : 23082640<br>
+                                Email : mhssce@yahoo.in<br>
+                            </p>
+                            <br>
+                            <iframe style="border-radius: 10px" allowfullscreen="" frameborder="0"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1886.579101322586!2d72.8299627416084!3d18.968619359114154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce40ffcfcacd%3A0x5d71ff22760f8e77!2sM.H.%20Saboo%20Siddik%20College%20of%20Engineering!5e0!3m2!1sen!2sin!4v1579590502004!5m2!1sen!2sin"
+                                    width="100%" height="400"></iframe>
+                        </div>
+
+                    </div>
+                    <div class="card p-4 mb-4">
+                        <span class="jump-link" id="about"></span>
+                        <div class="card-block">
+                            <h4 class="card-title mb-2">About Us</h4>
+                            <p class="text-muted">
+                                We at Student Grievance Support System connect the Students to the Management System,
+                                which
+                                enables the respective bodies to address the difficulties/issues faced by the student in
+                                an
+                                efficient way and find a best possible solution to it ensuring student Satisfaction. The
+                                basic motive of this portal is to ensure transparency on various levels and provide a
+                                mechanism for redressal of the grievances.
+                                <span id="dots"></span>
+                                <span id="more">
+                                <br><br>
+                            The Student Grievance Support System is a great initiative taken by the government of Andhra
+                            Pradesh in order to facilitate students/ Complainants to lodge a grievance if they are
+                            facing any difficulty or issues with respect to Admission, Infrastructure, Examination,
+                            Finance etc.
+                                <br><br>
+
+                            The portal acts as a great platform for students to convey their problems to the concerned
+                            authorities and also being informed about the status of the same. It also helps the
+                            Redressal Bodies to function smoothly and efficiently, ensuring a hassle-free grievance
+                            resolution procedure. The system also facilitates the Redressal Bodies of respective levels
+                            (University, Institute, Department) to search and browse grievances lodged against their
+                            level (University, Institute, Department) and post action taken against the complaints on
+                            the portal as well as contact the complainant directly through an interactive one to one
+                            chat. The portal is a user-friendly, robust and an interactive web-application that ensures
+                            a great user experience and also acts a bridge connecting the Students and the Management
+                            System.
+                            </span>
+
+                                <span style="cursor:pointer;color: #4caa67" class="" onclick="myFunction()" id="myBtn">Read more</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-12">
+                <div class="card-columns" style="column-count: 1">
+                    {% if not request.user.is_authenticated %}
+                        <div class="card p-4 mb-4 d-none d-lg-block">
+                            <span class="jump-link" id=""></span>
+                            <div class="card-block">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {% for error in form.non_field_errors %}
+                                            <p{% if forloop.last %} class="mb-0" {% endif %}>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <div class="row justify-content-center">
+                                        <h5 style="text-transform: uppercase">Already Registered?</h5>
+                                    </div>
+                                    <div class="row mb-2 justify-content-center" hidden>
+                                        <h6 class="text-muted">We are there for you!</h6>
+                                    </div>
+                                    <h5 class="mt-2" style="text-transform: uppercase; text-align: center" hidden>
+                                        Login</h5>
+                                    <h6 class="mb-4 mt-1 text-muted" style="text-align: center">Please login to access
+                                        your
+                                        dashboard</h6>
+                                    <div class="input-group mb-3 px-lg-3">
+                                        {% render_field form.username class="form-control" placeholder="Enter your Username" aria-label="Username" aria-describedby="basic-addon1" %}
+                                        {#                                <input type="email" class="form-control" placeholder="Enter your ID"#}
+                                        {#                                                     aria-label="Username"#}
+                                        {#                                                     aria-describedby="basic-addon1">#}
+                                    </div>
+                                    <div class="input-group mb-3 px-lg-3">
+                                        {% render_field form.password class="form-control" placeholder="Enter your Password" aria-label="Password" aria-describedby="basic-addon1" %}
+                                        {#                                    <input type="password" class="form-control" placeholder="Enter your Password"#}
+                                        {#                                           aria-label="Username"#}
+                                        {#                                           aria-describedby="basic-addon1">#}
+                                    </div>
+                                    <div style="text-align: center" class=" mb-3 px-lg-3">
+                                        <button type="submit" class="btn btn-success" style="width: 100%">Login</button>
+                                    </div>
+                                    {#                                <div style="text-align: center" class=" mb-3 px-lg-3">#}
+                                    {#                                    <button onclick="location.href='signup.html';" type="button" class="btn btn-success"#}
+                                    {#                                            style="width: 100%">Signup Page (temp)#}
+                                    {#                                    </button>#}
+                                    {#                                </div>#}
+                                    <div style="text-align: center" class=" px-lg-3 ">
+                                        {#                                TODO#}
+                                        <a href="#" class><p>Forgot Password?</p></a>
+                                    </div>
+                                    <div style="" class="text-muted my-3 px-lg-3 ">
+                                        <p>If you are a student, please note:</p>
+                                        <ul class="text-muted">
+                                            <li>
+                                                If you don't have login credentials, please contact your department
+                                                staff.
+                                                You will receive them via email.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card p-4 mb-4">
+                    <div class="card-block">
+                        <div class="row justify-content-center">
+                            <h5 style="text-transform: uppercase">Grievance Stats</h5>
+                        </div>
+                        <div class="row mb-2 justify-content-center">
+                            <h6 class="text-muted">We do our best to serve you!</h6>
+                        </div>
+                        <img src="{% static '/assets/img/chart.png' %}" style="width: 100%" alt="chart">
+                    </div>
+                </div>
+                <div class="card p-4 mb-4">
+                    <div class="card-block">
+                        <a class="twitter-timeline" href="https://twitter.com/CMOMaharashtra?">Tweets by CMO
+                            Maharashtra</a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}

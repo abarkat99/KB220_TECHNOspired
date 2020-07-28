@@ -1,0 +1,151 @@
+{% extends 'common/dashboard_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}My Grievances{% endblock page_title %}
+{% block page_heading %}My Grievances{% endblock page_heading %}
+{% block page_content %}
+    <!--message Modal -->
+    <div class="modal fade" id="grievance-messages-modal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <!--End  Modal -->
+
+
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-around">
+            <div class="col-lg-8 col-12 px-lg-3 order-lg-1 order-0 align-left">
+
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <div class=" col-md-4">
+                            <h5 class="my-3 card-custom-title" style="">All Grievances</h5>
+                        </div>
+                    </div>
+                    <!--Filters-->
+                    <div class="row justify-content-between align-items-center">
+                        <!--Search-->
+                        <form method="get" class="form-loads-subcategories"
+                              {% block filter_form_attr %}{% endblock filter_form_attr %}>
+                            {% block filter_form_block %}
+                            {% endblock filter_form_block %}
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </form>
+                        <table class="table step3-table filter-this-table">
+                            <tbody id="repeat-this-grievance">
+                            {% with grievances=page_obj %}
+                                {% include 'includes/iterate_grievances.html' %}
+                            {% endwith %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include 'includes/pagination.html' %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 px-lg-4 order-lg-2 order-2">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title" style="">Stats</h5>
+                        </div>
+                        <table class="table step3-table filter-this-table">
+                            <thead>
+                            <img src="{% static 'assets/img/Piechart.jpeg' %}" style="width: 100%;">
+                            </thead>
+                            <tbody>
+                            <!--========== ROW 1 STARTS =========-->
+
+                            <tr aria-rowspan="2" class="card-row">
+                                <td class="align-middle">
+                                    <div class="initiative-heading">
+                                        <h6 class="font-weight-bold mb-0 text-success">Resolved</h6>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="m-0">Your Grievance has been successfully resolved</p>
+                                </td>
+                                <td class="align-middle" hidden>
+                                    <p class="m-0">123456</p>
+                                </td>
+                            </tr>
+
+                            <!--========== ROW 1 ENDS =========-->
+
+                            <!--========== ROW 2 STARTS =========-->
+
+                            <tr aria-rowspan="2" class="card-row">
+                                <td class="align-middle">
+                                    <div class="initiative-heading">
+                                        <h6 class="font-weight-bold mb-0 text-warning">Pending</h6>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="m-0">Your Grievance has been approved and is being resolved</p>
+                                </td>
+                                <td class="align-middle" hidden>
+                                    <p class="m-0">123456</p>
+                                </td>
+                            </tr>
+
+                            <!--========== ROW 2 ENDS =========-->
+                            <!--========== ROW 3 STARTS =========-->
+                            <tr aria-rowspan="2" class="card-row">
+                                <td class="align-middle">
+                                    <div class="initiative-heading">
+                                        <h6 class="font-weight-bold mb-0 text-danger">Discarded</h6>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="m-0">Your Grievance has been disapproved</p>
+                                </td>
+                                <td class="align-middle" hidden>
+                                    <p class="m-0">123456</p>
+                                </td>
+                            </tr>
+
+                            <!--========== ROW 3 ENDS =========-->
+                            <!--========== ROW 4 STARTS =========-->
+                            <tr aria-rowspan="2" class="card-row">
+                                <td class="align-middle">
+                                    <div class="initiative-heading">
+                                        <h6 class="font-weight-bold mb-0 text-muted">In-Draft</h6>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="m-0">Your Grievance is incompelete or not submitted</p>
+                                </td>
+                                <td class="align-middle" hidden>
+                                    <p class="m-0">123456</p>
+                                </td>
+                            </tr>
+
+                            <!--========== ROW 4 ENDS =========-->
+                            <!--========== ROW 5 STARTS =========-->
+                            <tr aria-rowspan="2" class="card-row">
+                                <td class="align-middle">
+                                    <div class="initiative-heading">
+                                        <h6 class="font-weight-bold mb-0 text-primary">In-Review</h6>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="m-0">Awaiting approval</p>
+                                </td>
+                            </tr>
+
+                            <!--========== ROW 5 ENDS =========-->
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+{% block javascript %}
+    <script src="{% static 'common/js/modal_loaders.js' %}"></script>
+{% endblock javascript %}

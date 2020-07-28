@@ -1,0 +1,83 @@
+{% load static %}
+<div class="sidebar">
+    <a class="p-0" href="{% url 'home' %}" style="text-align: center">
+        <img class="navbar-logo" src="{% static 'assets/img/Logos/govt-logo-trans.png' %}" height="75" alt="">
+    </a>
+    <hr>
+    <a href="{% url 'dashboard' %}">
+        <div class="mb-2 mt-4" style="cursor: pointer">
+            <button class="sidebar-button active">
+                <i style="font-size:large" class="fa fa-home" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Dashboard
+            </p>
+        </div>
+    </a>
+    {% if request.user.designation == request.user.STUDENT %}
+        <a href="{% url 'add_grievance' %}">
+            <div class="mb-2 mt-4" style="cursor: pointer">
+                <button class="sidebar-button">
+                    <i style="font-size:large" class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+                <p class="sidebar-title"><br>
+                    Lodge <br>Grievance
+                </p>
+            </div>
+        </a>
+    {% endif %}
+    {% if request.user.designation in request.user.COMMITTEE_HEADS %}
+        {% comment %} TODO {% endcomment %}
+        <div class="mb-2 mt-4" onclick="location.href='#';" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-users" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Members
+            </p>
+        </div>
+    {% endif %}
+    {% if request.user.is_superuser or request.user.designation == request.user.UNI_HEAD or request.user.designation == request.user.INS_HEAD %}
+        {% comment %} TODO {% endcomment %}
+        <div class="mb-2 mt-4" onclick="location.href='#';" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-university" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Bodies
+            </p>
+        </div>
+    {% endif %}
+    {% if request.user.designation == request.user.DEPARTMENT or request.user.designation == request.user.DEP_HEAD %}
+        {% comment %} TODO {% endcomment %}
+        <div class="mb-2 mt-4" onclick="location.href='#';" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-graduation-cap" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Students
+            </p>
+        </div>
+    {% endif %}
+    <a href="{% url 'password_change' %}">
+        <div class="mb-2 mt-4" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-user" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                My Profile
+            </p>
+        </div>
+    </a>
+    <hr>
+    <a href="{% url 'logout' %}">
+        <div class="mb-2 mt-4" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-sign-out" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Logout
+            </p>
+        </div>
+    </a>
+</div>

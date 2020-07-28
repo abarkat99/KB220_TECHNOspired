@@ -1,0 +1,52 @@
+<div class="modal-header pb-0" style="border-bottom: none">
+    <h5 class="modal-title mt-2 mb-1 font-weight-bold" style="">All Messages</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body px-lg-4 py-2">
+    <div class="row justify-content-center">
+        <div class="col-lg-12 col-12 px-lg-0 order-lg-1">
+            <div style="height:300px; overflow-y:scroll">
+                <table class="table filter-this-table">
+                    <tbody>
+                    {% for reply in replies %}
+                    <tr>
+                        <td style="vertical-align: middle" colspan="1">
+                            <table class="table filter-this-table mb-1">
+                                <tr>
+                                    <td style="padding: 4px;">
+                                        <h6 class="mb-0 font-weight-bold" style="font-size: larger">
+                                            {% if reply.user == request.user %}
+                                                You
+                                            {% else %}
+                                                {{ reply.user.get_designation_display }}
+                                            {% endif %} </h6>
+                                    </td>
+                                    <td style="padding: 4px; text-align: right;">
+                                        <h6 class="mb-0 font-weight-bold" style="font-size: larger">{{ reply.date_time }}</h6>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p>
+                                {{ reply.message }}
+                            </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer align-middle justify-content-center pt-0" style="border-top: none">
+    {% if allow_reply %}
+        <button type="button" id="get-reply-form-modal" class="btn btn-success">
+            <i class="fa fa-reply" aria-hidden="true"></i> Reply
+        </button>
+    {% endif %}
+    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+</div>

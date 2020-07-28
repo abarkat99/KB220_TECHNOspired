@@ -1,8 +1,9 @@
 from django.db import models
 from django.db import transaction
 from accounts.models import User
-from datetime import date as date_fun
+import datetime
 from redressal.models import SubCategory, RedressalBody
+from .constants import StatusConstants
 
 
 # Concurrency controlled generation of tokens Singleton table
@@ -16,8 +17,8 @@ class DayToken(models.Model):
             daytoken = cls.objects.select_for_update().first()
             if daytoken == None:
                 daytoken = cls()
-            if daytoken.last_update != date_fun.today():
-                daytoken.last_update = date_fun.today()
+            if daytoken.last_update != datetime.date.today():
+                daytoken.last_update = datetime.date.today()
                 daytoken.counter = 0
             daytoken.counter = daytoken.counter + 1
             daytoken.save()
@@ -28,29 +29,47 @@ class DayToken(models.Model):
         super(DayToken, self).save(*args, **kwargs)
 
 
-class Grievance(models.Model):
+class Grievance(StatusConstants, models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='grievances')
     date = models.DateField(auto_now_add=True)
     redressal_body = models.ForeignKey(RedressalBody, on_delete=models.CASCADE, related_name='grievances')
     daytoken = models.IntegerField()
 
     last_update = models.DateField(auto_now=True)
-    status = models.CharField(max_length=10, choices=[('Pending', 'Pending'), ('Resolved', 'Resolved'), ],
-                              default='Pending')
-
+    status = models.PositiveSmallIntegerField(choices=StatusConstants.STATUS_CHOICES, default=StatusConstants.REVIEW)
     message = models.TextField(max_length=1000)
     subject = models.CharField(max_length=255)
     image = models.ImageField(null=True, blank=True, upload_to='images/')
+    UNIVERSITY = 1
+    INSTITUTE = 2
+    DEPARTMENT = 3
     CATEGORY_CHOICES = [
-        ('University', 'University'),
-        ('Institute', 'Institute'),
-        ('Department', 'Department'),
+        (UNIVERSITY, 'University'),
+        (INSTITUTE, 'Institute'),
+        (DEPARTMENT, 'Department'),
     ]
-    category = models.CharField(max_length=15, choices=CATEGORY_CHOICES)
+    category = models.PositiveSmallIntegerField(choices=CATEGORY_CHOICES)
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (("date", "daytoken"),)
+        ordering = ['-last_update']
+    
+    def token(self):
+        return self.date.strftime('%Y%m%d') + str(self.daytoken).zfill(4)
+    
+    def status_html_class(self):
+        return self.STATUS_COLORS[self.status]
+
+    @classmethod
+    def get_from_token(cls, token):
+        date = datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
+        daytoken = int(token[-4:])
+        try:
+            grievance = cls.objects.get(date=date, daytoken=daytoken)
+        except cls.DoesNotExist:
+            grievance = None
+        return grievance
 
 
 class Reply(models.Model):
@@ -58,3 +77,6 @@ class Reply(models.Model):
     grievance = models.ForeignKey(Grievance, on_delete=models.CASCADE, related_name='reply')
     date_time = models.DateTimeField(auto_now_add=True)
     message = models.TextField(max_length=1000)
+
+    class Meta:
+        ordering = ['date_time']

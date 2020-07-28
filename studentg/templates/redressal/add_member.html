@@ -1,0 +1,52 @@
+{% extends 'redressal/dashboard_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}Add Member{% endblock page_title %}
+{% block page_heading %}Add New Member{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-start">
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title" style="">Enter Member Details
+                            </h5>
+                        </div>
+                    </div>
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                                <p{% if forloop.last %} class="mb-0" {% endif %}>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group mb-3 volunteer-field">
+                            <div class="row">
+                                <div class="col">
+                                    {{ form.first_name.label_tag }}
+                                    {% render_field form.first_name class="form-control" placeholder="First Name" %}
+                                </div>
+                                <div class="col">
+                                    {{ form.last_name.label_tag }}
+                                    {% render_field form.last_name class="form-control" placeholder="Last Name" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 ">
+                            {{ form.email.label_tag }}
+                            {% render_field form.email class="form-control" placeholder="Email Id" %}
+                        </div>
+                        <div style="text-align: center" class=" mb-3 ">
+                            <button type="submit" class="btn btn-success" style="width: 100%">Send Registration
+                                Link
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}

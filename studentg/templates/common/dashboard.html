@@ -1,0 +1,358 @@
+{% extends 'common/dashboard_base.html' %}
+{% load static %}
+{% block page_title %}Dashboard{% endblock page_title %}
+{% block page_heading %}Your Dashboard{% endblock page_heading %}
+{% block page_content %}
+    <!--message Modal -->
+    <div class="modal fade" id="grievance-messages-modal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <!--End  Modal -->
+
+    <div class="container mb-lg-3 mt-lg-2 pl-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                {#            TODO#}
+                <a href="{% url 'add_grievance' %}">
+                    <div class="options" style="cursor: pointer">
+                        <div>
+                            <img src="{% static 'assets/img/tasks.jpg' %}" class="options-img"/>
+                        </div>
+                        <div class="options-title p-2"><i style="font-size: xx-large" class="fa fa-plus"
+                                                          aria-hidden="true"></i><br>
+                            Lodge Grievance
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                <a href="{% url 'all_grievances' %}">
+                    <div class="options" style="cursor: pointer">
+                        <div>
+                            <img src="{% static 'assets/img/feedback.jpg' %}" class="options-img"/>
+                        </div>
+                        <div class="options-title p-2"><i style="font-size: xx-large" class="fa fa-comments"
+                                                          aria-hidden="true"></i><br>
+                            My Grievances
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                <a href="{% url 'password_change' %}">
+                    <div class="options" style="cursor: pointer">
+                        <div>
+                            <img src="{% static 'assets/img/account.jpg' %}" class="options-img"/>
+                        </div>
+                        <div class="options-title p-2"><i style="font-size: xx-large" class="fa fa-user"
+                                                          aria-hidden="true"></i><br>
+                            My Profile
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                <a href="{% url 'logout' %}">
+                    <div class="options" style="cursor: pointer">
+                        <div>
+                            <img src="{% static 'assets/img/logout.jpeg' %}" class="options-img"/>
+                        </div>
+                        <div class="options-title p-2"><i style="font-size: xx-large" class="fa fa-sign-out"
+                                                          aria-hidden="true"></i><br>
+                            Logout
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-1 pl-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-12 px-lg-3 order-lg-1 order-2">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <div class=" col ">
+                            <h5 class="my-3 card-custom-title" style="">All Grievances</h5>
+                        </div>
+                        {#                    TODO#}
+                        <div style="text-align: right" class=" col">
+                            <a href="{% url 'all_grievances' %}">
+                                <button class="btn btn-dark">View All &nbsp
+                                    {#                                <i#}
+                                    {#                                    style=" font-size: small"#}
+                                    {#                                    class="fa fa-pencil"#}
+                                    {#                                    aria-hidden="true" hidden></i>#}
+                                </button>
+                            </a>
+                        </div>
+
+                        <table class="table step3-table filter-this-table">
+                            {#                        <thead hidden>#}
+                            {#                        <tr>#}
+                            {#                            <th scope="col"><h6>Subject</h6></th>#}
+                            {#                            <th scope="col"><h6>Category</h6></th>#}
+                            {#                            <th scope="col"><h6>Token No.</h6></th>#}
+                            {#                            <th scope="col"><h6>Details</h6></th>#}
+                            {#                        </tr>#}
+                            {#                        </thead>#}
+                            <tbody>
+                            {% include 'includes/iterate_grievances.html' %}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+                {#                <div class="card-custom mt-4 help-card" hidden>#}
+                {#                    <div class="row justify-content-between align-items-center">#}
+                {#                        <div class="col">#}
+                {#                            <h5 class="my-3 card-custom-title" style="">Grievances Received(D,I,U,A)</h5>#}
+                {#                        </div>#}
+                {#                        <table class="table step3-table filter-this-table">#}
+                {#                            <thead>#}
+                {#                            <tr>#}
+                {#                                <th scope="col"><h6>No.</h6></th>#}
+                {#                                <th scope="col"><h6>Title</h6></th>#}
+                {#                                <th scope="col"><h6>Type</h6></th>#}
+                {#                                <th scope="col"><h6>Details</h6></th>#}
+                {#                            </tr>#}
+                {#                            </thead>#}
+                {#                            <tbody>#}
+                {##}
+                {#                            <!--========== ROW 1 STARTS =========-->#}
+                {##}
+                {#                            <tr aria-rowspan="2" class="card-row">#}
+                {#                                <td class="align-middle">#}
+                {#                                    <div class="initiative-heading">#}
+                {#                                        <h6 class="font-weight-bold mb-0">Provide clothing to the needy</h6>#}
+                {#                                    </div>#}
+                {#                                </td>#}
+                {#                                <td class="align-middle">#}
+                {#                                    <p class="m-0">Clothing</p>#}
+                {#                                </td>#}
+                {#                                <td class="align-middle">#}
+                {#                                    <p class="m-0">123456</p>#}
+                {#                                </td>#}
+                {#                                <td class="align-middle">#}
+                {#                                    <button type="button" class="btn btn-sm btn-outline-dark" data-toggle="collapse"#}
+                {#                                            data-target="#collapseexploretask1"#}
+                {#                                            aria-expanded="false" aria-controls="collapseExample">#}
+                {#                                        <i class="fa fa-angle-down" aria-hidden="true"></i>#}
+                {#                                    </button>#}
+                {#                                </td>#}
+                {#                                <td class="align-middle" hidden>#}
+                {##}
+                {#                                </td>#}
+                {#                            </tr>#}
+                {#                            <tr>#}
+                {#                                <td colspan="4" class="sub-td">#}
+                {#                                    <table class="collapse sub-table" id="collapseexploretask1">#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1">#}
+                {#                                                Task ID#}
+                {#                                            </td>#}
+                {#                                            <td colspan="3">#}
+                {#                                                <div class="initiative-description">#}
+                {#                                                    <p class="text-muted" align="left">1</p>#}
+                {#                                                </div>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1">#}
+                {#                                                Task Details#}
+                {#                                            </td>#}
+                {#                                            <td colspan="3">#}
+                {#                                                <div class="initiative-description">#}
+                {#                                                    <p class="text-muted" align="left">We need volunteers to deliver the#}
+                {#                                                        clothes from#}
+                {#                                                        the#}
+                {#                                                        main#}
+                {#                                                        junction to the slum areas#}
+                {#                                                    </p>#}
+                {#                                                </div>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1">#}
+                {#                                                Task Creator#}
+                {#                                            </td>#}
+                {#                                            <td colspan="3">#}
+                {#                                                <div class="initiative-description">#}
+                {#                                                    <p class="text-muted" align="left">NGO#}
+                {#                                                    </p>#}
+                {#                                                </div>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1">#}
+                {#                                                Volunteers required#}
+                {#                                            </td>#}
+                {#                                            <td colspan="2">#}
+                {#                                                <div class="initiative-description">#}
+                {#                                                    <p class="text-muted" align="left">12#}
+                {#                                                    </p>#}
+                {#                                                </div>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1">#}
+                {#                                                Volunteers applied#}
+                {#                                            </td>#}
+                {#                                            <td colspan="2">#}
+                {#                                                <div class="initiative-description">#}
+                {#                                                    <p class="text-muted" align="left">6#}
+                {#                                                    </p>#}
+                {#                                                </div>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1" class="">#}
+                {#                                                <p class="">Contact</p>#}
+                {#                                            </td>#}
+                {#                                            <td>#}
+                {#                                                <div class="initiative-contact align-content-around">#}
+                {#                                                    <a href="tel:1077-240486">#}
+                {#                                                        <button class="btn btn-sm btn-outline-primary mt-1">01334-235010#}
+                {#                                                        </button>#}
+                {#                                                    </a>#}
+                {#                                                </div>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1">#}
+                {#                                                Website#}
+                {#                                            </td>#}
+                {#                                            <td colspan="3">#}
+                {#                                                <a href="www.urhope.in">#}
+                {#                                                    <button class="btn btn-sm btn-outline-primary mt-1">www.urhope.in#}
+                {#                                                    </button>#}
+                {#                                                </a>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                        <tr>#}
+                {#                                            <td colspan="1">#}
+                {#                                                <p class="">Action</p>#}
+                {#                                            </td>#}
+                {#                                            <td colspan="3">#}
+                {#                                                <div style="" class=" mb-2 ">#}
+                {#                                                    <a href="old_files/volunteer_applied_tasks.html">#}
+                {#                                                        <button class="btn btn-success mt-1">Apply</button>#}
+                {#                                                    </a>#}
+                {#                                                    <a href="old_files/volunteer_applied_tasks.html">#}
+                {#                                                        <button class="btn btn-success mt-1" disabled>Applied</button>#}
+                {#                                                    </a>#}
+                {#                                                    <a href="old_files/volunteer_applied_tasks.html">#}
+                {#                                                        <button class="btn btn-danger mt-1">Cancel Application</button>#}
+                {#                                                    </a>#}
+                {#                                                </div>#}
+                {#                                            </td>#}
+                {#                                        </tr>#}
+                {#                                    </table>#}
+                {#                                </td>#}
+                {#                            </tr>#}
+                {#                            <!--========== ROW 1 ENDS =========-->#}
+                {#                            </tbody>#}
+                {##}
+                {#                        </table>#}
+                {#                    </div>#}
+                {#                </div>#}
+            </div>
+            <div class="col-lg-4 col-12 px-lg-3 order-lg-1 order-2">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title" style="">Notifications</h5>
+                        </div>
+                        <table class="table filter-this-table">
+                            <tbody>
+                            <tr>
+                                <td style="vertical-align: middle" colspan="1">
+                                    <h6 class="my-2">8 May 2020 12:36</h6>
+                                    <p>Grievance (No. 123456) has been <strong>approved</strong></p>
+                                </td>
+                            </tr>
+                            {#                        <tr hidden>#}
+                            {#                            <td style="vertical-align: middle" colspan="1">#}
+                            {#                                <h6 class="my-2">8 May 2020 12:36</h6>#}
+                            {#                                <p>#}
+                            {#                                    <a href="" class="mt-1" hidden>#}
+                            {#                                        <img src="{% static 'assets/img/profile1.jpg' %}"#}
+                            {#                                             class="profile-pic" style="width: 20px" hidden>#}
+                            {#                                        &nbsp#}
+                            {#                                        Mike Richards#}
+                            {#                                    </a>#}
+                            {##}
+                            {#                                    Your grievance (No. 123456) has been <strong>escalated</strong> to university level#}
+                            {#                                    by your institue.#}
+                            {#                                    You will be notified about further actions#}
+                            {#                                    <a href="" class="mt-1" hidden>#}
+                            {#                                        Provide clothing to the needy#}
+                            {#                                    </a>#}
+                            {#                                    .#}
+                            {#                                    For any queries, reach out to us at#}
+                            {#                                    <a href="" class="mt-1">#}
+                            {#                                        studgrievred@andhrapradesh.com#}
+                            {#                                    </a>#}
+                            {#                                    and phone no.#}
+                            {#                                    <a href="" class="mt-1">#}
+                            {#                                        1234567890#}
+                            {#                                    </a>#}
+                            {#                                    . Thank You for making this world a better place!#}
+                            {#                                </p>#}
+                            {#                            </td>#}
+                            {#                        </tr>#}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-custom mt-3 help-card">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title" style="">Stats</h5>
+                        </div>
+                        <table class="table step3-table filter-this-table">
+                            <thead>
+                            <img src="{% static 'assets/img/Piechart.jpeg' %}" style="width: 100%;">
+                            <div>
+                                {#                            TODO#}
+                                <a href="#">
+                                    <button class="btn btn-dark mt-2">View All Charts</button>
+                                </a>
+                            </div>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-0 pl-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-12 px-lg-3 order-lg-1 order-2">
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <br/><br/>
+
+{% endblock page_content %}
+{% block javascript %}
+    <script src="{% static 'common/js/modal_loaders.js' %}"></script>
+    {% if messages %}
+        <script>
+            {% for message in messages %}
+                alert("{{ message }}")
+            {% endfor %}
+        </script>
+    {% endif %}
+{% endblock %}

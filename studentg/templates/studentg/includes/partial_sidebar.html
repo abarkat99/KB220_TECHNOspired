@@ -1,0 +1,48 @@
+{% load static %}
+<div class="sidebar">
+    <a class="p-0" href="{% url 'home' %}" style="text-align: center">
+        <img class="navbar-logo" src="{% static 'assets/img/Logos/govt-logo-trans.png' %}" height="75" alt="">
+    </a>
+    <hr>
+    <a href="{% url 'dashboard' %}">
+        <div class="mb-2 mt-4" style="cursor: pointer">
+            <button class="sidebar-button active">
+                <i style="font-size:large" class="fa fa-home" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Dashboard
+            </p>
+        </div>
+    </a>
+    <a href="{% url 'add_grievance' %}">
+        <div class="mb-2 mt-4" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Lodge <br>Grievance
+            </p>
+        </div>
+    </a>
+    <a href="{% url 'password_change' %}">
+        <div class="mb-2 mt-4" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-user" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                My Profile
+            </p>
+        </div>
+    </a>
+    <hr>
+    <a href="{% url 'logout' %}">
+        <div class="mb-2 mt-4" style="cursor: pointer">
+            <button class="sidebar-button">
+                <i style="font-size:large" class="fa fa-sign-out" aria-hidden="true"></i>
+            </button>
+            <p class="sidebar-title"><br>
+                Logout
+            </p>
+        </div>
+    </a>
+</div>

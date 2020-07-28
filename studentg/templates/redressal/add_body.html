@@ -1,0 +1,63 @@
+{% extends 'redressal/dashboard_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}Add {{ body_type }}{% endblock page_title %}
+{% block page_heading %}Add New {{ body_type }}{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-start">
+
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col">
+                                <h5 class="my-3 card-custom-title" style="">Enter {{ body_type }} Details
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 volunteer-field">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="{{ rbody_form.name.id_for_label }}">{{ body_type }} Name</label>
+                                    {% render_field rbody_form.name class="form-control" placeholder=body_type %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col">
+                                <h5 class="my-3 card-custom-title" style="">Enter {{ body_type }} Head Details
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3  volunteer-field">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="{{ tuser_form.first_name.id_for_label }}">{{ tuser_form.first_name.label }}</label>
+                                    {% render_field tuser_form.first_name class="form-control" placeholder="First Name" %}
+                                </div>
+                                <div class="col">
+                                    <label for="{{ tuser_form.last_name.id_for_label }}">{{ tuser_form.last_name.label }}</label>
+                                    {% render_field tuser_form.last_name class="form-control" placeholder="Last Name" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 volunteer-field">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="{{ tuser_form.email.id_for_label }}">{{ tuser_form.email.label }}</label>
+                                    {% render_field tuser_form.email class="form-control" placeholder="Email Id" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: center" class=" mb-3 ">
+                            <button type="submit" class="btn btn-success" style="width: 100%">Send Registration Link
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}

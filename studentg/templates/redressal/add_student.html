@@ -1,0 +1,34 @@
+{% extends 'redressal/dashboard_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}Add Member{% endblock page_title %}
+{% block page_heading %}Add New Member{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-start">
+
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col">
+                            <h5 class="my-3 card-custom-title" style="">Enter Student Details
+                            </h5>
+                        </div>
+                    </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.file.id_for_label }}"> Upload CSV File or Spreadsheet containing student details</label>
+                            {% render_field form.file class="form-control-file" %}
+                            <p class="text-muted mt-2">Please refer this <a href="{% static 'redressal/Student Details.csv' %}">Link</a> for format.</p>
+                        </div>
+                        <div style="text-align: center" class=" mb-3 ">
+                            <button type="submit" class="btn btn-success" style="width: 100%">Send Registration Link
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}

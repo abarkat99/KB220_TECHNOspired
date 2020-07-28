@@ -1,0 +1,31 @@
+{% extends 'redressal/dashboard_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block page_title %}Subcategories{% endblock page_title %}
+{% block page_heading %}View Subcategories{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-start">
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.sub_type.label_tag }}
+                            {% render_field form.sub_type class="form-control" placeholder="Sub-Category" %}
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
+                    </div>
+                    <div>
+                    Subcategories:-
+                        {% for subcategory in subcategories %}
+                            <p>
+                                {{ subcategory.sub_type }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
