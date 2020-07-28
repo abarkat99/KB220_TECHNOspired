@@ -14,6 +14,9 @@ class RedressalBody(models.Model):
     ]
     body_type = models.CharField(max_length=3, choices=TYPE_CHOICES)
 
+    def __str__(self):
+        return self.name
+
     def get_body_object(self):
         if self.body_type == self.UNIVERSITY:
             return self.university

@@ -152,7 +152,6 @@ class AddMember(CreateView):
         self.object.designation = self.request.user.designation[:-2]
         self.object.created_at = timezone.now()
         self.object.save()
-        self.object.send_mail(site_url='http://localhost:8000')
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -244,7 +243,6 @@ class AddBody(View):
             temp_user.redressal_body = rbody
             temp_user.created_at = timezone.now()
             temp_user.save()
-            temp_user.send_mail(site_url='http://localhost:8000')
             sub_cat = SubCategory()
             sub_cat.sub_type = "Other"
             sub_cat.redressal_body = rbody
@@ -309,7 +307,6 @@ class AddStudent(FormView):
             stuser.rollno = row['Rollno']
             stuser.user = tuser
             stuser.save()
-            tuser.send_mail(site_url='http://localhost:8000')
         return super(AddStudent, self).form_valid(form)
 
 

@@ -129,6 +129,9 @@ class TempUser(models.Model):
     uidb64 = models.CharField(max_length=255)
     token = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name
+
     def save(self, *args, **kwargs):
         if not self.uidb64:
             self.uidb64 = urlsafe_base64_encode(force_bytes(six.text_type(self.pk) + six.text_type(self.created_at))[::3])
@@ -137,7 +140,11 @@ class TempUser(models.Model):
             self.token = salted_hmac("%s" % (random.random()), value).hexdigest()[::3]
         super(TempUser, self).save(*args, **kwargs)
 
-    def send_mail(self, site_url):
+    def send_mail(self):
+        if self.designation == self.STUDENT:
+            site_url = "http://localhost:8000/"
+        else:
+            site_url = "http://localhost:8001/"
         signup_relative_url = reverse('signup', kwargs={
                 'uidb64': self.uidb64,
                 'token': self.token
