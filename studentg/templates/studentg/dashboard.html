@@ -1,5 +1,4 @@
 {% extends 'studentg/dashboard_base.html' %}
-{% load hosts %}
 {% load static %}
 {% block page_title %}Dashboard{% endblock page_title %}
 {% block page_heading %}Your Dashboard{% endblock page_heading %}
@@ -17,7 +16,7 @@
     <div class="container mb-lg-3 mt-lg-2 pl-lg-5">
         <div class="row justify-content-center">
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <a href="{% host_url 'add_grievance' host request.host.name %}">
+                <a href="{% url 'add_grievance' %}">
                     <div class="options" style="cursor: pointer">
                         <div>
                             <img src="{% static 'assets/img/tasks.jpg' %}" class="options-img"/>
@@ -30,7 +29,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <a href="{% host_url 'all_grievances' host request.host.name %}">
+                <a href="{% url 'all_grievances' %}">
                     <div class="options" style="cursor: pointer">
                         <div>
                             <img src="{% static 'assets/img/feedback.jpg' %}" class="options-img"/>
@@ -43,7 +42,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <a href="{% host_url 'password_change' host request.host.name %}">
+                <a href="{% url 'password_change' %}">
                     <div class="options" style="cursor: pointer">
                         <div>
                             <img src="{% static 'assets/img/account.jpg' %}" class="options-img"/>
@@ -56,7 +55,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <a href="{% host_url 'logout' host request.host.name %}">
+                <a href="{% url 'logout' %}">
                     <div class="options" style="cursor: pointer">
                         <div>
                             <img src="{% static 'assets/img/logout.jpeg' %}" class="options-img"/>
@@ -82,7 +81,7 @@
                         </div>
                         {#                    TODO#}
                         <div style="text-align: right" class=" col">
-                            <a href="{% host_url 'all_grievances' host request.host.name %}">
+                            <a href="{% url 'all_grievances' %}">
                                 <button class="btn btn-dark">View All &nbsp
                                     {#                                <i#}
                                     {#                                    style=" font-size: small"#}
@@ -316,7 +315,7 @@
                         <div class="col">
                             <h5 class="my-3 card-custom-title" style="">Stats</h5>
                         </div>
-                        <canvas id="grievance-status-chart" data-url="{% host_url 'status_stats_chart' host request.host.name %}"></canvas>
+                        <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
                     </div>
                 </div>
             </div>

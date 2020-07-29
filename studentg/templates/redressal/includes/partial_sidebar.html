@@ -1,11 +1,10 @@
-{% load hosts %}
 {% load static %}
 <div class="sidebar">
-    <a class="p-0" href="{% host_url 'home' host request.host.name %}" style="text-align: center">
+    <a class="p-0" href="{% url 'home' %}" style="text-align: center">
         <img class="navbar-logo" src="{% static 'assets/img/Logos/govt-logo-trans.png' %}" height="75" alt="">
     </a>
     <hr>
-    <a href="{% host_url 'dashboard' host request.host.name %}">
+    <a href="{% url 'dashboard' %}">
         <div class="mb-2 mt-4" style="cursor: pointer">
             <button class="sidebar-button active">
                 <i style="font-size:large" class="fa fa-home" aria-hidden="true"></i>
@@ -16,7 +15,7 @@
         </div>
     </a>
     {% if request.user.designation in request.user.HEAD_DESIGNATIONS %}
-        <a href="{% host_url 'view_members' host request.host.name %}">
+        <a href="{% url 'view_members' %}">
             <div class="mb-2 mt-4" style="cursor: pointer">
                 <button class="sidebar-button">
                     <i style="font-size:large" class="fa fa-users" aria-hidden="true"></i>
@@ -26,7 +25,7 @@
                 </p>
             </div>
         </a>
-        <a href="{% host_url 'view_subcategories' host request.host.name %}">
+        <a href="{% url 'view_subcategories' %}">
             <div class="mb-2 mt-4" style="cursor: pointer">
                 <button class="sidebar-button">
                     <i style="font-size:large" class="fa fa-list" aria-hidden="true"></i>
@@ -38,7 +37,7 @@
         </a>
     {% endif %}
     {% if request.user.designation == request.user.DEP_HEAD or request.user.designation == request.user.DEPARTMENT %}
-        <a href="{% host_url 'view_students' host request.host.name %}">
+        <a href="{% url 'view_students' %}">
             <div class="mb-2 mt-4" style="cursor: pointer">
                 <button class="sidebar-button">
                     <i style="font-size:large" class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -50,7 +49,7 @@
         </a>
     {% endif %}
     {% if request.user.is_superuser or request.user.designation == request.user.UNI_HEAD or request.user.designation == request.user.INS_HEAD %}
-    <a href="{% host_url 'view_bodies' host request.host.name %}">
+    <a href="{% url 'view_bodies' %}">
         <div class="mb-2 mt-4" style="cursor: pointer">
             <button class="sidebar-button">
                 <i style="font-size:large" class="fa fa-university" aria-hidden="true"></i>
@@ -61,7 +60,7 @@
         </div>
     </a>
     {% endif %}
-    <a href="{% host_url 'password_change' host request.host.name %}">
+    <a href="{% url 'password_change' %}">
         <div class="mb-2 mt-4" style="cursor: pointer">
             <button class="sidebar-button">
                 <i style="font-size:large" class="fa fa-user" aria-hidden="true"></i>
@@ -72,7 +71,7 @@
         </div>
     </a>
     <hr>
-    <a href="{% host_url 'logout' host request.host.name %}">
+    <a href="{% url 'logout' %}">
         <div class="mb-2 mt-4" style="cursor: pointer">
             <button class="sidebar-button">
                 <i style="font-size:large" class="fa fa-sign-out" aria-hidden="true"></i>

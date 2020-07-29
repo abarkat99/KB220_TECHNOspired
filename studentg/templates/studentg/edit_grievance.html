@@ -1,5 +1,4 @@
 {% extends 'studentg/dashboard_base.html' %}
-{% load hosts %}
 {% load static %}
 {% load widget_tweaks %}
 {% block page_title %}Edit Grievance{% endblock page_title %}
@@ -16,7 +15,7 @@
                         </div>
                     </div>
                     <form method="post" enctype="multipart/form-data" class="form-loads-subcategories"
-                          data-sub-categories-url="{% host_url 'load_subcategories' host request.host.name %}">
+                          data-sub-categories-url="{% url 'load_subcategories' %}">
                         {% csrf_token %}
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}

@@ -1,5 +1,4 @@
 {% extends 'studentg/dashboard_base.html' %}
-{% load hosts %}
 {% load static %}
 {% load widget_tweaks %}
 {% block page_title %}My Grievances{% endblock page_title %}
@@ -31,7 +30,7 @@
                         <div class="col-12">
                             <!--Search-->
                             <form method="get" class="form-loads-subcategories row mb-3 py-3"
-                                  data-sub-categories-url="{% host_url 'load_subcategories' host request.host.name %}"
+                                  data-sub-categories-url="{% url 'load_subcategories' %}"
                                   style="border-radius: 5px; border: 1px solid #dee2e6;">
                                 <div class=" col-lg-6 col-12 mb-1 m-0">
                                     <label for="{{ filter_form.subject.id_for_label }}"
@@ -93,7 +92,7 @@
                         </div>
                         <table class="table step3-table filter-this-table">
                             <thead>
-                            <canvas id="grievance-status-chart" data-url="{% host_url 'status_stats_chart' host request.host.name %}"></canvas>
+                            <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
                             </thead>
                             <tbody>
                             <!--========== ROW 1 STARTS =========-->
