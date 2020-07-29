@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# from django.contrib.sites.models import Site
 from redressal.models import RedressalBody
-
-# TempUser defaults
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.crypto import salted_hmac
@@ -11,7 +8,7 @@ import random
 import six
 from django.urls import reverse
 from django.core.mail import send_mail
-
+from django_hosts.resolvers import reverse_host
 # Create your models here.
 
 
@@ -142,16 +139,16 @@ class TempUser(models.Model):
 
     def send_mail(self):
         if self.designation == self.STUDENT:
-            site_url = "http://localhost:8000/"
+            site_url = reverse_host('www')
         else:
-            site_url = "http://localhost:8001/"
+            site_url = reverse_host('redressal')
         signup_relative_url = reverse('signup', kwargs={
                 'uidb64': self.uidb64,
                 'token': self.token
             })
         send_mail(
             'Sign Up for Student Grievance Portal',
-            f'Click this link to sign up {site_url}{signup_relative_url}',
+            f'Click this link to sign up http://{site_url}{signup_relative_url}',
             'from@example.com',
             [self.email],
             fail_silently=False,
