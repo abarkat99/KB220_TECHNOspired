@@ -1,7 +1,6 @@
-{% extends 'common/home_base.html' %}
+{% extends 'common/linkless_base.html' %}
 {% load static %}
-{% load widget_tweaks %}
-{% block page_title %}404- Page Not Found{% endblock page_title %}
+{% block page_title %}404 - Page Not Found{% endblock page_title %}
 {% block page_content %}
     <div class="container mt-lg-5 mt-5 pt-5">
         <div class="row justify-content-center">
@@ -14,7 +13,7 @@
                             <h1 class="mt-2 font-weight-bold" style="text-transform: uppercase; text-align: center">
                                 404</h1>
                             <h5 class="mt-2" style="text-align: center">Page not found!</h5>
-                            <p style="text-align: center">Sorry we couldn't find this page. But you can find plenty of
+                            <p style="text-align: center">Sorry we couldn't find this page. But you can find plenty
                                 other
                                 things on our <a href="{% url 'home' %}">homepage</a>.
                             </p>

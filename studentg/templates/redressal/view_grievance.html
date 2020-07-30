@@ -1,0 +1,82 @@
+{% extends 'redressal/dashboard_base.html' %}
+{% load widget_tweaks %}
+{% block page_title %}View Grievance{% endblock page_title %}
+{% block page_heading %}View Grievance{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+    <div class="row">
+        <div class="col-lg-7 col-12 px-lg-3 ">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-between align-items-center mx-1">
+                    <div class="">
+                        <h5 class="my-3 card-custom-title" style="">{{ grievance.subject }}</h5>
+                    </div>
+                </div>
+                <form method="post">
+                {% csrf_token %}
+                <div class="row mt-2 py-3 mx-1" style="border-radius: 5px; border: 1px solid #dee2e6;">
+                    <div class="col-6">
+                        {{ update_form.status.label_tag }}
+                        {% render_field update_form.status class="custom-select input-group-sm"%}
+                    </div>
+                    <div class="col-6">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-outline-warning" style="width: 100%">Update Status</button>
+                    </div>
+                </div>
+                </form>
+                <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
+                     style="border: 1px solid #dee2e6; border-radius: 5px">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-12 col-lg-6"><p><b>Token No.:</b> {{ grievance.token }}</p></div>
+                            <div class="col"><p><b>Status:</b><span class="{{ grievance.status_html_class }}"> {{ grievance.get_status_display }}</span></p></div>
+                            <div class="col-12 col-lg-6"><p><b>Category:</b> {{ grievance.get_category_display }}</p></div>
+                            <div class="col"><p><b>Sub-category:</b> {{ grievance.sub_category.sub_type }}</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
+                     style="border: 1px solid #dee2e6; border-radius: 5px">
+                    <div class="col">
+                        <h6 class="font-weight-bold">Description</h6>
+                        <p class="text-muted">
+                            {{ grievance.message }}
+                        </p>
+                    </div>
+                </div>
+                {% comment %} <div class="row justify-content-between align-items-center py-3 mx-1 mt-2">
+                    <button class="btn btn-dark" style="width: 100%">Edit Draft</button>
+                </div> {% endcomment %}
+            </div>
+        </div>
+        <div class="col-lg-5 col-12 px-lg-3 ">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-between align-items-center mx-1">
+                    <div class="">
+                        <h5 class="my-3 card-custom-title" style="">Messages</h5>
+                    </div>
+                </div>
+                <div class="row justify-content-between align-items-center mx-1">
+                    <div class="col-12">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 col-12 px-lg-0 order-lg-1 p-0">
+
+                                <div style="height:300px; overflow-y:scroll; border: 1px solid #dee2e6; border-radius: 5px;">
+                                    <table class="table filter-this-table">
+                                        <tbody>
+                                        {% include "includes/iterate_replies.html" %}
+                                        <!--========== ROW 1 ENDS =========-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        {% include "includes/reply_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

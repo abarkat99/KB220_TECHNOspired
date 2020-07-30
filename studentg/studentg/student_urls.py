@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
 
 from django.conf import settings
@@ -30,6 +29,7 @@ dashpatterns = [
     path('edit-draft/grievance/<token>/', views.EditDraftGrievance.as_view(), name="edit_grievance"),
     path('load/subcategories/', views.LoadSubcategories.as_view(), name="load_subcategories"),
     path('all/grievances/', views.AllGrievances.as_view(), name="all_grievances"),
+    path('view/grievance/<token>/', views.ViewGrievance.as_view(), name="view_grievance"),
     path('view/messages/<token>/', views.ViewGrievanceMessages.as_view(), name="view_messages"),
 
     path('stats/status-chart/', views.status_stats_chart, name="status_stats_chart"),
@@ -40,11 +40,14 @@ dashpatterns = [
 ]
 urlpatterns = [
     path('', views.HomeView.as_view(), name="home"),
+    path('403/', lambda request: permission_denied(request, None)),
     path('404/', lambda request: page_not_found(request, None)),
+    path('500/', lambda request: server_error(request)),
     # path('faq/', views.faq, name="faq"),
     path('accounts/signup/<uidb64>/<token>/', SignupView.as_view(template_name="studentg/signup.html"), name='signup'),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include(dashpatterns)),
+    path('stats/status-chart/', views.overall_status_stats_chart, name="overall_status_chart"),
     # path('admin/', admin.site.urls),
     # path('contact/', views.contact,name="contact"),
     # path('about_us/',views.about_us,name="about_us"),

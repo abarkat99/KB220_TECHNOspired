@@ -4,7 +4,7 @@
 {% block page_title %}Subcategories{% endblock page_title %}
 {% block page_heading %}View Subcategories{% endblock page_heading %}
 {% block page_content %}
-    <div class="container mt-3 pl-lg-5">
+    {% comment %} <div class="container mt-3 pl-lg-5">
         <div class="row justify-content-start">
             <div class="col-lg-6 col-12 px-lg-3 ">
                 <div class="card-custom mt-2 mt-lg-0 help-card">
@@ -27,5 +27,50 @@
                 </div>
             </div>
         </div>
+    </div> {% endcomment %}
+    <div class="container mt-3 pl-lg-5">
+    <div class="row">
+        <div class="col-lg-7 col-12 px-lg-3 ">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-between align-items-center mx-1">
+                    <div class="">
+                        <h5 class="my-3 card-custom-title" style="">Add New Sub-category</h5>
+                    </div>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row mt-2 py-4 mx-1 mb-2" style="border-radius: 5px; border: 1px solid #dee2e6;">
+                    <div class="col-6">
+                        {{ form.sub_type.label_tag }}
+                        {% render_field form.sub_type class="form-control" placeholder="Sub-Category" %}
+                    </div>
+                    <div class="col-6">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-outline-warning" style="width: 100%"><i class="fa fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-5 col-12 px-lg-3 ">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-between align-items-center mx-1">
+                    <div class="">
+                        <h5 class="my-3 card-custom-title" style="">Sub-category List</h5>
+                    </div>
+                </div>
+                <div class="row justify-content-between align-items-center mx-1">
+                    <ul>
+                        {% for subcategory in subcategories %}
+                            <li>
+                                {{ subcategory.sub_type }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 {% endblock page_content %}

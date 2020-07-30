@@ -27,27 +27,39 @@
                     </div>
                     <!--Filters-->
                     <div class="row justify-content-between align-items-center">
+                        <div class="col-12">
                         <!--Search-->
-                        <form method="get" class="form-loads-subcategories">
-                            <div class=" col-lg-6 col-12 mb-1">
-
-                                {{ filter_form.subject.label_tag }}
-                                {% render_field filter_form.subject class="form-control" %}
-                            </div>
-                            <div class=" col-lg-6 col-12 mb-1">
-                                {{ filter_form.sub_category.label_tag }}
-                                {% render_field filter_form.sub_category class="custom-select-sm custom-select filter" %}
-                            </div>
-                            <p>
-                                {{ filter_form.status.label_tag }}
-                                {% render_field filter_form.status class="custom-select-sm custom-select filter" %}
-                            </p>
-                            <p>
-                                {{ filter_form.o.label_tag }}
-                                {% render_field filter_form.o class="custom-select-sm custom-select filter" %}
-                            </p>
-                            <button type="submit" class="btn btn-primary">Filter</button>
-                        </form>
+                            <form method="get" class="form-loads-subcategories row mb-3 py-3" style="border-radius: 5px;border: 1px solid #dee2e6;">
+                                <div class=" col-lg-6 col-12 mb-1 m-0">
+                                    <label for="{{ filter_form.subject.id_for_label }}"class="mb-1">{{ filter_form.subject.label }}</label>
+                                    {% render_field filter_form.subject class="form-control form-control-sm" placeholder="Search..." %}
+                                </div>
+                                <div class=" col-lg-6 col-12 mb-1 m-0">
+                                    <label for="{{ filter_form.status.id_for_label }}"class="mb-1">{{ filter_form.status.label }}</label>
+                                    {% render_field filter_form.status class="custom-select-sm custom-select" %}
+                                </div>
+                                <div class="col-12 col-lg-12 so-accordion-wrapper mt-2" style="">
+                                    <div class="so-tab">
+                                        <input id="so-tab-1" type="checkbox" name="tabs"/>
+                                        <label for="so-tab-1" class="mb-2" style=""><h6 class="m-0">More Filters</h6>
+                                        </label>
+                                        <div class="so-tab-content row mb-0" style="border-bottom: none;">
+                                            <div class=" col-lg-6 col-12 mb-1">
+                                                <label for="{{ filter_form.sub_category.id_for_label }}"class="m-0">{{ filter_form.sub_category.label }}</label>
+                                                {% render_field filter_form.sub_category class="custom-select-sm custom-select" %}
+                                            </div>
+                                            <div class=" col-lg-6 col-12 mb-1 m-0">
+                                                <label for="{{ filter_form.o.id_for_label }}"class="m-0">{{ filter_form.o.label }}</label>
+                                                {% render_field filter_form.o class="custom-select-sm custom-select" %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-12 mt-2" style="text-align:center"> 
+                                    <button type="submit" class="btn btn-primary w-50">Search</button>
+                                </div>
+                            </form>
+                        </div>
                         <table class="table step3-table filter-this-table">
                             <tbody id="repeat-this-grievance">
                             {% with grievances=page_obj %}

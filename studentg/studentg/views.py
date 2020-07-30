@@ -2,7 +2,7 @@ from django.db.models import Count
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponseRedirect, JsonResponse
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import TemplateView, CreateView, UpdateView, View
 from django.contrib.auth.views import LoginView
 
 # from accounts.forms import NewTempUserForm, NewStudentForm, NewMassStudentForm
@@ -112,6 +112,41 @@ class EditDraftGrievance(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+class ViewGrievance(View):
+    template_name = 'studentg/view_grievance.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        replies = context['replies']
+        last_reply = replies.last()
+        if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
+            reply_form = NewReplyForm()
+            context['reply_form'] = reply_form
+        grievance = context['grievance']
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        grievance = context['grievance']
+        reply_form = NewReplyForm(request.POST)
+        if reply_form.is_valid():
+            reply = reply_form.save(commit=False)
+            reply.user = request.user
+            reply.grievance = grievance
+            reply.save()
+        return redirect('view_grievance', token=kwargs['token'])
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        grievance = Grievance.get_from_token(kwargs['token'])
+        if not grievance:
+            raise Http404()
+        replies = Reply.objects.filter(grievance=grievance)
+        context['grievance'] = grievance
+        context['replies'] = replies
+        return context
+
+
 class LoadSubcategories(TemplateView):
     template_name = 'studentg/subcat_options.html'
 
@@ -157,13 +192,11 @@ class ViewGrievanceMessages(TemplateView):
         context = super().get_context_data(**kwargs)
         grievance = Grievance.get_from_token(kwargs['token'])
         replies = Reply.objects.filter(grievance=grievance)
-        allow_reply = False
         last_reply = replies.last()
         if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
             allow_reply = True
         context['grievance'] = grievance
         context['replies'] = replies
-        context['allow_reply'] = allow_reply
         return context
 
 
@@ -188,6 +221,30 @@ def status_stats_chart(request):
         ]
     }
     return JsonResponse(data=data)
+
+def overall_status_stats_chart(request):
+    status_filtered = Grievance.objects.exclude(status=Grievance.DRAFT).order_by(
+        'status').values('status').annotate(count=Count('id'))
+    labels = []
+    data = []
+    backgroundColor = []
+    for entry in status_filtered:
+        labels.append(STATUS_DISPLAY_CONVERTER[entry['status']])
+        backgroundColor.append(STATUS_COLOR_CONVERTER[entry['status']])
+        data.append(entry['count'])
+    total_grievances = sum(data)
+    data = list(map(lambda x: 100 * x / total_grievances, data))
+    data = {
+        'labels': labels,
+        'datasets': [
+            {
+                'backgroundColor': backgroundColor,
+                'data': data,
+            },
+        ]
+    }
+    return JsonResponse(data=data)
+
 
 # def addgrievance(request):
 #     if request.method == 'POST':

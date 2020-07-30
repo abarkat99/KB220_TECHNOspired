@@ -1,0 +1,35 @@
+{% for reply in replies %}
+<tr>
+    <td style="vertical-align: middle; border-top: none !important;" colspan="1">
+        <table class="table filter-this-table mb-0">
+            <tr>
+                <td style="padding: 4px; border-top: none !important;">
+                    <h6 class="my-2">{% if reply.user == request.user %}
+                        You
+                        {% else %}
+                        {{ reply.user.get_designation_display }}
+                        {% endif %}</h6>
+                </td>
+                <td style="padding: 4px; text-align: right; border-top: none !important;">
+                    <h6 class="my-2">{{ reply.date_time }}</h6>
+                </td>
+            </tr>
+        </table>
+        <p>
+            {{ reply.message }}
+        </p>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td style="vertical-align: middle; border-top: none !important;" colspan="1">
+        <table class="table filter-this-table mb-0">
+            <tr>
+                <td style="padding: 4px; border-top: none !important;">
+                    <h6 class="my-2" style="text-align: center;">No Messages to display!</h6>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+{% endfor %}

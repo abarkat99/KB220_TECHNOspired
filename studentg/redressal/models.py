@@ -53,6 +53,7 @@ class SubCategory(models.Model):
 
 class University(models.Model):
     redressal_body = models.OneToOneField(RedressalBody, on_delete=models.CASCADE)
+    IS_SUB_BODY = False
 
     def get_sub_bodies(self):
         bodies = RedressalBody.objects.filter(institute__in=self.institute_set.all())
@@ -64,14 +65,22 @@ class University(models.Model):
 class Institute(models.Model):
     redressal_body = models.OneToOneField(RedressalBody, on_delete=models.CASCADE)
     university = models.ForeignKey(University, on_delete=models.CASCADE)
+    IS_SUB_BODY = True
 
     def get_sub_bodies(self):
         bodies = RedressalBody.objects.filter(department__in=self.department_set.all())
         in_bodies = bodies.filter(tempuser__designation="DEP_H")
         bodies = bodies.exclude(tempuser__designation="DEP_H")
         return bodies, in_bodies
+    
+    def get_super_body(self):
+        return self.university.redressal_body
 
 
 class Department(models.Model):
     redressal_body = models.OneToOneField(RedressalBody, on_delete=models.CASCADE)
     institute = models.ForeignKey(Institute, on_delete=models.CASCADE)
+    IS_SUB_BODY = True
+
+    def get_super_body(self):
+        return self.institute.redressal_body

@@ -5,6 +5,7 @@ from django_filters.constants import ALL_FIELDS
 from django_filters.filterset import filterset_factory
 
 from studentg.models import Grievance
+from studentg.constants import STATUS_VISIBLE_TO_COMMITTEE
 from .models import SubCategory
 
 
@@ -15,6 +16,7 @@ def sub_cats(request):
 class RedressalGrievanceFilter(django_filters.FilterSet):
     sub_category = django_filters.ModelChoiceFilter(queryset=sub_cats)
     subject = django_filters.CharFilter(lookup_expr='icontains', label='Subject')
+    status = django_filters.ChoiceFilter(choices=STATUS_VISIBLE_TO_COMMITTEE)
     o = django_filters.OrderingFilter(
         # tuple-mapping retains order
         fields=(

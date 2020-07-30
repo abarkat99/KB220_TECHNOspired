@@ -136,7 +136,10 @@ class TempUser(models.Model):
             value = six.text_type(self.email) + six.text_type(self.designation) + six.text_type(self.first_name) + six.text_type(self.last_name) + six.text_type(self.created_at)
             self.token = salted_hmac("%s" % (random.random()), value).hexdigest()[::3]
         super(TempUser, self).save(*args, **kwargs)
-
+    
+    def get_redressal_body(self):
+        return self.redressal_body
+    
     def send_mail(self):
         if self.designation == self.STUDENT:
             site_url = reverse_host('www')

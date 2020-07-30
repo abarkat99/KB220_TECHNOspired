@@ -7,7 +7,7 @@ from studentg.forms import GrievanceUpdateForm, NewReplyForm
 from studentg.constants import STATUS_COLOR_CONVERTER, STATUS_DISPLAY_CONVERTER
 
 from .decorators import is_committee_head, is_committee_member, is_committee_head_of_super_body_type, \
-    is_committee_member_of_grievance, is_department_member, is_committee_head_of
+    is_committee_member_of_grievance, is_department_member, is_committee_head_of, is_committee_head_of_temp_user, is_committee_head_of_super_body
 from .filters import RedressalGrievanceFilter, FilteredListView
 from .forms import NewRedressalBodyForm, NewSubCategoryForm
 from .models import RedressalBody, University, Institute, Department, SubCategory
@@ -15,6 +15,8 @@ from .models import RedressalBody, University, Institute, Department, SubCategor
 from django.views.generic import TemplateView, CreateView, View, FormView
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, Http404, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -38,11 +40,12 @@ class HomeView(LoginView):
     template_name = 'redressal/home.html'
 
 
+@method_decorator(login_required, name='dispatch')
 class DashboardView(TemplateView):
     template_name = 'redressal/dashboard.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(DashboardView, self).get_context_data(**kwargs)
         redressal_body = self.request.user.get_redressal_body()
         grievances = Grievance.objects.filter(redressal_body=redressal_body).exclude(status=Grievance.DRAFT).order_by(
             '-last_update')[:10]
@@ -50,6 +53,7 @@ class DashboardView(TemplateView):
         return context
 
 
+@method_decorator(is_committee_head(raise_denied=True), name="dispatch")
 class ViewSubcategories(CreateView):
     model = SubCategory
     form_class = NewSubCategoryForm
@@ -69,6 +73,7 @@ class ViewSubcategories(CreateView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class AllGrievances(FilteredListView):
     template_name = 'redressal/all_grievances.html'
     filterset_class = RedressalGrievanceFilter
@@ -85,12 +90,13 @@ class AllGrievances(FilteredListView):
         return context
 
 
+@method_decorator(is_committee_member_of_grievance(raise_denied=True), name="dispatch")
 class SetGrievanceStatus(View):
     status_to_set = None
 
-    def get(self, request, token, *args, **kwargs):
-        grievance = Grievance.get_from_token(token)
-        if not grievance:
+    def get(self, request, *args, **kwargs):
+        grievance = Grievance.get_from_token(kwargs['token'])
+        if not grievance or grievance.status == Grievance.DRAFT:
             raise Http404()
         grievance.status = self.status_to_set
         grievance.save()
@@ -113,12 +119,15 @@ class SetGrievanceResolved(SetGrievanceStatus):
     status_to_set = Grievance.RESOLVED
 
 
+@method_decorator(is_committee_member_of_grievance(raise_denied=True), name="dispatch")
 class ViewGrievanceMessages(TemplateView):
     template_name = 'common/view_messages_modal.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         grievance = Grievance.get_from_token(kwargs['token'])
+        if not grievance or grievance.status == Grievance.DRAFT:
+            raise Http404()
         replies = Reply.objects.filter(grievance=grievance)
         allow_reply = True
         context['grievance'] = grievance
@@ -127,6 +136,48 @@ class ViewGrievanceMessages(TemplateView):
         return context
 
 
+class ViewGrievance(View):
+    template_name = 'redressal/view_grievance.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        grievance = context['grievance']
+        reply_form = NewReplyForm()
+        update_form = GrievanceUpdateForm(instance=grievance)
+        context['reply_form'] = reply_form
+        context['update_form'] = update_form
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        grievance = context['grievance']
+        reply_form = NewReplyForm(request.POST)
+        update_form = GrievanceUpdateForm(request.POST, instance=grievance)
+        if reply_form.is_valid():
+            reply = reply_form.save(commit=False)
+            reply.user = request.user
+            reply.grievance = grievance
+            reply.save()
+        if update_form.is_valid():
+            grievance = update_form.save()
+            return redirect('dashboard')
+        context['reply_form'] = reply_form
+        context['update_form'] = update_form
+        return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        grievance = Grievance.get_from_token(kwargs['token'])
+        if not grievance or grievance.status == Grievance.DRAFT:
+            raise Http404()
+        replies = Reply.objects.filter(grievance=grievance)
+        allow_reply = True
+        context['grievance'] = grievance
+        context['replies'] = replies
+        return context
+
+
+@method_decorator(is_committee_head(raise_denied=True), name="dispatch")
 class ViewMembers(TemplateView):
     template_name = 'redressal/view_members.html'
 
@@ -140,6 +191,7 @@ class ViewMembers(TemplateView):
         return context
 
 
+@method_decorator(is_committee_head(raise_denied=True), name="dispatch")
 class AddMember(CreateView):
     model = TempUser
     form_class = NewTempUserForm
@@ -155,40 +207,39 @@ class AddMember(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+@method_decorator(is_committee_head_of_temp_user(raise_denied=True), name="dispatch")
 class DeleteInvitedMember(View):
     def get(self, request, pk, *args, **kwargs):
         try:
             TempUser.objects.get(pk=pk).delete()
-        except TempUser.MultipleObjectsReturned:
+        except TempUser.DoesNotExist:
             raise Http404()
         return redirect('view_members')
 
 
+@method_decorator(is_committee_head_of(raise_denied=True), name="dispatch")
 class DeleteMember(View):
     def get(self, request, pk, *args, **kwargs):
         try:
             User.objects.get(pk=pk).delete()
-        except User.MultipleObjectsReturned:
+        except User.DoesNotExist:
             raise Http404()
         return redirect('view_members')
 
 
+@method_decorator(is_committee_head_of_super_body_type(raise_denied=True), name="dispatch")
 class ViewBodies(TemplateView):
     template_name = 'redressal/view_bodies.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.user.is_superuser:
-            bodies = RedressalBody.objects.filter(body_type=RedressalBody.UNIVERSITY)
-            in_bodies = bodies.filter(tempuser__designation=User.UNI_HEAD)
-            bodies = bodies.exclude(tempuser__designation=User.UNI_HEAD)
-        else:
-            bodies, in_bodies = self.request.user.get_redressal_body().get_body_object().get_sub_bodies()
+        bodies, in_bodies = self.request.user.get_redressal_body().get_body_object().get_sub_bodies()
         context['bodies'] = bodies
         context['in_bodies'] = in_bodies
         return context
 
 
+@method_decorator(is_committee_head_of_super_body_type(raise_denied=True), name="dispatch")
 class AddBody(View):
     template_name = "redressal/add_body.html"
     body_type = None
@@ -262,15 +313,18 @@ class AddBody(View):
         return super(AddBody, self).dispatch(request, *args, **kwargs)
 
 
+@method_decorator(is_committee_head_of_super_body(raise_denied=True), name="dispatch")
 class DeleteBody(View):
     def get(self, request, pk, *args, **kwargs):
         try:
             RedressalBody.objects.get(pk=pk).delete()
-        except User.MultipleObjectsReturned:
+        except User.DoesNotExist:
             raise Http404()
         return redirect('view_bodies')
 
 
+
+@method_decorator(is_department_member(raise_denied=True), name="dispatch")
 class ViewStudents(TemplateView):
     template_name = 'redressal/view_students.html'
 
@@ -284,6 +338,7 @@ class ViewStudents(TemplateView):
         return context
 
 
+@method_decorator(is_department_member(raise_denied=True), name="dispatch")
 class AddStudent(FormView):
     template_name = 'redressal/add_student.html'
     form_class = NewMassStudentForm
@@ -560,6 +615,7 @@ def charts(request):
     return render(request, 'charts.html')
 
 
+@is_committee_member(raise_denied=True)
 def status_stats_chart(request):
     redressal_body = request.user.get_redressal_body()
     status_filtered = Grievance.objects.filter(redressal_body=redressal_body).exclude(status=Grievance.DRAFT).order_by(

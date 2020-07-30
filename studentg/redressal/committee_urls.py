@@ -22,6 +22,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from accounts.views import CustomPasswordChangeView, SignupView
 from . import views
+from studentg.views import overall_status_stats_chart
 
 dashpatterns = [
     # path('', views.dash_home, name="dash_home"),
@@ -32,6 +33,7 @@ dashpatterns = [
     path('set/grievance/<token>/status-review/', views.SetGrievanceReview.as_view(), name="set_status_review"),
     path('set/grievance/<token>/status-resolved/', views.SetGrievanceResolved.as_view(), name="set_status_resolved"),
     path('view/subcategories/', views.ViewSubcategories.as_view(), name="view_subcategories"),
+    path('view/grievance/<token>/', views.ViewGrievance.as_view(), name="view_grievance"),
     path('view/messages/<token>/', views.ViewGrievanceMessages.as_view(), name="view_messages"),
     path('view/members/', views.ViewMembers.as_view(), name="view_members"),
     path('add/member/', views.AddMember.as_view(), name="add_member"),
@@ -64,7 +66,7 @@ urlpatterns = [
     path('accounts/signup/<uidb64>/<token>/', SignupView.as_view(template_name="redressal/signup.html"), name='signup'),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include(dashpatterns)),
-    path('admin/', admin.site.urls),
+    path('stats/status-chart/', overall_status_stats_chart, name="overall_status_chart"),
     # path('contact/', views.contact,name="contact"),
     # path('about_us/',views.about_us,name="about_us"),
 ]

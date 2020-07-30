@@ -64,7 +64,9 @@
 
 <!-- Navbar -->
 <div class="partials_navbar_import">
+{% block partial_navbar %}
     {% include 'includes/partial_navbar.html' %}
+{% endblock partial_navbar %}
 </div>
 <!-- End Navbar -->
 
@@ -107,5 +109,6 @@
 </script>
 <!--  Preloader  -->
 </body>
-
+{% block javascript %}
+{% endblock javascript %}
 </html>

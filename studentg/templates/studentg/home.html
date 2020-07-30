@@ -15,7 +15,7 @@
                         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                     </ol>
-                    <div class="carousel-inner" style="border-radius: 5px">
+                    <div class="carousel-inner" style="border-radius: 15px">
                         <div class="carousel-item active">
                             <img class="d-block w-100" src="{% static 'assets/img/SIH%20-%20SGRP%20(3).png' %}"
                                  alt="First slide" height="250">
@@ -25,7 +25,7 @@
                                     <div class="col" style="text-align: right">
                                         <a href="{% url 'home' %}#login">
                                             <button class="px-3 py-2"
-                                                    style=" border-radius: 5px; border: none; background-color: #4caa67; color: white">
+                                                    style=" border-radius: 5px; border: none; background-color: #252766; color: white">
                                                 <i
                                                         style="font-size: xx-large" class="fa fa-comments-o"
                                                         aria-hidden="true"></i><br>
@@ -36,7 +36,7 @@
                                     <div class="col" style="text-align: left">
                                         {#                                    TODO#}
                                         <button class="px-3 py-2" onclick="location.href='#';"
-                                                style=" border-radius: 5px; border: none; background-color:white ; color: #4caa67">
+                                                style=" border-radius: 5px; border: none; background-color:white ; color: #252766">
                                             <i style="font-size: xx-large" class="fa fa-map-marker"
                                                aria-hidden="true"></i><br>
                                             Track Grievance
@@ -86,7 +86,7 @@
         <div class="row">
             <div class="col-lg-7 col-12">
                 <div class="card-columns" style="column-count: 1">
-                    <div class="card p-4 mb-4  d-block d-lg-none    ">
+                    <div class="card-custom p-4 mb-4  d-block d-lg-none    ">
                         <div class="card-block">
                             <div class="row justify-content-center">
                                 <h5 style="text-transform: uppercase">Got any grievances?</h5>
@@ -97,7 +97,7 @@
                             <div class="row justify-content-center">
                                 <div class="col" style="text-align: right">
                                     <button class="px-3 py-2"
-                                            style=" border-radius: 5px; border: none; background-color: #4caa67; color: white">
+                                            style=" border-radius: 5px; border: none; background-color: #252766; color: white">
                                         <i
                                                 style="font-size: xx-large" class="fa fa-comments-o"
                                                 aria-hidden="true"></i><br>
@@ -107,7 +107,7 @@
                                 <div class="col" style="text-align: left">
                                     {#                                TODO#}
                                     <button class="px-3 py-2" onclick="location.href='#';"
-                                            style=" border-radius: 5px; border: #4caa67 1px solid; background-color:white ; color: #4caa67">
+                                            style=" border-radius: 5px; border: #252766 1px solid; background-color:white ; color: #252766">
                                         <i style="font-size: xx-large" class="fa fa-map-marker"
                                            aria-hidden="true"></i><br>
                                         Track Grievance
@@ -123,7 +123,7 @@
                     </div>
                     {% if not request.user.is_authenticated %}
                         <span class="jump-link" id="login"></span>
-                        <div class="card p-4 mb-4 d-lg-none">
+                        <div class="card-custom p-4 mb-4 d-lg-none">
 
                             <div class="card-block">
                                 {% if form.non_field_errors %}
@@ -139,7 +139,7 @@
                                         {{ hidden }}
                                     {% endfor %}
                                     <div class="row justify-content-center">
-                                        <h5 style="text-transform: uppercase">Already Registered?</h5>
+                                        <h5 style="card-custom-title text-transform: uppercase">Already Registered?</h5>
                                     </div>
                                     <div class="row mb-2 justify-content-center" hidden>
                                         <h6 class="text-muted">We are there for you!</h6>
@@ -162,7 +162,7 @@
                                         {#                                           aria-describedby="basic-addon1">#}
                                     </div>
                                     <div style="text-align: center" class=" mb-3 px-lg-3">
-                                        <button type="submit" class="btn btn-success" style="width: 100%">Login</button>
+                                        <button type="submit" class="btn" style="width: 100%;color:white!important;background-color: #252766 !important; ">Login</button>
                                     </div>
                                     {#                                <div style="text-align: center" class=" mb-3 px-lg-3">#}
                                     {#                                    <button onclick="location.href='signup.html';" type="button" class="btn btn-success"#}
@@ -170,8 +170,7 @@
                                     {#                                    </button>#}
                                     {#                                </div>#}
                                     <div style="text-align: center" class=" px-lg-3 ">
-                                        {#                                TODO#}
-                                        <a href="#" class><p>Forgot Password?</p></a>
+                                        <a href="{% url 'password_reset' %}" class="text-muted"><p>Forgot Password?</p></a>
                                     </div>
                                     <div style="" class="text-muted my-3 px-lg-3 ">
                                         <p>If you are a student, please note:</p>
@@ -187,10 +186,10 @@
                             </div>
                         </div>
                     {% endif %}
-                    <div class="card p-4 mb-4">
+                    <div class="card-custom p-4 mb-4">
                         <span class="jump-link" id="process"></span>
                         <div class="card-block">
-                            <h5 class="mt-2" style="text-transform: uppercase; text-align: center">THE PROCESS</h5>
+                            <h5 class="mt-2" style=" card-custom-title text-transform: uppercase; text-align: center">THE PROCESS</h5>
                             <h6 class="mb-4 mt-1 text-muted" style="text-align: center">Get your grievances resolved in
                                 just 5 steps!</h6>
                             <p class="card-text" style="text-align: center">
@@ -199,7 +198,7 @@
                             <p class="mb-0 mt-3 card-text text-muted" style="">
                                 For verification purpose, we need the following documents:<br>
                             <ul class="text-muted">
-                                <li> College ID Card (Front and back Image)</li>
+                                <li> College ID card-custom (Front and back Image)</li>
                                 <li> University Admission Letter</li>
                             </ul>
                             <p class="mb-3 mt-2 card-text text-muted">
@@ -209,10 +208,10 @@
                         </div>
                     </div>
 
-                    <div class="card p-4 mb-4">
+                    <div class="card-custom p-4 mb-4">
                         <span class="jump-link" id="faq"></span>
                         <div class="card-block">
-                            <h4 class="card-title mb-4">FAQs</h4>
+                            <h4 class="card-custom-title mb-4">FAQs</h4>
                             <!-- Begin Accordion Snippet -->
                             <div class="so-accordion-wrapper">
                                 <div class="so-tab">
@@ -325,10 +324,10 @@
                             <a href="https://www.facebook.com/URHope.team/" hidden>Learn More</a>
                         </div>
                     </div>
-                    <div class="card p-4 mb-4">
+                    <div class="card-custom p-4 mb-4">
                         <span class="jump-link" id="contact"></span>
                         <div class="card-block">
-                            <h4 class="card-title mb-2">Contact Us</h4>
+                            <h4 class="card-custom-title mb-2">Contact Us</h4>
                             <p class="text-muted">
                                 Address: M.H. Saboo Siddik College of Engineering 8, Saboo Siddik Polytechnic Road,
                                 Byculla,
@@ -344,10 +343,10 @@
                         </div>
 
                     </div>
-                    <div class="card p-4 mb-4">
+                    <div class="card-custom p-4 mb-4">
                         <span class="jump-link" id="about"></span>
                         <div class="card-block">
-                            <h4 class="card-title mb-2">About Us</h4>
+                            <h4 class="card-custom-title mb-2">About Us</h4>
                             <p class="text-muted">
                                 We at Student Grievance Support System connect the Students to the Management System,
                                 which
@@ -377,7 +376,7 @@
                             System.
                             </span>
 
-                                <span style="cursor:pointer;color: #4caa67" class="" onclick="myFunction()" id="myBtn">Read more</span>
+                                <span style="cursor:pointer;color: #252766" class="" onclick="myFunction()" id="myBtn">Read more</span>
                             </p>
                         </div>
                     </div>
@@ -386,7 +385,7 @@
             <div class="col-lg-5 col-12">
                 <div class="card-columns" style="column-count: 1">
                     {% if not request.user.is_authenticated %}
-                        <div class="card p-4 mb-4 d-none d-lg-block">
+                        <div class="card-custom p-4 mb-4 d-none d-lg-block">
                             <span class="jump-link" id=""></span>
                             <div class="card-block">
                                 {% if form.non_field_errors %}
@@ -402,7 +401,7 @@
                                         {{ hidden }}
                                     {% endfor %}
                                     <div class="row justify-content-center">
-                                        <h5 style="text-transform: uppercase">Already Registered?</h5>
+                                        <h5 style="card-custom-title text-transform: uppercase">Already Registered?</h5>
                                     </div>
                                     <div class="row mb-2 justify-content-center" hidden>
                                         <h6 class="text-muted">We are there for you!</h6>
@@ -425,7 +424,7 @@
                                         {#                                           aria-describedby="basic-addon1">#}
                                     </div>
                                     <div style="text-align: center" class=" mb-3 px-lg-3">
-                                        <button type="submit" class="btn btn-success" style="width: 100%">Login</button>
+                                        <button type="submit" class="btn" style="width: 100%;color:white!important; background-color: #252766 !important;">Login</button>
                                     </div>
                                     {#                                <div style="text-align: center" class=" mb-3 px-lg-3">#}
                                     {#                                    <button onclick="location.href='signup.html';" type="button" class="btn btn-success"#}
@@ -433,8 +432,7 @@
                                     {#                                    </button>#}
                                     {#                                </div>#}
                                     <div style="text-align: center" class=" px-lg-3 ">
-                                        {#                                TODO#}
-                                        <a href="#" class><p>Forgot Password?</p></a>
+                                        <a href="{% url 'password_reset' %}" class="text-muted"><p>Forgot Password?</p></a>
                                     </div>
                                     <div style="" class="text-muted my-3 px-lg-3 ">
                                         <p>If you are a student, please note:</p>
@@ -451,20 +449,20 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="card p-4 mb-4">
+                <div class="card-custom p-4 mb-4">
                     <div class="card-block">
                         <div class="row justify-content-center">
-                            <h5 style="text-transform: uppercase">Grievance Stats</h5>
+                            <h5 style="card-custom-title text-transform: uppercase">Grievance Stats</h5>
                         </div>
                         <div class="row mb-2 justify-content-center">
                             <h6 class="text-muted">We do our best to serve you!</h6>
                         </div>
-                        <img src="{% static '/assets/img/chart.png' %}" style="width: 100%" alt="chart">
+                        <canvas id="grievance-status-chart" data-url="{% url 'overall_status_chart' %}" data-tooltip-type="percent"></canvas>
                     </div>
                 </div>
-                <div class="card p-4 mb-4">
-                    <div class="card-block">
-                        <a class="twitter-timeline" href="https://twitter.com/CMOMaharashtra?">Tweets by CMO
+                <div class="card-custom p-4 mb-4" >
+                    <div class="card-block" style="max-height: 1200px; overflow-y: scroll;">
+                        <a class="twitter-timeline" href="https://twitter.com/sih_2020?">Tweets by CMO
                             Maharashtra</a>
                         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                     </div>
@@ -473,3 +471,7 @@
         </div>
     </div>
 {% endblock page_content %}
+{% block javascript %}
+{% include 'includes/chart_scripts.html' %}
+<script src="{% static 'common/js/status_pie_loader.js' %}"></script>
+{% endblock javascript %}
