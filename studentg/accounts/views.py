@@ -56,8 +56,3 @@ class SignupView(View):
                 self.temp_user.redressal_body.delete()
             return render(request, 'link_expired.html')
         return super(SignupView, self).dispatch(request, *args, **kwargs)
-
-
-class CustomPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
-    success_url = reverse_lazy('dashboard')
-    success_message = 'Your Password Was Changed Successfully!'

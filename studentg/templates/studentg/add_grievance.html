@@ -25,56 +25,32 @@
                                 <div class="col">
                                     {{ form.category.label_tag }}
                                     {% render_field form.category class="custom-select" %}
+                                    {% for error in form.category.errors %}
+                                        <span class="help-block">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
                                 <div class="col">
                                     {{ form.sub_category.label_tag }}
                                     {% render_field form.sub_category class="custom-select" %}
+                                    {% for error in form.sub_category.errors %}
+                                        <span class="help-block">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mb-3 ">
                             {{ form.subject.label_tag }}
                             {% render_field form.subject class="form-control" placeholder="Subject" %}
+                            {% for error in form.subject.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
                         </div>
-                        {#                <div class="form-group mb-3  volunteer-field" hidden>#}
-                        {#                    <div class="row">#}
-                        {#                        <div class="col">#}
-                        {#                            <label for="exampleInputEmail1">No. of Volunteers required</label>#}
-                        {#                            <input type="number" class="form-control" placeholder="No. of Volunteers required"#}
-                        {#                                   aria-label="Username"#}
-                        {#                                   aria-describedby="basic-addon1">#}
-                        {#                        </div>#}
-                        {#                        <div class="col">#}
-                        {#                            <label for="exampleInputEmail1">Task type</label>#}
-                        {#                            <select class="custom-select" id="inputGroupSelect03">#}
-                        {#                                <option selected>--- Task type ---</option>#}
-                        {#                                <option value="1">Food</option>#}
-                        {#                                <option value="2">Healthcare</option>#}
-                        {#                                <option value="3">Shelter</option>#}
-                        {#                                <option value="4">Clothing</option>#}
-                        {#                                <option value="5">Medical Equipments</option>#}
-                        {#                                <option value="6">Others</option>#}
-                        {#                            </select>#}
-                        {#                        </div>#}
-                        {#                    </div>#}
-                        {#                </div>#}
-                        {#                <div class="form-group mb-3  volunteer-field" hidden>#}
-                        {#                    <div class="row">#}
-                        {#                        <div class="col">#}
-                        {#                            <label for="exampleInputEmail1">Pincode</label>#}
-                        {#                            <input type="number" class="form-control" placeholder="Pincode" aria-label="Username"#}
-                        {#                                   aria-describedby="basic-addon1">#}
-                        {#                        </div>#}
-                        {#                        <div class="col">#}
-                        {#                            <label for="exampleInputEmail1">Phone No</label>#}
-                        {#                            <input type="tel" class="form-control" placeholder="Phone No" aria-label="Username"#}
-                        {#                                   aria-describedby="basic-addon1">#}
-                        {#                        </div>#}
-                        {#                    </div>#}
-                        {#                </div>#}
                         <div class="form-group my-3">
                             {{ form.message.label_tag }}
                             {% render_field form.message class="form-control" placeholder="Description..." %}
+                            {% for error in form.message.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
                         </div>
                         <div class="form-group">
                             {{ form.image.label_tag }}

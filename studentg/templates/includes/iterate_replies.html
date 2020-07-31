@@ -4,7 +4,7 @@
         <table class="table filter-this-table mb-0">
             <tr>
                 <td style="padding: 4px; border-top: none !important;">
-                    <h6 class="my-2">{% if reply.user == request.user %}
+                    <h6 class="my-2 font-weight-bold">{% if reply.user == request.user %}
                         You
                         {% else %}
                         {{ reply.user.get_designation_display }}

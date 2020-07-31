@@ -21,7 +21,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from django.views.defaults import page_not_found, server_error, permission_denied
 from . import views
-from accounts.views import CustomPasswordChangeView, SignupView
+from accounts.views import SignupView
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
 dashpatterns = [
     path('', views.DashboardView.as_view(), name="dashboard"),
@@ -30,12 +31,14 @@ dashpatterns = [
     path('load/subcategories/', views.LoadSubcategories.as_view(), name="load_subcategories"),
     path('all/grievances/', views.AllGrievances.as_view(), name="all_grievances"),
     path('view/grievance/<token>/', views.ViewGrievance.as_view(), name="view_grievance"),
-    path('view/messages/<token>/', views.ViewGrievanceMessages.as_view(), name="view_messages"),
+    # path('view/messages/<token>/', views.ViewGrievanceMessages.as_view(), name="view_messages"),
 
     path('stats/status-chart/', views.status_stats_chart, name="status_stats_chart"),
 
-    path('my/account/', CustomPasswordChangeView.as_view(template_name="studentg/view_profile.html"),
+    path('my/account/', PasswordChangeView.as_view(template_name="studentg/view_profile.html"),
          name="password_change"),
+    path('settings/password/done/', PasswordChangeDoneView.as_view(template_name="studentg/password_change_done.html"),
+         name="password_change_done"),
     # path('getgrievance/<token>/',views.getgrievance, name="getgrievance"),
 ]
 urlpatterns = [

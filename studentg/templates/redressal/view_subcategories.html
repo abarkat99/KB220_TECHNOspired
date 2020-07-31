@@ -43,6 +43,9 @@
                     <div class="col-6">
                         {{ form.sub_type.label_tag }}
                         {% render_field form.sub_type class="form-control" placeholder="Sub-Category" %}
+                        {% for error in form.sub_type.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
                     </div>
                     <div class="col-6">
                         <label>&nbsp;</label>

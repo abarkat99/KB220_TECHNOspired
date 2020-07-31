@@ -15,8 +15,12 @@ class NewSubCategoryForm(forms.ModelForm):
         model = SubCategory
         fields = ['sub_type']
 
+    def __init__(self, *args, **kwargs):
+        self.redressal_body = kwargs.pop('redressal_body')
+        super(NewSubCategoryForm, self).__init__(*args, **kwargs)
+
     def clean_sub_type(self):
         sub_type = self.cleaned_data['sub_type']
-        if SubCategory.objects.filter(sub_type=sub_type).exists():
+        if SubCategory.objects.filter(sub_type=sub_type, redressal_body=self.redressal_body).exists():
             raise ValidationError("Subcategory already exists")
         return sub_type

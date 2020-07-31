@@ -111,8 +111,7 @@
                                 <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
                             </div>
                             <div>
-                                {#                            TODO#}
-                                <a href="#">
+                                <a href="{% url 'charts'%}">
                                     <button class="btn btn-dark mt-2">View All Charts</button>
                                 </a>
                             </div>
@@ -138,14 +137,6 @@
 
 {% endblock page_content %}
 {% block javascript %}
-    <script src="{% static 'common/js/modal_loaders.js' %}"></script>
-    {% if messages %}
-        <script>
-            {% for message in messages %}
-                alert("{{ message }}")
-            {% endfor %}
-        </script>
-    {% endif %}
     {% include 'includes/chart_scripts.html' %}
     <script src="{% static 'common/js/status_pie_loader.js' %}"></script>
 {% endblock %}

@@ -46,6 +46,7 @@
 
 
 </head>
+<body class="landing-page">
 <!-- Preloader -->
 <div id='loading_wrap' align="center"
      style='text-align: center; background-color:black; color:white; opacity: 0.9; z-index: 10000; position:fixed; height:100%; width:100%; overflow:hidden; top:0; left:0;'>
@@ -60,13 +61,12 @@
     </h4>
 </div>
 <!-- Preloader -->
-<body class="landing-page">
 
 <!-- Navbar -->
 <div class="partials_navbar_import">
-{% block partial_navbar %}
-    {% include 'includes/partial_navbar.html' %}
-{% endblock partial_navbar %}
+    {% block partial_navbar %}
+        {% include 'includes/partial_navbar.html' %}
+    {% endblock partial_navbar %}
 </div>
 <!-- End Navbar -->
 
@@ -108,7 +108,7 @@
     });
 </script>
 <!--  Preloader  -->
-</body>
 {% block javascript %}
 {% endblock javascript %}
+</body>
 </html>

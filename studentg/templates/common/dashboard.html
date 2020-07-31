@@ -345,12 +345,4 @@
 
 {% endblock page_content %}
 {% block javascript %}
-    <script src="{% static 'common/js/modal_loaders.js' %}"></script>
-    {% if messages %}
-        <script>
-            {% for message in messages %}
-                alert("{{ message }}")
-            {% endfor %}
-        </script>
-    {% endif %}
 {% endblock %}

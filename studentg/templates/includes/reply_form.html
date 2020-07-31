@@ -1,15 +1,5 @@
 {% load widget_tweaks %}
-<form method="post">
-                        {% csrf_token %}
-                        <div class="row form-group my-3 ">
-                            <label for="{{ reply_form.message.id_for_label }}">Reply</label>
-                            {% render_field reply_form.message class="form-control"%}
-                        </div>
-                        <div class="row" style="text-align: center" class=" mb-3 ">
-                            <button type="submit" class="btn btn-success" style="width: 100%"><i
-                                    class="fa fa-paper-plane"
-                                    aria-hidden="true"></i> &nbsp
-                                Send
-                            </button>
-                        </div>
-                        </form>
+<div class="row form-group my-3 ">
+
+    {% render_field reply_form.message class="form-control"%}
+</div>

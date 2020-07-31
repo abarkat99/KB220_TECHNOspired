@@ -24,15 +24,15 @@
             </a>
 
             <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-                    class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
 
 
             <div id="navbarSupportedContent" class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto align-items-lg-center align-items-md-start">
                     <li class="nav-item active"><a href="#" class="nav-link  font-weight-bold">Home</a></li>
                     {% if not request.user.is_authenticated %}
-                        <li class="nav-item"><a href="{% url 'home' %}#login" class="nav-link  ">Login</a></li>
+                    <li class="nav-item"><a href="{% url 'home' %}#login" class="nav-link  ">Login</a></li>
                     {% endif %}
                     <li class="nav-item"><a href="{% url 'home' %}#process" class="nav-link  ">Process</a></li>
                     <li class="nav-item"><a href="{% url 'home' %}#faq" class="nav-link  ">FAQ</a></li>
@@ -59,58 +59,53 @@
                         </select>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link d-none" href="#" id="navbarDropdownMenuLink"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link d-none" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                             <i style="font-size: x-large;" class="fa fa-user-circle"></i>
                         </a>
                         {% if request.user.is_authenticated %}
-                            <a class="nav-link dropdown-toggle d-md-block d-lg-none" href="#"
-                               id="navbarDropdownMenuLink"
-                               data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                Account
-                            </a>
+                        <a class="nav-link dropdown-toggle d-md-block d-lg-none" href="#" id="navbarDropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Account
+                        </a>
 
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'dashboard' %}#"><i style="font-size:large" class="fa fa-home"
-                                                                     aria-hidden="true"></i>&nbsp;&nbsp;Dashboard</a>
-                                <a class="dropdown-item" href="{% url 'add_grievance' %}"><i style="font-size:large"
-                                                                                             class="fa fa-plus"
-                                                                                             aria-hidden="true"></i>&nbsp;&nbsp;Lodge
-                                    Grievance</a>
-                                <a class="dropdown-item" href="{% url 'all_grievances' %}"><i style="font-size:large"
-                                                                     class="fa fa-comments"
-                                                                     aria-hidden="true"></i>&nbsp;&nbsp;My
-                                    Grievances</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'password_change' %}"><i style="font-size:large"
-                                                                                               class="fa fa-user"
-                                                                                               aria-hidden="true"></i>&nbsp;&nbsp;My
-                                    Profile</a>
-                                <a class="dropdown-item" href="{% url 'logout' %}"><i style="font-size:large"
-                                                                                      class="fa fa-sign-out"
-                                                                                      aria-hidden="true"></i>&nbsp;&nbsp;Logout</a>
-                            </div>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'dashboard' %}#"><i style="font-size:large"
+                                    class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Dashboard</a>
+                            <a class="dropdown-item" href="{% url 'add_grievance' %}"><i style="font-size:large"
+                                    class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Lodge
+                                Grievance</a>
+                            <a class="dropdown-item" href="{% url 'all_grievances' %}"><i style="font-size:large"
+                                    class="fa fa-comments" aria-hidden="true"></i>&nbsp;&nbsp;My
+                                Grievances</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'password_change' %}"><i style="font-size:large"
+                                    class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;My
+                                Profile</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}"><i style="font-size:large"
+                                    class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;&nbsp;Logout</a>
+                        </div>
                         {% endif %}
 
                     </li>
 
                     {% if request.user.is_authenticated %}
-                        <li class="nav-item dropdown d-none d-lg-block">
-                            <a class="nav-link p-0" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <img class="mr-2" style="border-radius: 50%" height="30"
-                                     src="{{ request.user|gravatar }}" alt="{{ request.user.username }}">
-                                {{ request.user.first_name }} {{ request.user.last_name }}
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
-                                <a class="dropdown-item" href="{% url 'add_grievance' %}">Lodge Grievance</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                            </div>
-                        </li>
+                    <li class="nav-item dropdown d-none d-lg-block">
+                        <a class="nav-link p-0" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <img class="mr-2" style="border-radius: 50%" height="30" src="{{ request.user|gravatar }}"
+                                alt="{{ request.user.username }}">
+                            {{ request.user.first_name }} {{ request.user.last_name }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+                            <a class="dropdown-item" href="{% url 'all_grievances' %}">My Grievances</a>
+                            <a class="dropdown-item" href="{% url 'add_grievance' %}">Lodge Grievance</a>
+                            <a class="dropdown-item" href="{% url 'password_change' %}">My Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -163,18 +158,17 @@
     #google_translate_element2 {
         display: none !important;
     }
-
     -->
 </style>
 
 <div id="google_translate_element2"></div>
 <script type="text/javascript">
     function googleTranslateElementInit2() {
-        new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element2');
+        new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element2');
     }
 </script>
 <script type="text/javascript"
-        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
 
 
 <script type="text/javascript">
@@ -228,7 +222,7 @@
             } else {
                 // $('.navbar').removeClass('active');
                 $('.navbar').removeClass('put-shadow');
-                if (((getBootstrapDeviceSize() == 'lg') || (getBootstrapDeviceSize() == 'xl'))) ;
+                if (((getBootstrapDeviceSize() == 'lg') || (getBootstrapDeviceSize() == 'xl')));
                 // $('.navbar-logo').addClass('hidden');
             }
         });
@@ -236,4 +230,3 @@
 
 
 </script>
-

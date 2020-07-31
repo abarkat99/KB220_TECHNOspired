@@ -41,6 +41,17 @@
                         </p>
                     </div>
                 </div>
+                {% if grievance.image %}
+                <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
+                    style="border: 1px solid #dee2e6; border-radius: 5px">
+                    <div class="col">
+                        <h6 class="font-weight-bold">Attachment <span class="text-muted small">(Click to enlarge)</span></h6>
+                        <a href="/media/{{ grievance.image }}" target="_blank"> 
+                            <img src="{{ grievance.image.url }}" height="100%" width="100%" style="border-radius: 5px;">
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
 
                 {% if grievance.status == grievance.DRAFT %}
                 <div class="row">
@@ -94,7 +105,14 @@
                             </div>
                         </div>
                         {% if reply_form %}
-                        {% include "includes/reply_form.html" %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {% include "includes/reply_form.html" %}
+                            <div class="row" style="text-align: center" class=" mb-3 ">
+                                <button type="submit" class="btn btn-success" style="width: 100%"><i class="fa fa-paper-plane"
+                                aria-hidden="true"></i> &nbsp;Send</button>
+                            </div>
+                        </form>
                         {% endif %}
                     </div>
                 </div>

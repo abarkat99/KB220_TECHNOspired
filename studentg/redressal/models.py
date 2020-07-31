@@ -1,7 +1,11 @@
 from django.db import models
 
+from accounts.constants import DesignationConstants, TempDesignationConstants
+
 
 # Create your models here.
+
+
 class RedressalBody(models.Model):
     name = models.CharField(max_length=255)
     UNIVERSITY = 'UNI'
@@ -28,16 +32,19 @@ class RedressalBody(models.Model):
     def get_head(self):
         if self.body_type == self.UNIVERSITY:
             if self.universitymember_set.exists():
-                return self.universitymember_set.filter(user__designation="UNI_H")[0].user
-            return self.tempuser_set.filter(designation="UNI_H")[0]
+                return self.universitymember_set.filter(user__designation=DesignationConstants.UNI_HEAD)[0].user
+            return self.tempuser_set.filter(designation=TempDesignationConstants.UNI_HEAD)[0]
         elif self.body_type == self.INSTITUTE:
             if self.institutemember_set.exists():
-                return self.institutemember_set.filter(user__designation="INS_H")[0].user
-            return self.tempuser_set.filter(designation="INS_H")[0]
+                return self.institutemember_set.filter(user__designation=DesignationConstants.INS_HEAD)[0].user
+            return self.tempuser_set.filter(designation=TempDesignationConstants.INS_HEAD)[0]
         elif self.body_type == self.DEPARTMENT:
             if self.departmentmember_set.exists():
-                return self.departmentmember_set.filter(user__designation="DEP_H")[0].user
-            return self.tempuser_set.filter(designation="DEP_H")[0]
+                return self.departmentmember_set.filter(user__designation=DesignationConstants.DEP_HEAD)[0].user
+            return self.tempuser_set.filter(designation=TempDesignationConstants.DEP_HEAD)[0]
+
+    class Meta:
+        verbose_name_plural = "Redressal Bodies"
 
 
 class SubCategory(models.Model):
@@ -46,6 +53,7 @@ class SubCategory(models.Model):
 
     class Meta:
         unique_together = (("sub_type", "redressal_body"),)
+        verbose_name_plural = "Sub categories"
 
     def __str__(self):
         return self.sub_type
@@ -57,8 +65,8 @@ class University(models.Model):
 
     def get_sub_bodies(self):
         bodies = RedressalBody.objects.filter(institute__in=self.institute_set.all())
-        in_bodies = bodies.filter(tempuser__designation="INS_H")
-        bodies = bodies.exclude(tempuser__designation="INS_H")
+        in_bodies = bodies.filter(tempuser__designation=TempDesignationConstants.INS_HEAD)
+        bodies = bodies.exclude(tempuser__designation=TempDesignationConstants.INS_HEAD)
         return bodies, in_bodies
 
 
@@ -69,8 +77,8 @@ class Institute(models.Model):
 
     def get_sub_bodies(self):
         bodies = RedressalBody.objects.filter(department__in=self.department_set.all())
-        in_bodies = bodies.filter(tempuser__designation="DEP_H")
-        bodies = bodies.exclude(tempuser__designation="DEP_H")
+        in_bodies = bodies.filter(tempuser__designation=TempDesignationConstants.DEP_HEAD)
+        bodies = bodies.exclude(tempuser__designation=TempDesignationConstants.DEP_HEAD)
         return bodies, in_bodies
     
     def get_super_body(self):

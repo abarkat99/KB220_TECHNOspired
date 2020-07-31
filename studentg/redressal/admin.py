@@ -2,7 +2,7 @@ from django.contrib import admin
 # Register your models here.
 from django.forms.models import ModelForm
 
-from redressal.models import University, RedressalBody, Institute, Department
+from redressal.models import University, RedressalBody, Institute, Department, SubCategory
 
 
 class AlwaysChangedModelForm(ModelForm):
@@ -48,3 +48,4 @@ class RedressalBodyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(RedressalBody, RedressalBodyAdmin)
+admin.site.register(SubCategory)

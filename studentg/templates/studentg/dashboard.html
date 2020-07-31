@@ -270,42 +270,14 @@
                         </div>
                         <table class="table filter-this-table">
                             <tbody>
+                            {% for notification in notifications %}
                             <tr>
                                 <td style="vertical-align: middle" colspan="1">
-                                    <h6 class="my-2">8 May 2020 12:36</h6>
-                                    <p>Grievance (No. 123456) has been <strong>approved</strong></p>
+                                    <h6 class="my-2">{{ notification.date_time }}</h6>
+                                    <p>There has been some action on Grievance No. <a href="{% url 'view_grievance' notification.grievance.token %}"><strong>{{ notification.grievance.token }}<strong></a></p>
                                 </td>
                             </tr>
-                            {#                        <tr hidden>#}
-                            {#                            <td style="vertical-align: middle" colspan="1">#}
-                            {#                                <h6 class="my-2">8 May 2020 12:36</h6>#}
-                            {#                                <p>#}
-                            {#                                    <a href="" class="mt-1" hidden>#}
-                            {#                                        <img src="{% static 'assets/img/profile1.jpg' %}"#}
-                            {#                                             class="profile-pic" style="width: 20px" hidden>#}
-                            {#                                        &nbsp#}
-                            {#                                        Mike Richards#}
-                            {#                                    </a>#}
-                            {##}
-                            {#                                    Your grievance (No. 123456) has been <strong>escalated</strong> to university level#}
-                            {#                                    by your institue.#}
-                            {#                                    You will be notified about further actions#}
-                            {#                                    <a href="" class="mt-1" hidden>#}
-                            {#                                        Provide clothing to the needy#}
-                            {#                                    </a>#}
-                            {#                                    .#}
-                            {#                                    For any queries, reach out to us at#}
-                            {#                                    <a href="" class="mt-1">#}
-                            {#                                        studgrievred@andhrapradesh.com#}
-                            {#                                    </a>#}
-                            {#                                    and phone no.#}
-                            {#                                    <a href="" class="mt-1">#}
-                            {#                                        1234567890#}
-                            {#                                    </a>#}
-                            {#                                    . Thank You for making this world a better place!#}
-                            {#                                </p>#}
-                            {#                            </td>#}
-                            {#                        </tr>#}
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -336,14 +308,6 @@
 
 {% endblock page_content %}
 {% block javascript %}
-    <script src="{% static 'common/js/modal_loaders.js' %}"></script>
-    {% if messages %}
-        <script>
-            {% for message in messages %}
-                alert("{{ message }}")
-            {% endfor %}
-        </script>
-    {% endif %}
     {% include 'includes/chart_scripts.html' %}
     <script src="{% static 'common/js/status_pie_loader.js' %}"></script>
 {% endblock %}

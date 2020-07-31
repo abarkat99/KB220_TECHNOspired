@@ -1,9 +1,11 @@
 from django.db import models
 from django.db import transaction
+from django.core.mail import send_mail
 from accounts.models import User
 import datetime
 from redressal.models import SubCategory, RedressalBody
 from .constants import StatusConstants
+from django_hosts.resolvers import reverse
 
 
 # Concurrency controlled generation of tokens Singleton table
@@ -54,6 +56,9 @@ class Grievance(StatusConstants, models.Model):
     class Meta:
         unique_together = (("date", "daytoken"),)
         ordering = ['-last_update']
+
+    def __str__(self):
+        return f'{self.subject} - ({self.pk})'
     
     def token(self):
         return self.date.strftime('%Y%m%d') + str(self.daytoken).zfill(4)
@@ -80,3 +85,23 @@ class Reply(models.Model):
 
     class Meta:
         ordering = ['date_time']
+        verbose_name_plural = "Replies"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    grievance = models.ForeignKey(Grievance, on_delete=models.CASCADE, related_name='notifications')
+    date_time = models.DateTimeField(auto_now_add=True)
+
+    def send_mail(self):
+        token_no = self.grievance.token()
+        url = reverse('view_grievance', host='www', kwargs={
+            'token': token_no
+        })
+        send_mail(
+            f'Your Grievance No. {token_no}',
+            f'There has been some action on your grievance: click this link to check it out: http:{url}',
+            'st050100@gmail.com',
+            [self.user.email],
+            fail_silently=False,
+        )

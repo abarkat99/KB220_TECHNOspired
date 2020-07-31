@@ -5,36 +5,19 @@ from django.http import HttpResponseNotFound, Http404, HttpResponseRedirect, Jso
 from django.views.generic import TemplateView, CreateView, UpdateView, View
 from django.contrib.auth.views import LoginView
 
-# from accounts.forms import NewTempUserForm, NewStudentForm, NewMassStudentForm
-# from accounts.models import Student, DepartmentMember, TempUser, StudentTempUser
 
 from redressal.models import SubCategory
 
 import datetime
 
 from .constants import STATUS_DISPLAY_CONVERTER, STATUS_COLOR_CONVERTER
+from .decorators import is_owner_of_grievance
 from .forms import NewGrievanceForm, NewReplyForm
-from .models import DayToken, Grievance, Reply
+from .models import DayToken, Grievance, Reply, Notification
 from .filters import StudentGrievanceFilter, FilteredListView
 
-# from django.utils.encoding import force_bytes
-# from django.utils.http import urlsafe_base64_encode
-# from django.utils.crypto import salted_hmac
-# import six
-# import random
-# from django.utils import timezone
-# import pandas as pd
-#
-# from django.core.mail import send_mail
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-
-
-# def home(request):
-#     if request.user.is_authenticated:
-#         return redirect('dash_home')
-#     return render(request, 'home.html')
 
 
 class HomeView(LoginView):
@@ -50,14 +33,16 @@ def faq(request):
 # def dash_home(request):
 #     return render(request, 'dash_home.html')
 
-
+@method_decorator(login_required, name="dispatch")
 class DashboardView(TemplateView):
     template_name = 'studentg/dashboard.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         grievances = Grievance.objects.filter(user=self.request.user).order_by('-last_update')[:10]
+        notifications = Notification.objects.filter(user=self.request.user).order_by('-date_time')[:10]
         context['grievances'] = grievances
+        context['notifications'] = notifications
         return context
 
 
@@ -76,6 +61,7 @@ def grievance_save_helper(request, grievance):
     grievance.redressal_body = redressal_body.redressal_body
 
 
+@method_decorator(login_required, name="dispatch")
 class CreateGrievance(CreateView):
     model = Grievance
     form_class = NewGrievanceForm
@@ -83,6 +69,7 @@ class CreateGrievance(CreateView):
     success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
+        print('hello')
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         grievance_save_helper(self.request, self.object)
@@ -90,7 +77,14 @@ class CreateGrievance(CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_form_kwargs(self):
+        kwargs = super(CreateGrievance, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
+
+@method_decorator(login_required, name="dispatch")
+@method_decorator(is_owner_of_grievance(raise_denied=True), name="dispatch")
 class EditDraftGrievance(UpdateView):
     model = Grievance
     form_class = NewGrievanceForm
@@ -100,7 +94,7 @@ class EditDraftGrievance(UpdateView):
     def get_object(self, queryset=None):
         try:
             return Grievance.get_from_token(self.kwargs['token'])
-        except Grievance.MultipleObjectsReturned:
+        except Grievance.DoesNotExist:
             raise Http404()
 
     def form_valid(self, form):
@@ -111,18 +105,25 @@ class EditDraftGrievance(UpdateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_form_kwargs(self):
+        kwargs = super(EditDraftGrievance, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
+
+@method_decorator(login_required, name="dispatch")
+@method_decorator(is_owner_of_grievance(raise_denied=True), name="dispatch")
 class ViewGrievance(View):
     template_name = 'studentg/view_grievance.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        grievance = context['grievance']
         replies = context['replies']
         last_reply = replies.last()
         if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
             reply_form = NewReplyForm()
             context['reply_form'] = reply_form
-        grievance = context['grievance']
         return render(request, self.template_name, context)
     
     def post(self, request, *args, **kwargs):
@@ -147,6 +148,7 @@ class ViewGrievance(View):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class LoadSubcategories(TemplateView):
     template_name = 'studentg/subcat_options.html'
 
@@ -170,6 +172,7 @@ class LoadSubcategories(TemplateView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class AllGrievances(FilteredListView):
     template_name = 'studentg/all_grievances.html'
     filterset_class = StudentGrievanceFilter
@@ -185,21 +188,21 @@ class AllGrievances(FilteredListView):
         return context
 
 
-class ViewGrievanceMessages(TemplateView):
-    template_name = 'common/view_messages_modal.html'
+# class ViewGrievanceMessages(TemplateView):
+#     template_name = 'common/view_messages_modal.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         grievance = Grievance.get_from_token(kwargs['token'])
+#         replies = Reply.objects.filter(grievance=grievance)
+#         last_reply = replies.last()
+#         if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
+#             allow_reply = True
+#         context['grievance'] = grievance
+#         context['replies'] = replies
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        grievance = Grievance.get_from_token(kwargs['token'])
-        replies = Reply.objects.filter(grievance=grievance)
-        last_reply = replies.last()
-        if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
-            allow_reply = True
-        context['grievance'] = grievance
-        context['replies'] = replies
-        return context
-
-
+@login_required
 def status_stats_chart(request):
     redressal_body = request.user.get_redressal_body()
     status_filtered = Grievance.objects.filter(user=request.user).order_by(

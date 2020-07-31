@@ -1,41 +1,26 @@
-from django.db import models
+import random
+
+import six
 from django.contrib.auth.models import AbstractUser
-from redressal.models import RedressalBody
+from django.core.mail import send_mail
+from django.db import models
+from django.urls import reverse
+from django.utils.crypto import salted_hmac
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.utils.crypto import salted_hmac
-import random
-import six
-from django.urls import reverse
-from django.core.mail import send_mail
-from django_hosts.resolvers import reverse_host
+from django_hosts.resolvers import reverse
+
+from redressal.models import RedressalBody
+from .constants import DesignationConstants, TempDesignationConstants
+
+
 # Create your models here.
 
 
-class User(AbstractUser):
+class User(DesignationConstants, AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    ADMIN = 'ADM'
-    STUDENT = 'STU'
-    UNIVERSITY = 'UNI'
-    INSTITUTE = 'INS'
-    DEPARTMENT = 'DEP'
-    UNI_HEAD = 'UNI_H'
-    INS_HEAD = 'INS_H'
-    DEP_HEAD = 'DEP_H'
-    HEAD_DESIGNATIONS = {UNI_HEAD, INS_HEAD, DEP_HEAD}
-    DESIGNATION_CHOICES = [
-        (ADMIN, 'Admin'),
-        (STUDENT, 'Student'),
-        (UNIVERSITY, 'University Member'),
-        (INSTITUTE, 'Institute Member'),
-        (DEPARTMENT, 'Department Member'),
-        (UNI_HEAD, 'University Head'),
-        (INS_HEAD, 'Institute Head'),
-        (DEP_HEAD, 'Department Head'),
-    ]
-    # site = models.ForeignKey(Site, on_delete=models.CASCADE, default=Site.objects.get_current)
-    designation = models.CharField(max_length=5, choices=DESIGNATION_CHOICES)
+    designation = models.CharField(max_length=5, choices=DesignationConstants.DESIGNATION_CHOICES)
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def get_designation_object(self):
@@ -67,10 +52,10 @@ class User(AbstractUser):
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     redressal_body = models.ForeignKey(RedressalBody, on_delete=models.CASCADE)
-    rollno = models.IntegerField(unique=True)
+    rollno = models.IntegerField()
 
-    class Meta:
-        unique_together = (("redressal_body", "rollno"),)
+    # class Meta:
+    #     unique_together = (("redressal_body", "rollno"),)
 
 
 class UniversityMember(models.Model):
@@ -78,7 +63,8 @@ class UniversityMember(models.Model):
     redressal_body = models.ForeignKey(RedressalBody, on_delete=models.CASCADE)
 
     def get_body_members(self):
-        return User.objects.filter(universitymember__in=self.redressal_body.universitymember_set.all()).exclude(pk=self.user.pk)
+        return User.objects.filter(universitymember__in=self.redressal_body.universitymember_set.all()).exclude(
+            pk=self.user.pk)
 
 
 class InstituteMember(models.Model):
@@ -86,7 +72,8 @@ class InstituteMember(models.Model):
     redressal_body = models.ForeignKey(RedressalBody, on_delete=models.CASCADE)
 
     def get_body_members(self):
-        return User.objects.filter(institutemember__in=self.redressal_body.institutemember_set.all()).exclude(pk=self.user.pk)
+        return User.objects.filter(institutemember__in=self.redressal_body.institutemember_set.all()).exclude(
+            pk=self.user.pk)
 
 
 class DepartmentMember(models.Model):
@@ -94,35 +81,18 @@ class DepartmentMember(models.Model):
     redressal_body = models.ForeignKey(RedressalBody, on_delete=models.CASCADE)
 
     def get_body_members(self):
-        return User.objects.filter(departmentmember__in=self.redressal_body.departmentmember_set.all()).exclude(pk=self.user.pk)
+        return User.objects.filter(departmentmember__in=self.redressal_body.departmentmember_set.all()).exclude(
+            pk=self.user.pk)
 
 
-class TempUser(models.Model):
+class TempUser(TempDesignationConstants, models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     email = models.EmailField()
     redressal_body = models.ForeignKey(RedressalBody, on_delete=models.CASCADE)
-    STUDENT = 'STU'
-    UNIVERSITY = 'UNI'
-    INSTITUTE = 'INS'
-    DEPARTMENT = 'DEP'
-    UNI_HEAD = 'UNI_H'
-    INS_HEAD = 'INS_H'
-    DEP_HEAD = 'DEP_H'
-    DESIGNATION_CHOICES = [
-        (STUDENT, 'Student'),
-        (UNIVERSITY, 'University'),
-        (INSTITUTE, 'Institute'),
-        (DEPARTMENT, 'Department'),
-        (UNI_HEAD, 'University Head'),
-        (INS_HEAD, 'Institute Head'),
-        (DEP_HEAD, 'Department Head'),
-    ]
-    COMMITTEE_HEADS = {UNI_HEAD, INS_HEAD, DEP_HEAD}
-    COMMITTEE_DESIGNATIONS = {UNIVERSITY, INSTITUTE, DEPARTMENT, UNI_HEAD, INS_HEAD, DEP_HEAD}
 
-    designation = models.CharField(max_length=5, choices=DESIGNATION_CHOICES)
+    designation = models.CharField(max_length=5, choices=TempDesignationConstants.DESIGNATION_CHOICES)
     uidb64 = models.CharField(max_length=255)
     token = models.CharField(max_length=255)
 
@@ -131,28 +101,30 @@ class TempUser(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.uidb64:
-            self.uidb64 = urlsafe_base64_encode(force_bytes(six.text_type(self.pk) + six.text_type(self.created_at))[::3])
+            self.uidb64 = urlsafe_base64_encode(
+                force_bytes(six.text_type(self.pk) + six.text_type(self.created_at))[::3])
         if not self.token:
-            value = six.text_type(self.email) + six.text_type(self.designation) + six.text_type(self.first_name) + six.text_type(self.last_name) + six.text_type(self.created_at)
+            value = six.text_type(self.email) + six.text_type(self.designation) + six.text_type(
+                self.first_name) + six.text_type(self.last_name) + six.text_type(self.created_at)
             self.token = salted_hmac("%s" % (random.random()), value).hexdigest()[::3]
         super(TempUser, self).save(*args, **kwargs)
-    
+
     def get_redressal_body(self):
         return self.redressal_body
-    
+
     def send_mail(self):
         if self.designation == self.STUDENT:
-            site_url = reverse_host('www')
+            host = 'www'
         else:
-            site_url = reverse_host('redressal')
-        signup_relative_url = reverse('signup', kwargs={
-                'uidb64': self.uidb64,
-                'token': self.token
-            })
+            host = 'redressal'
+        signup_relative_url = reverse('signup', host=host, kwargs={
+            'uidb64': self.uidb64,
+            'token': self.token
+        })
         send_mail(
             'Sign Up for Student Grievance Portal',
-            f'Click this link to sign up http://{site_url}{signup_relative_url}',
-            'from@example.com',
+            f'Click this link to sign up http:{signup_relative_url}',
+            'st050100@gmail.com',
             [self.email],
             fail_silently=False,
         )
