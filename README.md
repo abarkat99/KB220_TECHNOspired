@@ -3,8 +3,9 @@
 A Web Application for students to submit their grievances and for redressors to redress the same\
 Collaborators:-\
 Abdul Aziz Barkat\
+Furqaan Thakur\
 Himanshu Patil\
 Mohtashim Ansari\
 Saloni Mishra\
 Shivam Tiwari\
-Somil Virani\
+Somil Virani
