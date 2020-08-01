@@ -4,11 +4,15 @@ django-filter==2.3.0
 django-hosts==4.0
 django-sendgrid-v5==0.8.1
 django-widget-tweaks==1.4.8
+future==0.18.2
 numpy==1.19.0
 pandas==1.0.5
 Pillow==7.2.0
 python-dateutil==2.8.1
+python-dotenv==0.14.0
+python-http-client==3.2.7
 pytz==2020.1
 sendgrid==6.4.4
 six==1.15.0
 sqlparse==0.3.1
+starkbank-ecdsa==1.0.0
