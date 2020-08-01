@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from accounts.forms import NewTempUserForm, NewStudentForm, NewMassStudentForm
 from accounts.models import TempUser, StudentTempUser, User, UniversityMember, InstituteMember, DepartmentMember, \
     Student
@@ -7,9 +9,10 @@ from studentg.forms import GrievanceUpdateForm, NewReplyForm
 from studentg.constants import STATUS_COLOR_CONVERTER, STATUS_DISPLAY_CONVERTER
 
 from .decorators import is_committee_head, is_committee_member, is_committee_head_of_super_body_type, \
-    is_committee_member_of_grievance, is_department_member, is_committee_head_of, is_committee_head_of_temp_user, is_committee_head_of_super_body
+    is_committee_member_of_grievance, is_department_member, is_committee_head_of, is_committee_head_of_temp_user, \
+    is_committee_head_of_super_body
 from .filters import RedressalGrievanceFilter, FilteredListView
-from .forms import NewRedressalBodyForm, NewSubCategoryForm
+from .forms import NewRedressalBodyForm, NewSubCategoryForm, SelectSubCategoryForm
 from .models import RedressalBody, University, Institute, Department, SubCategory
 
 from django.views.generic import TemplateView, CreateView, View, FormView
@@ -24,7 +27,7 @@ import pandas as pd
 from django.utils import timezone
 
 # Charts
-from django.db.models import Count
+from django.db.models import Count, Avg, F
 
 
 class HomeView(LoginView):
@@ -39,7 +42,7 @@ class DashboardView(TemplateView):
         context = super(DashboardView, self).get_context_data(**kwargs)
         redressal_body = self.request.user.get_redressal_body()
         grievances = Grievance.objects.filter(redressal_body=redressal_body).exclude(status=Grievance.DRAFT).order_by(
-            '-last_update')[:10]
+            '-last_update')[:3]
         context['grievances'] = grievances
         return context
 
@@ -98,7 +101,7 @@ class ViewGrievance(View):
         context['reply_form'] = reply_form
         context['update_form'] = update_form
         return render(request, self.template_name, context)
-    
+
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         grievance = context['grievance']
@@ -282,7 +285,6 @@ class DeleteBody(View):
         return redirect('view_bodies')
 
 
-
 @method_decorator(is_department_member(raise_denied=True), name="dispatch")
 class ViewStudents(TemplateView):
     template_name = 'redressal/view_students.html'
@@ -326,14 +328,38 @@ class AddStudent(FormView):
 
 @is_committee_member(raise_denied=True)
 def charts(request):
-    return render(request, 'redressal/view_charts.html')
-
-
-@is_committee_member(raise_denied=True)
-def status_stats_chart(request):
     redressal_body = request.user.get_redressal_body()
-    status_filtered = Grievance.objects.filter(redressal_body=redressal_body).exclude(status=Grievance.DRAFT).order_by(
-        'status').values('status').annotate(count=Count('id'))
+    base_queryset = Grievance.objects.filter(redressal_body=redressal_body)
+    total_count = base_queryset.count()
+    new_last_day = base_queryset.filter(date__range=[datetime.today() - timedelta(days=1), datetime.today()]).count()
+    new_count = base_queryset.filter(status=Grievance.REVIEW).count()
+    # TODO Replace below with distinct query in Production server
+    no_days = base_queryset.values('date').annotate(date_count=Count('id')).count()
+    avg_per_day = int(round(total_count / no_days))
+    pending_count = base_queryset.filter(status=Grievance.PENDING).count()
+    pending_inc_count = base_queryset.filter(status=Grievance.PENDING,
+                                             date__range=[datetime.today() - timedelta(days=1),
+                                                          datetime.today()]).count()
+    resolved_count = base_queryset.filter(status=Grievance.RESOLVED).count()
+    resolved_inc_count = base_queryset.filter(status=Grievance.RESOLVED,
+                                              date__range=[datetime.today() - timedelta(days=1),
+                                                           datetime.today()]).count()
+    subcategory_select = SelectSubCategoryForm(redressal_body=redressal_body)
+    context = {
+        'total_count': total_count,
+        'new_last_day': new_last_day,
+        'new_count': new_count,
+        'avg_per_day': avg_per_day,
+        'pending_count': pending_count,
+        'pending_inc_count': pending_inc_count,
+        'resolved_count': resolved_count,
+        'resolved_inc_count': resolved_inc_count,
+        'subcategory_select': subcategory_select,
+    }
+    return render(request, 'redressal/view_charts.html', context)
+
+
+def status_chart_helper(redressal_body, status_filtered):
     labels = []
     data = []
     backgroundColor = []
@@ -350,6 +376,50 @@ def status_stats_chart(request):
             },
         ]
     }
+    return data
+
+
+@is_committee_member(raise_denied=True)
+def status_stats_chart(request):
+    redressal_body = request.user.get_redressal_body()
+    status_filtered = Grievance.objects.filter(redressal_body=redressal_body).exclude(status=Grievance.DRAFT).order_by(
+        'status').values('status').annotate(count=Count('id'))
+    data = status_chart_helper(redressal_body, status_filtered)
+    return JsonResponse(data=data)
+
+
+@is_committee_member(raise_denied=True)
+def status_chart_for_subcategory(request):
+    redressal_body = request.user.get_redressal_body()
+    subcategory_select = SelectSubCategoryForm(request.GET, redressal_body=redressal_body)
+    if subcategory_select.is_valid():
+        sub_category = subcategory_select.cleaned_data['sub_category']
+    else:
+        raise Http404()
+    status_filtered = Grievance.objects.filter(redressal_body=redressal_body, sub_category=sub_category).exclude(
+        status=Grievance.DRAFT).order_by(
+        'status').values('status').annotate(count=Count('id'))
+    data = status_chart_helper(redressal_body, status_filtered)
+    return JsonResponse(data=data)
+
+
+@is_committee_member(raise_denied=True)
+def subcategory_stats_chart(request):
+    redressal_body = request.user.get_redressal_body()
+    subcategory = SubCategory.objects.filter(redressal_body=redressal_body).annotate(grievance_count=Count('grievance'))
+    labels = []
+    data = []
+    for entry in subcategory:
+        labels.append(entry.sub_type)
+        data.append(entry.grievance_count)
+    data = {
+        'labels': labels,
+        'datasets': [
+            {
+                'data': data,
+            },
+        ]
+    }
     return JsonResponse(data=data)
 
 
@@ -360,9 +430,11 @@ def grievances_line_chart(request):
     data_r = []
     # gr_list = Grievance.objects.annotate(t_count=Window(expression=Count('id'), order_by=F('date').asc()))
     gr_list = Grievance.objects.filter(
-        redressal_body=r_body).exclude(status=Grievance.DRAFT).order_by('date').values('date').annotate(t_count=Count('id'))
+        redressal_body=r_body).exclude(status=Grievance.DRAFT).order_by('date').values('date').annotate(
+        t_count=Count('id'))
     gr_list_2 = Grievance.objects.filter(
-        redressal_body=r_body, status=Grievance.RESOLVED).exclude(status=Grievance.DRAFT).order_by('last_update').values('last_update').annotate(
+        redressal_body=r_body, status=Grievance.RESOLVED).exclude(status=Grievance.DRAFT).order_by(
+        'last_update').values('last_update').annotate(
         r_count=Count('id'))
     for entry in gr_list:
         data_t.append({'x': entry['date'], 'y': entry['t_count']})
@@ -371,10 +443,10 @@ def grievances_line_chart(request):
         data_r.append({'x': entry['date'], 'y': 0})
     for entry in gr_list_2:
         data_r.append({'x': entry['last_update'], 'y': entry['r_count']})
-    for idx, val in enumerate(data_t):
-        val['y'] += data_t[idx - 1]['y']
-    for idx, val in enumerate(data_r):
-        val['y'] += data_r[idx - 1]['y']
+    for i in range(1, len(data_t)):
+        data_t[i]['y'] += data_t[i - 1]['y']
+    for i in range(1, len(data_r)):
+        data_r[i]['y'] += data_r[i - 1]['y']
     data = {
         'datasets': [
             {

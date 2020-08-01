@@ -23,15 +23,6 @@ from django.contrib.auth.decorators import login_required
 class HomeView(LoginView):
     template_name = 'studentg/home.html'
 
-'''
-def faq(request):
-    return render(request, 'faq.html')
-    '''
-
-
-# @login_required
-# def dash_home(request):
-#     return render(request, 'dash_home.html')
 
 @method_decorator(login_required, name="dispatch")
 class DashboardView(TemplateView):
@@ -39,10 +30,12 @@ class DashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        grievances = Grievance.objects.filter(user=self.request.user).order_by('-last_update')[:10]
-        notifications = Notification.objects.filter(user=self.request.user).order_by('-date_time')[:10]
+        grievances = Grievance.objects.filter(user=self.request.user).order_by('-last_update')[:5]
+        draft_count = Grievance.objects.filter(user=self.request.user, status=Grievance.DRAFT).count()
+        notifications = Notification.objects.filter(user=self.request.user).order_by('-date_time')[:5]
         context['grievances'] = grievances
         context['notifications'] = notifications
+        context['draft_count'] = draft_count
         return context
 
 
@@ -188,20 +181,6 @@ class AllGrievances(FilteredListView):
         return context
 
 
-# class ViewGrievanceMessages(TemplateView):
-#     template_name = 'common/view_messages_modal.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         grievance = Grievance.get_from_token(kwargs['token'])
-#         replies = Reply.objects.filter(grievance=grievance)
-#         last_reply = replies.last()
-#         if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
-#             allow_reply = True
-#         context['grievance'] = grievance
-#         context['replies'] = replies
-#         return context
-
 @login_required
 def status_stats_chart(request):
     redressal_body = request.user.get_redressal_body()
@@ -225,6 +204,7 @@ def status_stats_chart(request):
     }
     return JsonResponse(data=data)
 
+
 def overall_status_stats_chart(request):
     status_filtered = Grievance.objects.exclude(status=Grievance.DRAFT).order_by(
         'status').values('status').annotate(count=Count('id'))
@@ -247,84 +227,3 @@ def overall_status_stats_chart(request):
         ]
     }
     return JsonResponse(data=data)
-
-
-# def addgrievance(request):
-#     if request.method == 'POST':
-#         form = NewGrievanceForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             grievance = form.save(commit=False)
-#             grievance.user = request.user
-#             r_body = request.user.get_redressal_body()
-#             if grievance.category != Grievance.DEPARTMENT:
-#                 r_body = r_body.department.institute.redressal_body
-#                 if grievance.category != Grievance.INSTITUTE:
-#                     r_body = r_body.institute.university.redressal_body
-#                     if grievance.category != Grievance.UNIVERSITY:
-#                         raise Http404
-#             grievance.redressal_body = r_body
-#             grievance.daytoken = DayToken.get_new_token()
-#             grievance.save()
-#         return redirect('my_grievances')
-#     else:
-#         form = NewGrievanceForm()
-#     return render(request, 'addgrievance.html', {'form': form})
-
-
-# def load_subcategories(request):
-#     category = request.GET.get('category')
-#     r_body = request.user.get_redressal_body()
-#     if category != Grievance.DEPARTMENT:
-#         r_body = r_body.department.institute.redressal_body
-#         if category != Grievance.INSTITUTE:
-#             r_body = r_body.institute.university.redressal_body
-#             if category != Grievance.UNIVERSITY:
-#                 raise Http404()
-#     subcats = SubCategory.objects.filter(
-#         redressal_body=r_body).order_by('sub_type')
-#     return render(request, 'subcat_options.html', {'subcats': subcats})
-
-
-# def my_grievances(request):
-#     grievance_list = Grievance.objects.filter(
-#         user=request.user).order_by('-last_update')
-#     page = request.GET.get('page', 1)
-#     paginator = Paginator(grievance_list, 10)
-#     try:
-#         grievance_list = paginator.page(page)
-#     except PageNotAnInteger:
-#         grievance_list = paginator.page(1)
-#     except EmptyPage:
-#         grievance_list = paginator.page(paginator.num_pages)
-#     return render(request, 'my_grievances.html', {'grievance_list': grievance_list, 'paginator': paginator})
-#
-#
-# def getgrievance(request, token):
-#     date = datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
-#     daytoken = int(token[-4:])
-#     grievance = get_object_or_404(Grievance, date=date, daytoken=daytoken)
-#     if request.method == 'POST':
-#         reply_form = NewReplyForm(request.POST)
-#         if reply_form.is_valid():
-#             reply = reply_form.save(commit=False)
-#             reply.user = request.user
-#             reply.save()
-#     replies = Reply.objects.filter(grievance=grievance)
-#     reply_form = None
-#     if request.user != grievance.user:
-#         raise Http404()
-#     if replies:
-#         if request.user != replies.last().user and grievance.status != 'Resolved':
-#             reply_form = NewReplyForm(initial={'grievance': grievance})
-#     return render(request, 'getgrievance.html',
-#                   {'grievance': grievance, 'replies': replies, 'token': token, 'reply_form': reply_form})
-
-'''
-def contact(request):
-    return render(request, "contact.html")
-
-
-def about_us(request):
-    return render(request, "about_us.html")
-    '''
-

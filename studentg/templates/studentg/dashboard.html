@@ -81,8 +81,10 @@
                         </div>
                         {#                    TODO#}
                         <div style="text-align: right" class=" col">
-                            <a href="{% url 'all_grievances' %}">
-                                <button class="btn btn-dark">View All &nbsp
+                            <a href="{% url 'all_grievances' %}?status=1">
+
+                                <button class="btn btn-dark"><i class="fa fa-file" aria-hidden="true"></i>
+                                    &nbsp;View Drafts ({{ draft_count }})&nbsp;
                                     {#                                <i#}
                                     {#                                    style=" font-size: small"#}
                                     {#                                    class="fa fa-pencil"#}
@@ -106,7 +108,21 @@
 
                         </table>
                     </div>
+                    <div style="text-align: right" class="row justify-content-center mt-2">
+                        <a href="{% url 'all_grievances' %}">
+    
+                            <button class="btn btn-dark">
+                                View All &nbsp
+                                {#                                <i#}
+                                {#                                    style=" font-size: small"#}
+                                {#                                    class="fa fa-pencil"#}
+                                {#                                    aria-hidden="true" hidden></i>#}
+                            </button>
+                        </a>
+                    </div>
+                   
                 </div>
+                
 
                 {#                <div class="card-custom mt-4 help-card" hidden>#}
                 {#                    <div class="row justify-content-between align-items-center">#}

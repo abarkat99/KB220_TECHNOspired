@@ -46,21 +46,20 @@
 
 
 </head>
-<body class="landing-page">
 <!-- Preloader -->
 <div id='loading_wrap' align="center"
      style='text-align: center; background-color:black; color:white; opacity: 0.9; z-index: 10000; position:fixed; height:100%; width:100%; overflow:hidden; top:0; left:0;'>
     <h4 style="margin-top: 40vh; color: white;">
-        <div style="text-align: -webkit-center" class="w-100">
-            <div class="loader" style="text-align: center;"></div>
-        </div>
-        <img src="{% static 'assets/img/Logos/govt-logo-trans.png' %}"
+        <div style="text-align: -webkit-center" class="w-100" hidden><div class="loader" style="text-align: center;"></div></div>
+        <img src="static/assets/img/Logos/govt-logo-trans.png"
              width="64" hidden>
         <br>
         Loading...
     </h4>
 </div>
 <!-- Preloader -->
+<body class="landing-page">
+
 
 <!-- Navbar -->
 <div class="partials_navbar_import">

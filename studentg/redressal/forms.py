@@ -24,3 +24,12 @@ class NewSubCategoryForm(forms.ModelForm):
         if SubCategory.objects.filter(sub_type=sub_type, redressal_body=self.redressal_body).exists():
             raise ValidationError("Subcategory already exists")
         return sub_type
+
+
+class SelectSubCategoryForm(forms.Form):
+    sub_category = forms.ModelChoiceField(queryset=SubCategory.objects.none())
+
+    def __init__(self, *args, **kwargs):
+        redressal_body = kwargs.pop('redressal_body')
+        super(SelectSubCategoryForm, self).__init__(*args, **kwargs)
+        self.fields['sub_category'].queryset = SubCategory.objects.filter(redressal_body=redressal_body)

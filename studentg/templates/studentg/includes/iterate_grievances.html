@@ -22,23 +22,34 @@
             </tr>
             <tr>
                 <th class="align-middle p-0 d-md-none d-block">
+
                     <p class='m-0 d-xs-block d-md-none font-weight-bold text-uppercase'
                         style='color:#252766; font-size: small !important;'>{{ grievance.subject }}</p>
                     <p class='m-0 d-block d-md-none' style="font-weight: normal !important;"><b>Status: </b><b
                             class="{{ grievance.status_html_class }}">
                             {{ grievance.get_status_display }}</b></p>
                 </th>
+
                 <th class="align-middle p-0 d-none d-md-block">
-                    <p class='m-0 d-none d-md-block' style="font-weight: normal !important;">
-                        <b>Category:</b> {{ grievance.get_category_display }}</p>
-                    <p class='m-0 d-none d-md-block' style="font-weight: normal !important;">
-                        <b>Sub-Category:</b> {{ grievance.sub_category }}</p>
-                </th>
-                <th class='align-middle p-0 d-none d-md-block'>
-                    <p class='m-0 d-none d-md-block' style="font-weight: normal !important;"><b>Status: </b><span
-                        class="{{ grievance.status_html_class }}">{{ grievance.get_status_display }}</span></p>
-                    <p class='mb-0 d-none d-md-block' style="font-weight: normal !important;"><b>Posted
-                            on:</b> {{ grievance.date }}</p>
+                    <div class="row">
+                        <div class="col-6">
+                            <!--<th class="align-middle p-0 d-none d-md-block">-->
+                            <p class='m-1 d-none d-md-block' style="font-weight: normal !important;">
+                                <b>Category:</b> {{ grievance.get_category_display }}</p>
+                            <p class='m-1 d-none d-md-block' style="font-weight: normal !important;">
+                                <b>Sub-Category:</b> {{ grievance.sub_category }}</p>
+                        <!---</th>--->
+                        </div>
+                        
+                        <div class="col-6">
+                                <!--<th class='align-middle p-0 d-none d-md-block'>--->
+                                <p class='m-1 d-none d-md-block' style="font-weight: normal !important;"><b>Status: </b><span
+                                    class="{{ grievance.status_html_class }}">{{ grievance.get_status_display }}</span></p>
+                                <p class='mb-1 d-none d-md-block' style="font-weight: normal !important;"><b>Posted
+                                    on:</b> {{ grievance.date }}</p>
+                            <!--</th>-->
+                        </div>
+                    </div>
                 </th>
             </tr>
         </table>

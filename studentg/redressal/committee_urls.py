@@ -25,6 +25,14 @@ from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from . import views
 from studentg.views import overall_status_stats_chart
 
+chartpatterns = [
+    path('', views.charts, name="charts"),
+    path('stats/status-chart/', views.status_stats_chart, name="status_stats_chart"),
+    path('stats/subcat-chart/', views.subcategory_stats_chart, name="subcat_stats_chart"),
+    path('stats/subcat-dependent-chart/', views.status_chart_for_subcategory, name="subcat_dependent_chart"),
+    path('grievance-chart/', views.grievances_line_chart, name="grievance-chart"),
+    path('stats/overall-status-chart/', overall_status_stats_chart, name="overall_status_chart"),
+]
 dashpatterns = [
     path('', views.DashboardView.as_view(), name="dashboard"),
     path('all/grievances/', views.AllGrievances.as_view(), name="all_grievances"),
@@ -40,21 +48,17 @@ dashpatterns = [
     path('view/students/', views.ViewStudents.as_view(), name="view_students"),
     path('add/student/', views.AddStudent.as_view(), name="add_student"),
 
-    path('stats/status-chart/', views.status_stats_chart, name="status_stats_chart"),
-
     path('my/account/', PasswordChangeView.as_view(template_name="redressal/view_profile.html"),
          name="password_change"),
     path('settings/password/done/', PasswordChangeDoneView.as_view(template_name="redressal/password_change_done.html"),
          name="password_change_done"),
-    path('charts/', views.charts, name="charts"),
-    path('grievance-chart/', views.grievances_line_chart, name="grievance-chart"),
 ]
 urlpatterns = [
     path('', views.HomeView.as_view(), name="home"),
     path('accounts/signup/<uidb64>/<token>/', SignupView.as_view(template_name="redressal/signup.html"), name='signup'),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include(dashpatterns)),
-    path('stats/status-chart/', overall_status_stats_chart, name="overall_status_chart"),
+    path('charts/', include(chartpatterns)),
 ]
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()

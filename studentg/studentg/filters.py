@@ -22,6 +22,7 @@ def sub_cats(request):
 
 class StudentGrievanceFilter(RedressalGrievanceFilter):
     sub_category = django_filters.ModelChoiceFilter(queryset=sub_cats)
+    status = django_filters.ChoiceFilter(choices=Grievance.STATUS_CHOICES)
 
     class Meta:
         model = Grievance

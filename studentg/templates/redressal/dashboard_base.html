@@ -69,13 +69,15 @@
                 <h1 class="font-weight-bold" style="color:#252766; text-align: left">{% block page_heading %}
                     Your Dashboard
                 {% endblock page_heading %}</h1>
+                <h6 href="grievances_list.html" class="text-muted" style="text-align: left; cursor: pointer"
+                    onClick="javascript:history.go(-1)" class="text-muted">< Back</h6>
             </div>
             <div class="col justify-content-end d-none d-lg-block">
                 <h6 class="font-weight-bold" style="color:#252766; text-align: end">
                     <select onchange="doGTranslate(this);" style="border-radius: 5px; font-size: x-small; padding: 8px 16px !important; ::ms-expand{ display: none}; -webkit-appearance: none;
     -moz-appearance: none;
     text-indent: 1px;
-    text-overflow: ''; border: none; cursor: pointer">
+    text-overflow: ''; border: none; cursor: pointer; background-color: lightgrey">
                         <option class="lang notranslate" value="en|en">English</option>
                         <option class="lang notranslate" value="en|te">తెలుగు</option>
                         <option class="lang notranslate" value="en|hi">हिन्दी</option>

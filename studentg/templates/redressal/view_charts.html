@@ -1,66 +1,398 @@
 {% extends 'redressal/dashboard_base.html' %}
 {% load static %}
-{% block page_title %}Charts{% endblock page_title %}
-{% block page_heading %}Charts{% endblock page_heading %}
+{% load widget_tweaks %}
+{% block page_title %}Analytics{% endblock page_title %}
+{% block page_heading %}Analytics{% endblock page_heading %}
 {% block page_content %}
-    <div class="container mt-3 pl-lg-5">
-        <div class="row justify-content-center">
-
-            <div class="col-lg-6 col-12 px-lg-3 ">
-                <div class="card-custom mt-2 mt-lg-0 help-card">
-                    <div class="row justify-content-between align-items-center">
-                        <canvas id="grievance-chart" data-url="{% url 'grievance-chart' %}"></canvas>
+<div class="container mt-3 pl-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-10 px-lg-3 align-items-center">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <span class="text-muted">New</span>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <h1 class="mb-0 text-muted">{{ new_count }}</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <p> Average {{ avg_per_day }} new per day</p>
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-6 col-12 px-lg-3 ">
-                <div class="card-custom mt-2 mt-lg-0 help-card">
-                    <div class="row justify-content-between align-items-center">
-                        <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
+        </div>
+        <div class="col-lg-3 col-10 px-lg-3 align-items-center">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <span class="text-warning">Pending</span>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <h1 class="mb-0 text-warning">{{ pending_count }}</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <p> +{{ pending_inc_count }} in last 24 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-10 px-lg-3 align-items-center">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <span class="text-success">Resolved</span>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <h1 class="mb-0 text-success">{{ resolved_count }}</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <p> +{{ resolved_inc_count}} in last 24 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-10 px-lg-3 align-items-center">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <span class="">Total</span>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <h1 class="mb-0">{{ total_count }}</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class=" col ">
+                        <p> +{{ new_last_day }} in last 24 hours</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row justify-content-center mt-4 mb-5">
+        <div class="col-lg-6 col-12 px-lg-3 ">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-between align-items-center">
+                    <div class=" col ">
+                        <h5 class="my-3 card-custom-title">Grievances Overall</h5>
+                    </div>
+                    <canvas id="grievance-chart" data-url="{% url 'grievance-chart' %}"></canvas>
+                </div>
+            </div>
+            <div class="card-custom mt-2  mt-lg-4 help-card">
+                <div class="row justify-content-between align-items-center">
+                    <div class=" col ">
+                        <h5 class="my-3 card-custom-title">Subcategories</h5>
+                        <form action="{% url 'subcat_dependent_chart' %}" method="get" id="subcategory-form">
+                            {% render_field subcategory_select.sub_category %}
+                        </form>
+                    </div>
+                    <div style="text-align: right" class=" col" hidden>
+                        <a href="{% url 'charts' %}">
+                            <button class="btn btn-dark">View All &nbsp
+                            </button>
+                        </a>
+                    </div>
+                    <canvas id="grievance-subcat-chart" data-url="{% url 'subcat_stats_chart' %}"
+                        data-color="auto"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-12 px-lg-3 ">
+            <div class="card-custom mt-2 mt-lg-0 help-card">
+                <div class="row justify-content-between align-items-center">
+                    <div class=" col ">
+                        <h5 class="my-3 card-custom-title">Status-wise Overall</h5>
+                    </div>
+                    <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row mt-4">
+        <div class="col-lg-12 col-12 px-lg-3 ">
+            <h3 class="font-weight-bold" style="color:#252766; text-align: left">
+                Subcategories</h3>
+        </div>
+        <div class="col-lg-6 col-12 px-lg-3 ">
+            <div class="card-custom mt-2  mt-lg-4 help-card">
+                <div class="row justify-content-between align-items-center">
+                    <div class=" col ">
+                        <h5 class="my-3 card-custom-title">Overall</h5>
+                    </div>
+                    <canvas id="grievance-subcat-chart" data-url="{% url 'subcat_stats_chart' %}"
+                        data-color="auto"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-12 px-lg-3 ">
+            <div class="card-custom mt-2  mt-lg-4 help-card">
+                <div class="row justify-content-between align-items-center">
+                    <div class=" col ">
+                        <h5 class="my-3 card-custom-title">Admission</h5>
+                    </div>
+                
+                    <canvas id="grievance-subcat-stats-chart" data-url="{% url 'subcat_stats_chart' %}"
+                        data-color="auto"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock page_content %}
 {% block javascript %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
-        integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
-        crossorigin="anonymous"></script>
-    {% include 'includes/chart_scripts.html' %}
-    <script src="{% static 'common/js/status_pie_loader.js' %}"></script>
-    <script>
-        var $grievanceChart = $("#grievance-chart");
-        $.ajax({
-            url: $grievanceChart.data("url"),
-            success: function (data) {
-                var ctx = $grievanceChart[0].getContext("2d");
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+    integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
+    crossorigin="anonymous"></script>
+{% include 'includes/chart_scripts.html' %}
+<script src="{% static 'common/js/chartjs-plugin-colorschemes.min.js' %}"></script>
+<script src="{% static 'common/js/status_pie_loader.js' %}"></script>
+<script>
+    var $grievanceChart = $("#grievance-chart");
+    $.ajax({
+        url: $grievanceChart.data("url"),
+        success: function (data) {
+            var ctx = $grievanceChart[0].getContext("2d");
 
-                new Chart(ctx, {
-                    type: 'line',
-                    data: data,
-                    options: {
-                        responsive: true,
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Grievances Over Time'
-                        },
-                        scales: {
-                            xAxes: [{
-                                type: 'time',
-                                time: {
-                                    parser: 'YYYY-MM-DD',
-                                    unit: 'day',
-                                },
-                            }]
-                        },
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'top',
                     },
-                });
-            }
+                    title: {
+                        display: true,
+                        text: 'Grievances Over Time'
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                parser: 'YYYY-MM-DD',
+                                unit: 'day',
+                            },
+                        }]
+                    },
+                },
+            });
+        }
+    });
+</script>
+<script>
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#grievance-subcat-stats-chart"); //REPLACE WITH ID HERE
+                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); 
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
         });
-    </script>
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    });
+</script>
 {% endblock javascript %}
