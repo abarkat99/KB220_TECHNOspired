@@ -1,0 +1,66 @@
+{% extends 'redressal/dashboard_base.html' %}
+{% load static %}
+{% block page_title %}Charts{% endblock page_title %}
+{% block page_heading %}Charts{% endblock page_heading %}
+{% block page_content %}
+    <div class="container mt-3 pl-lg-5">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <canvas id="grievance-chart" data-url="{% url 'grievance-chart' %}"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12 px-lg-3 ">
+                <div class="card-custom mt-2 mt-lg-0 help-card">
+                    <div class="row justify-content-between align-items-center">
+                        <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+{% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+        integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
+        crossorigin="anonymous"></script>
+    {% include 'includes/chart_scripts.html' %}
+    <script src="{% static 'common/js/status_pie_loader.js' %}"></script>
+    <script>
+        var $grievanceChart = $("#grievance-chart");
+        $.ajax({
+            url: $grievanceChart.data("url"),
+            success: function (data) {
+                var ctx = $grievanceChart[0].getContext("2d");
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Grievances Over Time'
+                        },
+                        scales: {
+                            xAxes: [{
+                                type: 'time',
+                                time: {
+                                    parser: 'YYYY-MM-DD',
+                                    unit: 'day',
+                                },
+                            }]
+                        },
+                    },
+                });
+            }
+        });
+    </script>
+{% endblock javascript %}
