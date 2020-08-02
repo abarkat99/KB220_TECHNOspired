@@ -393,6 +393,62 @@
                 console.log(data);
             },
         });
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+    $("#id_sub_category").change(function(){
+        let $frm = $('#subcategory-form');
+        $.ajax({
+            type: $frm.attr('method'),
+            url: $frm.attr('action'),
+            data: $frm.serialize(),
+            success: function (data) {
+                let $chart = $("#id-of-canvas"); //REPLACE WITH ID HERE
+/*                var ctx = $chart[0].getContext("2d");
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                        legend: {
+                            onClick: (e) => e.stopPropagation()
+                        },
+                        tooltips: {
+                            callbacks: tooltip_callbacks
+                        },
+                        plugins: plugins
+                    }
+            }); */
+            },
+            error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
     });
 </script>
 {% endblock javascript %}
