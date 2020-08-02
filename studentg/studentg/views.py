@@ -15,6 +15,7 @@ from .decorators import is_owner_of_grievance
 from .forms import NewGrievanceForm, NewReplyForm
 from .models import DayToken, Grievance, Reply, Notification
 from .filters import StudentGrievanceFilter, FilteredListView
+from redressal.helpers import get_redressal_body_members
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -54,6 +55,15 @@ def grievance_save_helper(request, grievance):
     grievance.redressal_body = redressal_body.redressal_body
 
 
+def grievance_notification_helper(grievance):
+    if grievance.status == Grievance.REVIEW or grievance.status != grievance.DRAFT:
+        for user in get_redressal_body_members(grievance.redressal_body):
+            notification = Notification()
+            notification.user = user
+            notification.grievance = grievance
+            notification.save()
+
+
 @method_decorator(login_required, name="dispatch")
 class CreateGrievance(CreateView):
     model = Grievance
@@ -68,6 +78,7 @@ class CreateGrievance(CreateView):
         grievance_save_helper(self.request, self.object)
         self.object.daytoken = DayToken.get_new_token()
         self.object.save()
+        grievance_notification_helper(self.object)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_form_kwargs(self):
@@ -96,6 +107,7 @@ class EditDraftGrievance(UpdateView):
         self.object.date = datetime.date.today()
         self.object.daytoken = DayToken.get_new_token()
         self.object.save()
+        grievance_notification_helper(self.object)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_form_kwargs(self):

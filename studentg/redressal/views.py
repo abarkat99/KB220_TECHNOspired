@@ -5,7 +5,7 @@ from accounts.models import TempUser, StudentTempUser, User, UniversityMember, I
     Student
 
 from studentg.models import Grievance, Reply, Notification
-from studentg.forms import GrievanceUpdateForm, NewReplyForm
+from studentg.forms import GrievanceUpdateForm, NewReplyForm, GrievanceEscalationForm
 from studentg.constants import STATUS_COLOR_CONVERTER, STATUS_DISPLAY_CONVERTER
 
 from .decorators import is_committee_head, is_committee_member, is_committee_head_of_super_body_type, \
@@ -19,6 +19,7 @@ from django.views.generic import TemplateView, CreateView, View, FormView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, Http404, JsonResponse, HttpResponseRedirect
+import json
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
@@ -43,7 +44,9 @@ class DashboardView(TemplateView):
         redressal_body = self.request.user.get_redressal_body()
         grievances = Grievance.objects.filter(redressal_body=redressal_body).exclude(status=Grievance.DRAFT).order_by(
             '-last_update')[:3]
+        notifications = Notification.objects.filter(user=self.request.user).order_by('-date_time')[:5]
         context['grievances'] = grievances
+        context['notifications'] = notifications
         return context
 
 
@@ -98,6 +101,10 @@ class ViewGrievance(View):
         grievance = context['grievance']
         reply_form = NewReplyForm()
         update_form = GrievanceUpdateForm(instance=grievance)
+        user_body_object = request.user.get_redressal_body().get_body_object()
+        if user_body_object.IS_SUB_BODY:
+            escalation_form = GrievanceEscalationForm(redressal_body=user_body_object.get_super_body(), instance=grievance, prefix='escalation')
+            context['escalation_form'] = escalation_form
         context['reply_form'] = reply_form
         context['update_form'] = update_form
         return render(request, self.template_name, context)
@@ -107,6 +114,19 @@ class ViewGrievance(View):
         grievance = context['grievance']
         reply_form = NewReplyForm(request.POST)
         update_form = GrievanceUpdateForm(request.POST, instance=grievance)
+        user_body_object = request.user.get_redressal_body().get_body_object()
+        if user_body_object.IS_SUB_BODY:
+            escalation_form = GrievanceEscalationForm(request.POST, redressal_body=user_body_object.get_super_body(), instance=grievance, prefix='escalation')
+            if escalation_form.is_valid():
+                grievance = escalation_form.save(commit=False)
+                category_escalator = {
+                    Grievance.DEPARTMENT: Grievance.INSTITUTE,
+                    Grievance.INSTITUTE: Grievance.DEPARTMENT
+                }
+                grievance.category = category_escalator[grievance.category]
+                grievance.save()
+                return redirect('dashboard')
+            context['escalation_form'] = escalation_form
         is_reply = False
         if reply_form.is_valid():
             reply = reply_form.save(commit=False)
@@ -122,7 +142,6 @@ class ViewGrievance(View):
                 notification.user = grievance.user
                 notification.grievance = grievance
                 notification.save()
-            return redirect('dashboard')
         context['reply_form'] = reply_form
         context['update_form'] = update_form
         return render(request, self.template_name, context)
@@ -395,7 +414,11 @@ def status_chart_for_subcategory(request):
     if subcategory_select.is_valid():
         sub_category = subcategory_select.cleaned_data['sub_category']
     else:
-        raise Http404()
+        return HttpResponseNotFound(json.dumps({'detail': 'Not Found'}), content_type="application/json")
+    count = Grievance.objects.filter(redressal_body=redressal_body, sub_category=sub_category).exclude(
+        status=Grievance.DRAFT).count()
+    if not count:
+        return HttpResponseNotFound(json.dumps({'detail': 'No data'}), content_type="application/json")
     status_filtered = Grievance.objects.filter(redressal_body=redressal_body, sub_category=sub_category).exclude(
         status=Grievance.DRAFT).order_by(
         'status').values('status').annotate(count=Count('id'))
@@ -447,6 +470,8 @@ def grievances_line_chart(request):
         data_t[i]['y'] += data_t[i - 1]['y']
     for i in range(1, len(data_r)):
         data_r[i]['y'] += data_r[i - 1]['y']
+    if gr_list:
+        data_r.append({'x': data_t[-1]['x'], 'y': data_r[-1]['y']})
     data = {
         'datasets': [
             {

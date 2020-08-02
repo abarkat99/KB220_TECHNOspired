@@ -13,7 +13,7 @@ class NewRedressalBodyForm(forms.ModelForm):
 class NewSubCategoryForm(forms.ModelForm):
     class Meta:
         model = SubCategory
-        fields = ['sub_type']
+        fields = ['sub_type', 'priority']
 
     def __init__(self, *args, **kwargs):
         self.redressal_body = kwargs.pop('redressal_body')
@@ -27,9 +27,9 @@ class NewSubCategoryForm(forms.ModelForm):
 
 
 class SelectSubCategoryForm(forms.Form):
-    sub_category = forms.ModelChoiceField(queryset=SubCategory.objects.none())
+    sub_category = forms.ModelChoiceField(queryset=SubCategory.objects.none(), empty_label=None)
 
     def __init__(self, *args, **kwargs):
         redressal_body = kwargs.pop('redressal_body')
         super(SelectSubCategoryForm, self).__init__(*args, **kwargs)
-        self.fields['sub_category'].queryset = SubCategory.objects.filter(redressal_body=redressal_body)
+        self.fields['sub_category'].queryset = SubCategory.objects.filter(redressal_body=redressal_body).exclude(grievance=None)

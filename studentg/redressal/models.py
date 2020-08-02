@@ -49,6 +49,13 @@ class RedressalBody(models.Model):
 
 class SubCategory(models.Model):
     sub_type = models.CharField(max_length=255)
+    LOW = 0
+    HIGH = 1
+    PRIORITY_CHOICES = [
+        (LOW, 'Low'),
+        (HIGH, 'High'),
+    ]
+    priority = models.PositiveSmallIntegerField(choices=PRIORITY_CHOICES, default=LOW)
     redressal_body = models.ForeignKey(RedressalBody, on_delete=models.CASCADE, related_name='subcategories')
 
     class Meta:
@@ -69,6 +76,9 @@ class University(models.Model):
         bodies = bodies.exclude(tempuser__designation=TempDesignationConstants.INS_HEAD)
         return bodies, in_bodies
 
+    def __str__(self):
+        return self.redressal_body.name
+
 
 class Institute(models.Model):
     redressal_body = models.OneToOneField(RedressalBody, on_delete=models.CASCADE)
@@ -84,6 +94,8 @@ class Institute(models.Model):
     def get_super_body(self):
         return self.university.redressal_body
 
+    def __str__(self):
+        return self.redressal_body.name
 
 class Department(models.Model):
     redressal_body = models.OneToOneField(RedressalBody, on_delete=models.CASCADE)
@@ -92,3 +104,6 @@ class Department(models.Model):
 
     def get_super_body(self):
         return self.institute.redressal_body
+
+    def __str__(self):
+        return self.redressal_body.name

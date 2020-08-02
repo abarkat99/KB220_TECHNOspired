@@ -39,6 +39,17 @@ class GrievanceUpdateForm(forms.ModelForm):
     status = forms.ChoiceField(choices=STATUS_VISIBLE_TO_COMMITTEE)
 
 
+class GrievanceEscalationForm(forms.ModelForm):
+    class Meta:
+        model = Grievance
+        fields = ['sub_category']
+
+    def __init__(self, *args, **kwargs):
+        redressal_body = kwargs.pop('redressal_body')
+        super(GrievanceEscalationForm, self).__init__(*args, **kwargs)
+        self.fields['sub_category'].queryset = SubCategory.objects.filter(redressal_body=redressal_body)
+
+
 class NewReplyForm(forms.ModelForm):
     class Meta:
         model = Reply

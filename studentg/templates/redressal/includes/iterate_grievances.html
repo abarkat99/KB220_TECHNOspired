@@ -15,6 +15,7 @@
             <table class="table step3-table filter-this-table">
                 <tr>
                     <th colspan="2" style="text-align:left;" class="p-0">
+                        {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}<span class="text-danger">High Priority <i class="fa fa-exclamation"></i></span>{% endif %}
                         <a href="{% url 'view_grievance' grievance.token %}"><h5 class='d-none d-md-block mb-0 text-uppercase font-weight-bold'
                             style='color:#252766;'>{{ grievance.subject }}</h5></a>
                     </th>
@@ -32,24 +33,25 @@
                     <th class="align-middle p-0 d-none d-md-block">
                         <div class="row">
                             <div class="col-6">
-                                <p class='m-1 d-none d-md-block'
+                            {% comment %} YE Field idhar useless abhi keliye rehenede nahi to 1-2 balance a{% endcomment %}
+                                <p class='mt-2 d-none d-md-block'
+                                style="font-weight: normal !important;"> 
+                                    <b>Category : </b> {{ grievance.get_category_display }}</p>
+                                <p class='mt-1 d-none d-md-block'
                                 style="font-weight: normal !important;">
-                                    <b>Category:</b> {{ grievance.get_category_display }}</p>
-                                <p class='m-1 d-none d-md-block'
-                                style="font-weight: normal !important;">
-                                    <b>Sub-Category:</b> {{ grievance.sub_category }}</p>
+                                    <b>Sub-Category : </b> {{ grievance.sub_category }}</p>
                             </div>
                             <!--</th>-->
 
                             <div class="col-6">
                                 <!--<th class='align-middle p-0 d-none d-md-block'>-->
-                                <p class='m-1 d-none d-md-block'
-                                style="font-weight: normal !important;"><b>Status:</b><span
+                                <p class='mt-2 d-none d-md-block'
+                                style="font-weight: normal !important;"><b>Status : </b><span
                                         class="{{ grievance.status_html_class }}">
                                                         {{ grievance.get_status_display }}</span></p>
-                                <p class='mb-1 d-none d-md-block'
+                                <p class='mt-1 d-none d-md-block'
                                 style="font-weight: normal !important;"><b>Posted
-                                    on:</b> {{ grievance.date }}</p>
+                                    on : </b> {{ grievance.date }}</p>
                             </div>
                         </div>
                     </th>

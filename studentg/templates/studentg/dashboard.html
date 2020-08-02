@@ -123,6 +123,8 @@
                    
                 </div>
                 
+                
+                
 
                 {#                <div class="card-custom mt-4 help-card" hidden>#}
                 {#                    <div class="row justify-content-between align-items-center">#}
@@ -290,7 +292,7 @@
                             <tr>
                                 <td style="vertical-align: middle" colspan="1">
                                     <h6 class="my-2">{{ notification.date_time }}</h6>
-                                    <p>There has been some action on Grievance No. <a href="{% url 'view_grievance' notification.grievance.token %}"><strong>{{ notification.grievance.token }}<strong></a></p>
+                                    <p>Action on Grievance No. <a href="{% url 'view_grievance' notification.grievance.token %}"><strong>{{ notification.grievance.token }}<strong></a></p>
                                 </td>
                             </tr>
                             {% endfor %}

@@ -103,12 +103,14 @@
                     </div>
                     <table class="table filter-this-table">
                         <tbody>
+                            {% for notification in notifications %}
                             <tr>
                                 <td style="vertical-align: middle" colspan="1">
-                                    <h6 class="my-2">8 May 2020 12:36</h6>
-                                    <p>Grievance (No. 123456) has been <strong>approved</strong></p>
+                                    <h6 class="my-2">{{ notification.date_time }}</h6>
+                                    <p>New Grievance No. <a href="{% url 'view_grievance' notification.grievance.token %}"><strong>{{ notification.grievance.token }}<strong></a> registered</p>
                                 </td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

@@ -95,7 +95,7 @@
         </div>
 
         <div class="col-lg-6 col-12 px-lg-3 order-lg-2 order-md-1 order-1">
-            <div class="card-custom mt-2 mt-lg-0 help-card">
+            <div class="card-custom mt-2 mt-lg-0 help-card" hidden>
                 <div class="profile-placeholder mb-3">
                     <img src="{{ request.user|gravatar }}"
                          class="profile-pic" alt="{{ request.user.username }}">
@@ -116,7 +116,7 @@
                 {% endif %}
                 <form method="post">
                     {% csrf_token %}
-                    <h6 class="my-3" style="">Change Password</h6>
+                    <h5 class="my-3" style="">Change Password</h5>
                     <div class="form-group mb-3 ">
                         {% render_field form.old_password class="form-control" placeholder="Current Password" aria-label="Current Password" %}
                         {% for error in form.old_password.errors %}

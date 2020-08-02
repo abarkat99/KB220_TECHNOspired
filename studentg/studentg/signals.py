@@ -6,4 +6,7 @@ from .models import Notification
 @receiver(post_save, sender=Notification)
 def auto_send_mail(sender, instance, created, *args, **kwargs):
     if created:
-        instance.send_mail()
+        if instance.user.designation == instance.user.STUDENT:
+            instance.send_mail()
+        else:
+            instance.redressal_send_mail()

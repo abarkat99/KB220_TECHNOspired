@@ -105,3 +105,16 @@ class Notification(models.Model):
             [self.user.email],
             fail_silently=False,
         )
+
+    def redressal_send_mail(self):
+        token_no = self.grievance.token()
+        url = reverse('view_grievance', host='redressal', kwargs={
+            'token': token_no
+        })
+        send_mail(
+            f'New Grievance having No. {token_no}',
+            f'There is a new grievance: click this link to check it out: http:{url}',
+            'st050100@gmail.com',
+            [self.user.email],
+            fail_silently=False,
+        )
