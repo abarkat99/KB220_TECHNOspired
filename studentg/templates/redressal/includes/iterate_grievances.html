@@ -15,7 +15,7 @@
             <table class="table step3-table filter-this-table">
                 <tr>
                     <th colspan="2" style="text-align:left;" class="p-0">
-                        {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}<span class="text-danger">High Priority <i class="fa fa-exclamation"></i></span>{% endif %}
+                        {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}<span class="text-danger">High Priority <i class="fa fa-exclamation-triangle"></i></span>{% endif %}
                         <a href="{% url 'view_grievance' grievance.token %}"><h5 class='d-none d-md-block mb-0 text-uppercase font-weight-bold'
                             style='color:#252766;'>{{ grievance.subject }}</h5></a>
                     </th>
@@ -59,7 +59,7 @@
             </table>
         </td>
         <td class="pb-0" style="text-align: left;" colspan="1">
-            <a href="{% url 'view_grievance' grievance.token %}">
+            <a target="_blank" href="{% url 'view_grievance' grievance.token %}">
             <button type='button' class='btn btn-sm btn-outline-dark'>
                 Open 
             </button>

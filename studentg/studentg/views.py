@@ -12,8 +12,8 @@ import datetime
 
 from .constants import STATUS_DISPLAY_CONVERTER, STATUS_COLOR_CONVERTER
 from .decorators import is_owner_of_grievance
-from .forms import NewGrievanceForm, NewReplyForm
-from .models import DayToken, Grievance, Reply, Notification
+from .forms import NewGrievanceForm, NewReplyForm, RatingForm
+from .models import DayToken, Grievance, Reply, Notification, Rating
 from .filters import StudentGrievanceFilter, FilteredListView
 from redressal.helpers import get_redressal_body_members
 
@@ -126,6 +126,12 @@ class ViewGrievance(View):
         grievance = context['grievance']
         replies = context['replies']
         last_reply = replies.last()
+        if grievance.status in [Grievance.RESOLVED, Grievance.REJECTED]:
+            if grievance.rating:
+                rating_form = RatingForm(instance=grievance.rating)
+            else:
+                rating_form = RatingForm()
+            context['rating_form'] = rating_form
         if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
             reply_form = NewReplyForm()
             context['reply_form'] = reply_form
@@ -140,6 +146,15 @@ class ViewGrievance(View):
             reply.user = request.user
             reply.grievance = grievance
             reply.save()
+        if grievance.rating:
+            rating_form = RatingForm(request.POST, instance=grievance.rating)
+        else:
+            rating_form = RatingForm(request.POST)
+        if rating_form.is_valid():
+            rating = rating_form.save(commit=False)
+            rating.user = request.user
+            rating.grievance = grievance
+            rating.save()
         return redirect('view_grievance', token=kwargs['token'])
 
     def get_context_data(self, **kwargs):

@@ -32,7 +32,7 @@
             <a href="{% url 'charts'%}">
                 <div class="options" style="cursor: pointer">
                     <div>
-                        <img src="{% static 'assets/img/feedback.jpg' %}" class="options-img" />
+                        <img src="{% static 'assets/img/feedback.jpeg' %}" class="options-img" />
                     </div>
                     <div class="options-title p-2"><i style="font-size: xx-large" class="fa fa-bar-chart"
                             aria-hidden="true"></i><br>
@@ -45,7 +45,7 @@
             <a href="{% url 'password_change' %}">
                 <div class="options" style="cursor: pointer">
                     <div>
-                        <img src="{% static 'assets/img/account.jpg' %}" class="options-img" />
+                        <img src="{% static 'assets/img/account.jpeg' %}" class="options-img" />
                     </div>
                     <div class="options-title p-2"><i style="font-size: xx-large" class="fa fa-user"
                             aria-hidden="true"></i><br>
@@ -107,7 +107,7 @@
                             <tr>
                                 <td style="vertical-align: middle" colspan="1">
                                     <h6 class="my-2">{{ notification.date_time }}</h6>
-                                    <p>New Grievance No. <a href="{% url 'view_grievance' notification.grievance.token %}"><strong>{{ notification.grievance.token }}<strong></a> registered</p>
+                                    <p>New Grievance No. <a href="{% url 'view_grievance' notification.grievance.token %}"><strong>{{ notification.grievance.token }}<strong></a><br>registered</p>
                                 </td>
                             </tr>
                             {% endfor %}

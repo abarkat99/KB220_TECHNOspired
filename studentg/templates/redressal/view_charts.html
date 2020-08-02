@@ -120,15 +120,13 @@
                     </div>
                 </div>
                 <div class="card-custom mt-2 mt-lg-4 help-card">
-                    <div class=" col ">
-                        <h5 class="my-3 card-custom-title">Subcategory Breakdown</h5>
-                    </div>
                     <div class="row justify-content-center align-items-center">
+                        <h5 class="my-3 mr-2 card-custom-title">Subcategory Breakdown</h5>
                         <form action="{% url 'subcat_dependent_chart' %}" method="get" id="subcategory-form">
                             {% render_field subcategory_select.sub_category %}
                         </form>
                     </div>
-                    <div class="my-4">
+                    <div class="my-2">
                             <canvas id="grievance-subcat-dependant-chart"></canvas>
                     </div>
                     <div class="row justify-content-center">

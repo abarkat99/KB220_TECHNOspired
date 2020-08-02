@@ -66,6 +66,13 @@ class Grievance(StatusConstants, models.Model):
     def status_html_class(self):
         return self.STATUS_COLORS[self.status]
 
+    def get_escalated_level_display(self):
+        escalator = {
+            self.DEPARTMENT: 'Institute',
+            self.INSTITUTE: 'University'
+        }
+        return escalator[self.category]
+
     @classmethod
     def get_from_token(cls, token):
         date = datetime.datetime.strptime(token[:-4], "%Y%m%d").date()
@@ -118,3 +125,21 @@ class Notification(models.Model):
             [self.user.email],
             fail_silently=False,
         )
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
+    grievance = models.OneToOneField(Grievance, on_delete=models.CASCADE, related_name='rating')
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    RATING_CHOICES = [
+        (FIVE, '5 Stars'),
+        (FOUR, '4 Stars'),
+        (THREE, '3 Stars'),
+        (TWO, '2 Stars'),
+        (ONE, '1 Star'),
+    ]
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)

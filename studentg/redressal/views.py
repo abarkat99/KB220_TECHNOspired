@@ -124,8 +124,10 @@ class ViewGrievance(View):
                     Grievance.INSTITUTE: Grievance.DEPARTMENT
                 }
                 grievance.category = category_escalator[grievance.category]
+                grievance.redressal_body = user_body_object.get_super_body()
+                grievance.status = Grievance.REVIEW
                 grievance.save()
-                return redirect('dashboard')
+                return redirect('all_grievances')
             context['escalation_form'] = escalation_form
         is_reply = False
         if reply_form.is_valid():
@@ -354,7 +356,10 @@ def charts(request):
     new_count = base_queryset.filter(status=Grievance.REVIEW).count()
     # TODO Replace below with distinct query in Production server
     no_days = base_queryset.values('date').annotate(date_count=Count('id')).count()
-    avg_per_day = int(round(total_count / no_days))
+    if no_days:
+        avg_per_day = int(round(total_count / no_days))
+    else:
+        avg_per_day = 0
     pending_count = base_queryset.filter(status=Grievance.PENDING).count()
     pending_inc_count = base_queryset.filter(status=Grievance.PENDING,
                                              date__range=[datetime.today() - timedelta(days=1),

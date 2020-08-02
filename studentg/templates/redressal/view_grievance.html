@@ -8,8 +8,11 @@
         <div class="col-md-10 col-12 px-lg-3 ">
             <div class="card-custom mt-2 mt-lg-0 help-card">
                 <div class="row justify-content-between align-items-center mx-1">
-                    <div class="">
-                        <h5 class="my-3 card-custom-title" style="">{{ grievance.subject }}</h5>
+                    <div class="mt-3">
+                        {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}
+                        <p class="text-danger">
+                            High Priority <i class="fa fa-exclamation-triangle"></i></p>{% endif %}
+                        <h5 class="card-custom-title" style="">{{ grievance.subject }}</h5>
                     </div>
                 </div>
                 <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
@@ -23,11 +26,17 @@
                                 <p><b>Status:</b><span class="{{ grievance.status_html_class }}">
                                         {{ grievance.get_status_display }}</span></p>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-lg-6" hidden>
                                 <p><b>Category:</b> {{ grievance.get_category_display }}</p>
                             </div>
-                            <div class="col">
+                            <div class="col-12 col-lg-6 ">
                                 <p><b>Sub-category:</b> {{ grievance.sub_category.sub_type }}</p>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <p><b>Posted on: </b> {{ grievance.date }}</p>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <p><b>Last updated: </b> {{ grievance.last_update }}</p>
                             </div>
                         </div>
                     </div>
@@ -53,13 +62,31 @@
                     </div>
                 </div>
                 {% endif %}
-                {% comment %} <div class="row justify-content-between align-items-center py-3 mx-1 mt-2">
-                    <button class="btn btn-dark" style="width: 100%">Edit Draft</button>
-                </div> {% endcomment %}
+                {% if escalation_form %}
+                <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
+                    style="border: 1px solid #dee2e6; border-radius: 5px">
+                    <div class="col">
+                        <h6 class="font-weight-bold mb-3">Escalate Grievance to {{ grievance.get_escalated_level_display }} Level</h6>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col">
+                                    {% render_field escalation_form.sub_category class="custom-select input-group-sm" %}
+                                </div>
+                                <div class="col">
+                                    <button type='submit' class='btn btn-sm btn-dark'>
+                                        Escalate
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
             </div>
         </div>
-        </div>
-        <div class="row">
+    </div>
+    <div class="row">
         <div class="col-lg-5 col-md-5 col-12 px-lg-3 pt-3">
             <div class="card-custom mt-2 mt-lg-0 help-card">
                 <div class="row justify-content-between align-items-center mx-1">
@@ -71,7 +98,6 @@
                     <div class="col-12">
                         <div class="row justify-content-center">
                             <div class="col-lg-12 col-12 px-lg-0 order-lg-1 p-0">
-
                                 <div
                                     style="height:300px; overflow-y:scroll; border: 1px solid #dee2e6; border-radius: 5px;">
                                     <table class="table filter-this-table">
@@ -92,26 +118,27 @@
                 <div class="row justify-content-between align-items-center mx-1">
                     <div class="col">
                         <form method="post">
-                            <div class="row py-2">            
+                            {% csrf_token %}
+                            <div class="row py-2">
                                 <div class="col-12 pl-2 pr-0">
                                     <h5 class="my-2 card-custom-title" style="">Status</h5>
                                     <div class="" style="margin-left: -10px;">
-                                    {{ update_form.status.}}
-                                    {% render_field update_form.status class="custom-select input-group-sm"%}
+                                        {{ update_form.status. }}
+                                        {% render_field update_form.status class="custom-select input-group-sm" %}
                                     </div>
                                 </div>
                             </div>
                             <div class="">
                                 <h5 class="my-3 card-custom-title" style="margin-left: -5px;">Reply</h5>
                             </div>
-                            {% csrf_token %}
                             {% include "includes/reply_form.html" %}
                             <div class="row" style="text-align: center" class=" mb-3">
-                                <button type="submit" class="btn btn-success" style="width: 100%"><i class="fa fa-paper-plane"
-                                aria-hidden="true"></i> &nbsp;Send</button>
+                                <button type="submit" class="btn btn-success" style="width: 100%"><i
+                                        class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp;Send
+                                </button>
                             </div>
-                        </form>           
-                        </div>          
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

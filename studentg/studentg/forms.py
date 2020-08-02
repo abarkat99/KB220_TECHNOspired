@@ -1,5 +1,5 @@
 from django import forms
-from .models import Grievance, Reply
+from .models import Grievance, Reply, Rating
 from redressal.models import SubCategory
 from .constants import STATUS_VISIBLE_TO_COMMITTEE
 
@@ -54,3 +54,11 @@ class NewReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ['message']
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['rating']
+
+    rating = forms.ChoiceField(choices=Rating.RATING_CHOICES, widget=forms.RadioSelect)
