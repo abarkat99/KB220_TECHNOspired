@@ -83,7 +83,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row justify-content-center mt-4 mb-5">
             <div class="col-lg-6 col-12 px-lg-3 ">
                 <div class="card-custom mt-2 mt-lg-0 help-card">
@@ -92,8 +92,9 @@
                             <h5 class="my-3 card-custom-title">Grievances Overall</h5>
                         </div>
                         <canvas id="grievance-chart" data-url="{% url 'grievance-chart' %}"></canvas>
-                        <button type="button" class="mt-2 btn btn-primary download-canvas" 
-                            data-canvas-id="grievance-chart">Download</button>
+                        <button type="button" class="mt-2 btn btn-primary download-canvas"
+                                data-canvas-id="grievance-chart">Download
+                        </button>
                     </div>
                 </div>
                 <div class="card-custom mt-2  mt-lg-4 help-card">
@@ -103,8 +104,9 @@
                         </div>
                         <canvas id="grievance-subcat-chart" data-url="{% url 'subcat_stats_chart' %}"
                                 data-color="auto"></canvas>
-                        <button type="button" class="mt-2 btn btn-primary download-canvas" 
-                                data-canvas-id="grievance-subcat-chart">Download</button>
+                        <button type="button" class="mt-2 btn btn-primary download-canvas"
+                                data-canvas-id="grievance-subcat-chart">Download
+                        </button>
                     </div>
                 </div>
             </div>
@@ -115,8 +117,9 @@
                             <h5 class="my-3 card-custom-title">Status-wise Overall</h5>
                         </div>
                         <canvas id="grievance-status-chart" data-url="{% url 'status_stats_chart' %}"></canvas>
-                            <button type="button" class="mt-2 btn btn-primary download-canvas" 
-                            data-canvas-id="grievance-status-chart">Download</button>
+                        <button type="button" class="mt-2 btn btn-primary download-canvas"
+                                data-canvas-id="grievance-status-chart">Download
+                        </button>
                     </div>
                 </div>
                 <div class="card-custom mt-2 mt-lg-4 help-card">
@@ -127,41 +130,25 @@
                         </form>
                     </div>
                     <div class="my-2">
-                            <canvas id="grievance-subcat-dependant-chart"></canvas>
+                        <canvas id="grievance-subcat-dependant-chart"></canvas>
                     </div>
                     <div class="row justify-content-center">
-                            <button type="button" class="mt-2 btn btn-primary download-canvas" 
-                                data-canvas-id="grievance-subcat-dependant-chart">Download</button>
-                    </div>
-                    
-                </div>
-            </div> 
-        </div>
-        <div class="row mt-4" hidden>
-            <div class="col-lg-12 col-12 px-lg-3 ">
-                <h3 class="font-weight-bold" style="color:#252766; text-align: left">
-                    Subcategories</h3>
-            </div>
-            <div class="col-lg-6 col-12 px-lg-3 ">
-                <div class="card-custom mt-2  mt-lg-4 help-card">
-                    <div class="row justify-content-between align-items-center">
-                        <div class=" col ">
-                            <h5 class="my-3 card-custom-title">Overall</h5>
-                        </div>
-                        <canvas id="grievance-subcat-chart" data-url="{% url 'subcat_stats_chart' %}"
-                                data-color="auto"></canvas>
+                        <button type="button" class="mt-2 btn btn-primary download-canvas"
+                                data-canvas-id="grievance-subcat-dependant-chart">Download
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-12 px-lg-3 ">
-                <div class="card-custom mt-2  mt-lg-4 help-card">
-                    <div class="row justify-content-between align-items-center">
+            <div class="col-6">
+                <div class="card-custom mt-2 mt-lg-4 help-card">
+                    <div class="row justify-content-center align-items-center">
                         <div class=" col ">
-                            <h5 class="my-3 card-custom-title">Admission</h5>
+                            <h5 class="my-3 card-custom-title">Ratings</h5>
                         </div>
-
-                        <canvas id="grievance-subcat-stats-chart" data-url="{% url 'subcat_stats_chart' %}"
-                                data-color="auto"></canvas>
+                        <canvas id="rating-bar-chart" data-url="{% url 'rating_bar_chart' %}"></canvas>
+                        <button type="button" class="mt-2 btn btn-primary download-canvas"
+                            data-canvas-id="rating-bar-chart">Download
+                        </button>
                     </div>
                 </div>
             </div>
@@ -210,7 +197,7 @@
         });
     </script>
     <script>
-        function load_subcategory_dependant_chart(){
+        function load_subcategory_dependant_chart() {
             $("#grievance-subcat-dependant-chart").replaceWith('<canvas id="grievance-subcat-dependant-chart"></canvas>');
             let $frm = $('#subcategory-form');
             $.ajax({
@@ -241,16 +228,44 @@
             load_subcategory_dependant_chart();
         });
     </script>
+    <script>
+        let $ratingBarChart = $("#rating-bar-chart");
+        $.ajax({
+            url: $ratingBarChart.data("url"),
+            success: function (data) {
+                console.log(data);
+                var ctx = $ratingBarChart[0].getContext("2d");
+                new Chart(ctx, {
+                    type: 'horizontalBar',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    precision: 0
+                                },
+                            }]
+                        },
+                    },
+                });
+            }
+        });
+    </script>
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
     <script>
-    $('.download-canvas').click(function(){
-        let canvasid = $(this).data("canvas-id");
-        let canvas = document.getElementById(canvasid);
-        let imgData = canvas.toDataURL("image/jpeg", 1.0);
-        var pdf = new jsPDF();
-        pdf.addImage(imgData, 'JPEG', 0, 0);
-        pdf.save("download.pdf");
-    });
+        $('.download-canvas').click(function () {
+            let canvasid = $(this).data("canvas-id");
+            let canvas = document.getElementById(canvasid);
+            let imgData = canvas.toDataURL("image/png", 1.0);
+            var pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save("download.pdf");
+        });
     </script>
-       
+
 {% endblock javascript %}

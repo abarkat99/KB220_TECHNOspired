@@ -15,7 +15,7 @@ function chart_ajax($chart){
     if($chart.data("color") == "auto") {
         var plugins = {
             colorschemes: {
-                scheme: 'tableau.NurielStone9'
+                scheme: 'tableau.Classic20'
               }
         }
     }

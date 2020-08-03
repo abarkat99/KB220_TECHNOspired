@@ -30,6 +30,7 @@ chartpatterns = [
     path('stats/status-chart/', views.status_stats_chart, name="status_stats_chart"),
     path('stats/subcat-chart/', views.subcategory_stats_chart, name="subcat_stats_chart"),
     path('stats/subcat-dependent-chart/', views.status_chart_for_subcategory, name="subcat_dependent_chart"),
+    path('rating-chart/', views.rating_bar_chart, name="rating_bar_chart"),
     path('grievance-chart/', views.grievances_line_chart, name="grievance-chart"),
     path('stats/overall-status-chart/', overall_status_stats_chart, name="overall_status_chart"),
 ]
@@ -52,13 +53,13 @@ dashpatterns = [
          name="password_change"),
     path('settings/password/done/', PasswordChangeDoneView.as_view(template_name="redressal/password_change_done.html"),
          name="password_change_done"),
+    path('charts/', include(chartpatterns)),
 ]
 urlpatterns = [
     path('', views.HomeView.as_view(), name="home"),
     path('accounts/signup/<uidb64>/<token>/', SignupView.as_view(template_name="redressal/signup.html"), name='signup'),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include(dashpatterns)),
-    path('charts/', include(chartpatterns)),
 ]
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()

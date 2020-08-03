@@ -1,69 +1,100 @@
 {% for grievance in grievances %}
-    <tr aria-rowspan='2' class='card-row'>
-        <td class='align-middle pb-0 pt-0'>
-            <div class='initiative-heading'>
-                <h6 class=' mb-0 small' style='text-align: center'>Token Number</h6>
-                <h6 class='d-xs-block d-md-none mb-0 font-weight-bold'
-                    style='color:#252766; text-align: center; font-size: xx-small !important;'>
-                    {{ grievance.token }}</h6>
-                <h3 class='d-none d-md-block mb-0'
-                    style='text-align: center; color:#252766;font-size: medium !important;'>
-                    {{ grievance.token }}</h3>
-            </div>
-        </td>
-        <td class='align-middle pb-0' colspan="2">
-            <table class="table step3-table filter-this-table">
-                <tr>
-                    <th colspan="2" style="text-align:left;" class="p-0">
-                        {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}<span class="text-danger">High Priority <i class="fa fa-exclamation-triangle"></i></span>{% endif %}
-                        <a href="{% url 'view_grievance' grievance.token %}"><h5 class='d-none d-md-block mb-0 text-uppercase font-weight-bold'
-                            style='color:#252766;'>{{ grievance.subject }}</h5></a>
-                    </th>
-                </tr>
-                <tr>
-                    <th class="align-middle p-0 d-md-none d-block">
-                        <p class='m-0 d-xs-block d-md-none font-weight-bold text-uppercase'
-                           style='color:#252766; font-size: small !important;'>{{ grievance.subject }}</p>
-                        <p class='m-0 d-block d-md-none'
-                           style="font-weight: normal !important;"><b>Status:</b><b
-                                class="{{ grievance.status_html_class }}">
-                            {{ grievance.get_status_display }}</b></p>
-                    </th>
-
-                    <th class="align-middle p-0 d-none d-md-block">
-                        <div class="row">
-                            <div class="col-6">
-                            {% comment %} YE Field idhar useless abhi keliye rehenede nahi to 1-2 balance a{% endcomment %}
-                                <p class='mt-2 d-none d-md-block'
-                                style="font-weight: normal !important;"> 
-                                    <b>Category : </b> {{ grievance.get_category_display }}</p>
-                                <p class='mt-1 d-none d-md-block'
-                                style="font-weight: normal !important;">
-                                    <b>Sub-Category : </b> {{ grievance.sub_category }}</p>
-                            </div>
-                            <!--</th>-->
-
-                            <div class="col-6">
-                                <!--<th class='align-middle p-0 d-none d-md-block'>-->
-                                <p class='mt-2 d-none d-md-block'
-                                style="font-weight: normal !important;"><b>Status : </b><span
-                                        class="{{ grievance.status_html_class }}">
-                                                        {{ grievance.get_status_display }}</span></p>
-                                <p class='mt-1 d-none d-md-block'
-                                style="font-weight: normal !important;"><b>Posted
-                                    on : </b> {{ grievance.date }}</p>
-                            </div>
+<tr aria-rowspan='2' class='card-row'>
+    <td class='align-middle pb-0 pt-0'>
+        <div class='initiative-heading'>
+            <h6 class=' mb-0 small' style='text-align: center'>Token Number</h6>
+            <h6 class='d-xs-block d-md-none mb-0 font-weight-bold'
+                style='color:#252766; text-align: center; font-size: xx-small !important;'>
+                {{ grievance.token }}</h6>
+            <h3 class='d-none d-md-block mb-0' style='text-align: center; color:#252766;font-size: medium !important;'>
+                {{ grievance.token }}</h3>
+        </div>
+    </td>
+    <td class='align-middle pb-0 px-0' colspan="2">
+        <table class="table step3-table filter-this-table">
+            <tr>
+                <th colspan="2" style="text-align:left;" class="p-0">
+                    <div class="col pl-0">
+                        {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}<span
+                            class="text-danger">High Priority <i
+                                class="fa fa-exclamation-triangle"></i></span>{% endif %}
+                        <a href="{% url 'view_grievance' grievance.token %}">
+                            <h5 class='d-none d-md-block mb-0 text-uppercase font-weight-bold' style='color:#252766;'>
+                                {{ grievance.subject }}</h5>
+                        </a>
+                        {% if grievance.rating %}
+                        <div class="rate pl-0" style="height: 15px;">
+                            <span>Rating: &nbsp;&nbsp;</span>
+                                {% with ''|center:grievance.rating.rating as range %}
+                                {% for _ in range %}
+                                <input type="radio" id="star5" name="rate" value="5" checked disabled />
+                                <label for="star5" style="color: #ffc700; font-size: 15px !important;">5 stars</label>
+                                {% endfor %}
+                                {% endwith %}
+                                {% with grievance.rating.rating|add:"-5" as n }
+                                {% with ''|center:n as range %}
+                                {% for _ in range %}
+                                
+                                {% endfor %}
+                                {% endwith %}
                         </div>
-                    </th>
-                </tr>
-            </table>
-        </td>
-        <td class="pb-0" style="text-align: left;" colspan="1">
-            <a target="_blank" href="{% url 'view_grievance' grievance.token %}">
-            <button type='button' class='btn btn-sm btn-outline-dark'>
-                Open 
-            </button>
+                        {% endif %}
+                    </div>
+                    <div class="col-1">
+                        <p></p>
+                    </div>
+                    </div>
+                </th>
+            </tr>
+            
+            {% comment %}
+            {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}<span class="text-danger">High
+                Priority <i class="fa fa-exclamation-triangle"></i></span>{% endif %}
+            <a href="{% url 'view_grievance' grievance.token %}">
+                <h5 class='d-none d-md-block mb-0 text-uppercase font-weight-bold' style='color:#252766;'>
+                    {{ grievance.subject }}</h5>
             </a>
-        </td>
-    </tr>
+
+            {% endcomment %}
+
+            <tr>
+                <th class="align-middle p-0 d-md-none d-block">
+                    <p class='m-0 d-xs-block d-md-none font-weight-bold text-uppercase'
+                        style='color:#252766; font-size: small !important;'>{{ grievance.subject }}</p>
+                    <p class='m-0 d-block d-md-none' style="font-weight: normal !important;"><b>Status:</b><b
+                            class="{{ grievance.status_html_class }}">
+                            {{ grievance.get_status_display }}</b></p>
+                </th>
+
+                <th class="align-middle p-0 d-none d-md-block">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class='mt-2 d-none d-md-block' style="font-weight: normal !important;">
+                                <b>Category : </b> {{ grievance.get_category_display }}</p>
+                            <p class='mt-1 d-none d-md-block' style="font-weight: normal !important;">
+                                <b>Sub-Category : </b> {{ grievance.sub_category }}</p>
+                        </div>
+                        <!--</th>-->
+
+                        <div class="col-6">
+                            <!--<th class='align-middle p-0 d-none d-md-block'>-->
+                            <p class='mt-2 d-none d-md-block' style="font-weight: normal !important;"><b>Status :
+                                </b><span class="{{ grievance.status_html_class }}">
+                                    {{ grievance.get_status_display }}</span></p>
+                            <p class='mt-1 d-none d-md-block' style="font-weight: normal !important;"><b>Posted
+                                    on : </b> {{ grievance.date }}</p>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </table>
+    </td>
+    <td class="pb-0" style="text-align: left;" colspan="1">
+        <a target="_blank" href="{% url 'view_grievance' grievance.token %}">
+            <button type='button' class='btn btn-sm btn-outline-dark'>
+                Open
+            </button>
+        </a>
+    </td>
+</tr>
 {% endfor %}

@@ -4,7 +4,7 @@ from accounts.forms import NewTempUserForm, NewStudentForm, NewMassStudentForm
 from accounts.models import TempUser, StudentTempUser, User, UniversityMember, InstituteMember, DepartmentMember, \
     Student
 
-from studentg.models import Grievance, Reply, Notification
+from studentg.models import Grievance, Reply, Notification, Rating
 from studentg.forms import GrievanceUpdateForm, NewReplyForm, GrievanceEscalationForm
 from studentg.constants import STATUS_COLOR_CONVERTER, STATUS_DISPLAY_CONVERTER
 
@@ -103,7 +103,8 @@ class ViewGrievance(View):
         update_form = GrievanceUpdateForm(instance=grievance)
         user_body_object = request.user.get_redressal_body().get_body_object()
         if user_body_object.IS_SUB_BODY:
-            escalation_form = GrievanceEscalationForm(redressal_body=user_body_object.get_super_body(), instance=grievance, prefix='escalation')
+            escalation_form = GrievanceEscalationForm(redressal_body=user_body_object.get_super_body(),
+                                                      instance=grievance, prefix='escalation')
             context['escalation_form'] = escalation_form
         context['reply_form'] = reply_form
         context['update_form'] = update_form
@@ -116,7 +117,8 @@ class ViewGrievance(View):
         update_form = GrievanceUpdateForm(request.POST, instance=grievance)
         user_body_object = request.user.get_redressal_body().get_body_object()
         if user_body_object.IS_SUB_BODY:
-            escalation_form = GrievanceEscalationForm(request.POST, redressal_body=user_body_object.get_super_body(), instance=grievance, prefix='escalation')
+            escalation_form = GrievanceEscalationForm(request.POST, redressal_body=user_body_object.get_super_body(),
+                                                      instance=grievance, prefix='escalation')
             if escalation_form.is_valid():
                 grievance = escalation_form.save(commit=False)
                 category_escalator = {
@@ -475,8 +477,6 @@ def grievances_line_chart(request):
         data_t[i]['y'] += data_t[i - 1]['y']
     for i in range(1, len(data_r)):
         data_r[i]['y'] += data_r[i - 1]['y']
-    if gr_list:
-        data_r.append({'x': data_t[-1]['x'], 'y': data_r[-1]['y']})
     data = {
         'datasets': [
             {
@@ -490,5 +490,31 @@ def grievances_line_chart(request):
                 'borderColor': "#8e5ea2",
             }
         ]
+    }
+    return JsonResponse(data=data)
+
+
+def rating_bar_chart(request):
+    redressal_body = request.user.get_redressal_body()
+    rating_values = Rating.objects.filter(grievance__redressal_body=redressal_body).order_by('rating').values('rating').annotate(
+        rating_count=Count('id'))
+    labels = ['5', '4', '3', '2', '1']
+    data = [0 for i in range(5)]
+    for rating in rating_values:
+        data[5 - rating['rating']] = rating['rating_count']
+    data = {
+        'labels': labels,
+        'datasets': [{
+            'label': '# of Ratings',
+            'data': data,
+            'backgroundColor': [
+                '#07a631',
+                '#4a90ed',
+                '#f29a4e',
+                '#f2eb1f',
+                '#c20808',
+            ],
+            'borderWidth': 1
+        }]
     }
     return JsonResponse(data=data)

@@ -128,7 +128,6 @@ class Notification(models.Model):
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
     grievance = models.OneToOneField(Grievance, on_delete=models.CASCADE, related_name='rating')
     ONE = 1
     TWO = 2

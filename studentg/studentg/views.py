@@ -127,9 +127,9 @@ class ViewGrievance(View):
         replies = context['replies']
         last_reply = replies.last()
         if grievance.status in [Grievance.RESOLVED, Grievance.REJECTED]:
-            if grievance.rating:
+            try:
                 rating_form = RatingForm(instance=grievance.rating)
-            else:
+            except Rating.DoesNotExist:
                 rating_form = RatingForm()
             context['rating_form'] = rating_form
         if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
@@ -146,13 +146,12 @@ class ViewGrievance(View):
             reply.user = request.user
             reply.grievance = grievance
             reply.save()
-        if grievance.rating:
+        try:
             rating_form = RatingForm(request.POST, instance=grievance.rating)
-        else:
+        except Rating.DoesNotExist:
             rating_form = RatingForm(request.POST)
         if rating_form.is_valid():
             rating = rating_form.save(commit=False)
-            rating.user = request.user
             rating.grievance = grievance
             rating.save()
         return redirect('view_grievance', token=kwargs['token'])
