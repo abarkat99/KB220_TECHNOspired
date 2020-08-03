@@ -1,4 +1,9 @@
 {% load widget_tweaks %}
 <div class="row form-group my-3 ">
     {% render_field reply_form.message class="form-control"%}
+    {% for error in reply_form.message.errors %}
+            <div class="alert alert-danger small mt-2 w-100" role="alert">
+                <p> {{ error }} </p>
+            </div>
+    {% endfor %}
 </div>

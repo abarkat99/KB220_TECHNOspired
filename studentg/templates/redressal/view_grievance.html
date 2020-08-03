@@ -15,6 +15,37 @@
                         <h5 class="card-custom-title" style="">{{ grievance.subject }}</h5>
                     </div>
                 </div>
+
+                {% if grievance.rating %}
+                <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
+                    style="border: 1px solid #252766; border-radius: 5px">
+                    <div class="col-12">
+                        <h6 class="font-weight-bold"> <span style="float: left;">Student has rated the grievance: &nbsp;</span>
+                            <div class="rate pl-0" style="height: 15px;">
+                                {% with ''|center:grievance.rating.get_lacking_score as range %}
+                                {% for _ in range %}
+                                <input type="radio" id="star5" name="rate" value="5" checked disabled />
+                                <label for="star5" style="color: #ced4da; font-size: 15px !important;">5 stars</label>
+                                {% endfor %}
+                                {% endwith %}
+                                {% with ''|center:grievance.rating.rating as range %}
+                                {% for _ in range %}
+                                <input type="radio" id="star5" name="rate" value="5" checked disabled />
+                                <label for="star5" style="color: #ffc700; font-size: 15px !important;">5 stars</label>
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
+                        </h6>
+                    </div>
+                    <div class="col-12 justify-content-center" style="text-align: center;">
+
+
+                    </div>
+
+                </div>
+                {% endif %}
+
+
                 <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
                     style="border: 1px solid #dee2e6; border-radius: 5px">
                     <div class="col">
@@ -66,7 +97,8 @@
                 <div class="row justify-content-between align-items-center py-3 mx-1 mt-2"
                     style="border: 1px solid #dee2e6; border-radius: 5px">
                     <div class="col">
-                        <h6 class="font-weight-bold mb-3">Escalate Grievance to {{ grievance.get_escalated_level_display }} Level</h6>
+                        <h6 class="font-weight-bold mb-3">Escalate Grievance to
+                            {{ grievance.get_escalated_level_display }} Level</h6>
                         <form method="post">
                             {% csrf_token %}
                             <div class="row">
@@ -82,7 +114,7 @@
                         </form>
                     </div>
                 </div>
-            {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>

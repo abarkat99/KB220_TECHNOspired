@@ -5,7 +5,7 @@ function chart_ajax($chart){
         var tooltip_callbacks = {
             label: function(tooltipItem, data) {
                 var indice = tooltipItem.index;
-                var label = data.labels[indice] + ': '+ data.datasets[0].data[indice] + ' %';
+                var label = data.labels[indice] + ': '+ (Math.round((data.datasets[0].data[indice] + Number.EPSILON) * 100) / 100) + ' %';
                 return label;
             }
         };

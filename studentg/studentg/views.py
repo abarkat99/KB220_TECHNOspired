@@ -140,20 +140,30 @@ class ViewGrievance(View):
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         grievance = context['grievance']
+        replies = context['replies']
+        last_reply = replies.last()
         reply_form = NewReplyForm(request.POST)
-        if reply_form.is_valid():
-            reply = reply_form.save(commit=False)
-            reply.user = request.user
-            reply.grievance = grievance
-            reply.save()
-        try:
-            rating_form = RatingForm(request.POST, instance=grievance.rating)
-        except Rating.DoesNotExist:
-            rating_form = RatingForm(request.POST)
-        if rating_form.is_valid():
-            rating = rating_form.save(commit=False)
-            rating.grievance = grievance
-            rating.save()
+        if grievance.status in [Grievance.RESOLVED, Grievance.REJECTED]:
+            try:
+                rating_form = RatingForm(request.POST, instance=grievance.rating)
+            except Rating.DoesNotExist:
+                rating_form = RatingForm(request.POST)
+            if rating_form.is_valid():
+                rating = rating_form.save(commit=False)
+                rating.grievance = grievance
+                rating.save()
+                return redirect('view_grievance', token=kwargs['token'])
+            context['rating_form'] = rating_form
+            return render(request, self.template_name, context)
+        if last_reply and self.request.user != last_reply.user and grievance.status not in [Grievance.RESOLVED, Grievance.REJECTED]:
+            if reply_form.is_valid():
+                reply = reply_form.save(commit=False)
+                reply.user = request.user
+                reply.grievance = grievance
+                reply.save()
+                return redirect('view_grievance', token=kwargs['token'])
+            context['reply_form'] = reply_form
+            return render(request, self.template_name, context)
         return redirect('view_grievance', token=kwargs['token'])
 
     def get_context_data(self, **kwargs):

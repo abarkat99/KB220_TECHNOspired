@@ -4,84 +4,88 @@
 {% block page_title %}Add Grievance{% endblock page_title %}
 {% block page_heading %}New Grievance{% endblock page_heading %}
 {% block page_content %}
-    <div class="container mt-3 pl-lg-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-12 px-lg-3">
+<div class="container mt-3 pl-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-12 px-lg-3">
 
-                <div class="card-custom mt-2 mt-lg-1 help-card">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col">
-                            <h5 class="my-3 card-custom-title">Enter your grievance below</h5>
+            <div class="card-custom mt-2 mt-lg-1 help-card">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col">
+                        <h5 class="my-3 card-custom-title">Enter your grievance below</h5>
+                    </div>
+                </div>
+                <form method="post" enctype="multipart/form-data" class="form-loads-subcategories"
+                    data-sub-categories-url="{% url 'load_subcategories' %}">
+                    {% csrf_token %}
+                    {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                    {% endfor %}
+                    <div class="form-group mb-3  volunteer-field">
+                        <div class="row">
+                            <div class="col">
+                                {{ form.category.label_tag }}
+                                {% render_field form.category class="custom-select" %}
+                                {% for error in form.category.errors %}
+                                <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col">
+                                {{ form.sub_category.label_tag }}
+                                {% render_field form.sub_category class="custom-select" %}
+                                {% for error in form.sub_category.errors %}
+                                <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                    <form method="post" enctype="multipart/form-data" class="form-loads-subcategories"
-                          data-sub-categories-url="{% url 'load_subcategories' %}">
-                        {% csrf_token %}
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
+                    <div class="form-group mb-3 ">
+                        {{ form.subject.label_tag }}
+                        {% render_field form.subject class="form-control" placeholder="Subject" %}
+                        {% for error in form.subject.errors %}
+                        <div class="alert alert-danger small mt-2" role="alert">
+                            <p> {{ error }}</p>
+                        </div>
                         {% endfor %}
-                        <div class="form-group mb-3  volunteer-field">
-                            <div class="row">
-                                <div class="col">
-                                    {{ form.category.label_tag }}
-                                    {% render_field form.category class="custom-select" %}
-                                    {% for error in form.category.errors %}
-                                        <span class="help-block">{{ error }}</span>
-                                    {% endfor %}
-                                </div>
-                                <div class="col">
-                                    {{ form.sub_category.label_tag }}
-                                    {% render_field form.sub_category class="custom-select" %}
-                                    {% for error in form.sub_category.errors %}
-                                        <span class="help-block">{{ error }}</span>
-                                    {% endfor %}
-                                </div>
+                    </div>
+                    <div class="form-group mb-3 " hidden>
+                        <p class="font-weight-bold">Suggestions</p>
+                        <p><a href="#">University Fees Problem</a></p>
+                        <p><a href="#">Exam Date</a></p>
+                    </div>
+                    <div class="form-group my-3">
+                        {{ form.message.label_tag }}
+                        {% render_field form.message class="form-control" placeholder="Description..." %}
+                        {% for error in form.message.errors %}
+                        <div class="alert alert-danger small mt-2" role="alert">
+                            <p> {{ error }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.image.label_tag }}
+                        {% render_field form.image class="form-control" %}
+                    </div>
+                    <div style="text-align: center" class=" mb-3 ">
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-dark submit_grievance" name="draft_submit"
+                                    style="width: 100%">
+                                    Save as Draft
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-success submit_grievance" name="true_submit"
+                                    style="width: 100%">Submit
+                                </button>
                             </div>
                         </div>
-                        <div class="form-group mb-3 ">
-                            {{ form.subject.label_tag }}
-                            {% render_field form.subject class="form-control" placeholder="Subject" %}
-                            {% for error in form.subject.errors %}
-                                <span class="help-block">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="form-group mb-3 " hidden>
-                            <p class="font-weight-bold">Suggestions</p>
-                            <p><a href="#">University Fees Problem</a></p>
-                            <p><a href="#">Exam Date</a></p>
-                        </div>
-                        <div class="form-group my-3">
-                            {{ form.message.label_tag }}
-                            {% render_field form.message class="form-control" placeholder="Description..." %}
-                            {% for error in form.message.errors %}
-                                <span class="help-block">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="form-group">
-                            {{ form.image.label_tag }}
-                            {% render_field form.image class="form-control" %}
-                        </div>
-                        <div style="text-align: center" class=" mb-3 ">
-                            <div class="row">
-                                <div class="col">
-                                    <button type="submit" class="btn btn-dark submit_grievance" name="draft_submit"
-                                            style="width: 100%">
-                                        Save as Draft
-                                    </button>
-                                </div>
-                                <div class="col">
-                                    <button type="submit" class="btn btn-success submit_grievance" name="true_submit"
-                                            style="width: 100%">Submit
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 {% endblock page_content %}
 {% block javascript %}
-    <script src="{% static 'studentg/js/load_subcat.js' %}"></script>
+<script src="{% static 'studentg/js/load_subcat.js' %}"></script>
 {% endblock javascript %}

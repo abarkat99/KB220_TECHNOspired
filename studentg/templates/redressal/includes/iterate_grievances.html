@@ -25,28 +25,24 @@
                         {% if grievance.rating %}
                         <div class="rate pl-0" style="height: 15px;">
                             <span>Rating: &nbsp;&nbsp;</span>
-                                {% with ''|center:grievance.rating.rating as range %}
-                                {% for _ in range %}
-                                <input type="radio" id="star5" name="rate" value="5" checked disabled />
-                                <label for="star5" style="color: #ffc700; font-size: 15px !important;">5 stars</label>
-                                {% endfor %}
-                                {% endwith %}
-                                {% with grievance.rating.rating|add:"-5" as n }
-                                {% with ''|center:n as range %}
-                                {% for _ in range %}
-                                
-                                {% endfor %}
-                                {% endwith %}
+                            {% with ''|center:grievance.rating.get_lacking_score as range %}
+                            {% for _ in range %}
+                            <input type="radio" id="star5" name="rate" value="5" checked disabled />
+                            <label for="star5" style="color: #ced4da; font-size: 15px !important;">5 stars</label>
+                            {% endfor %}
+                            {% endwith %}
+                            {% with ''|center:grievance.rating.rating as range %}
+                            {% for _ in range %}
+                            <input type="radio" id="star5" name="rate" value="5" checked disabled />
+                            <label for="star5" style="color: #ffc700; font-size: 15px !important;">5 stars</label>
+                            {% endfor %}
+                            {% endwith %}
                         </div>
                         {% endif %}
                     </div>
-                    <div class="col-1">
-                        <p></p>
-                    </div>
-                    </div>
                 </th>
             </tr>
-            
+
             {% comment %}
             {% if grievance.sub_category.priority == grievance.sub_category.HIGH %}<span class="text-danger">High
                 Priority <i class="fa fa-exclamation-triangle"></i></span>{% endif %}

@@ -18,6 +18,23 @@
                         <h5 class='d-none d-md-block mb-0 text-uppercase font-weight-bold' style='color:#252766;'>
                             {{ grievance.subject }}</h5>
                     </a>
+                    {% if grievance.rating %}
+                    <div class="rate pl-0" style="height: 15px;">
+                        <span>Rating: &nbsp;&nbsp;</span>
+                        {% with ''|center:grievance.rating.get_lacking_score as range %}
+                        {% for _ in range %}
+                        <input type="radio" id="star5" name="rate" value="5" checked disabled />
+                        <label for="star5" style="color: #ced4da; font-size: 15px !important;">5 stars</label>
+                        {% endfor %}
+                        {% endwith %}
+                        {% with ''|center:grievance.rating.rating as range %}
+                        {% for _ in range %}
+                        <input type="radio" id="star5" name="rate" value="5" checked disabled />
+                        <label for="star5" style="color: #ffc700; font-size: 15px !important;">5 stars</label>
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                    {% endif %}
                 </th>
             </tr>
             <tr>
@@ -38,14 +55,16 @@
                                 <b>Category : </b> {{ grievance.get_category_display }}</p>
                             <p class='mb-1 d-none d-md-block' style="font-weight: normal !important;">
                                 <b>Sub-Category : </b> {{ grievance.sub_category }}</p>
-                        <!---</th>--->
+                            <!---</th>--->
                         </div>
-                        
+
                         <div class="col-6">
-                                <!--<th class='align-middle p-0 d-none d-md-block'>--->
-                                <p class='mt-2 d-none d-md-block' style="font-weight: normal !important;"><b>Status : </b><span
-                                    class="{{ grievance.status_html_class }}">{{ grievance.get_status_display }}</span></p>
-                                <p class='mb-1 d-none d-md-block' style="font-weight: normal !important;"><b>Posted
+                            <!--<th class='align-middle p-0 d-none d-md-block'>--->
+                            <p class='mt-2 d-none d-md-block' style="font-weight: normal !important;"><b>Status :
+                                </b><span
+                                    class="{{ grievance.status_html_class }}">{{ grievance.get_status_display }}</span>
+                            </p>
+                            <p class='mb-1 d-none d-md-block' style="font-weight: normal !important;"><b>Posted
                                     on : </b> {{ grievance.date }}</p>
                             <!--</th>-->
                         </div>
@@ -56,9 +75,9 @@
     </td>
     <td class="pb-0" style="text-align: left;" colspan="1">
         <a target="_blank" href="{% url 'view_grievance' grievance.token %}">
-        <button type='button' class='btn btn-sm btn-outline-dark'>
-            Open
-        </button>
+            <button type='button' class='btn btn-sm btn-outline-dark'>
+                Open
+            </button>
         </a>
     </td>
 </tr>

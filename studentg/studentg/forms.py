@@ -2,12 +2,24 @@ from django import forms
 from .models import Grievance, Reply, Rating
 from redressal.models import SubCategory
 from .constants import STATUS_VISIBLE_TO_COMMITTEE
-
+from better_profanity import profanity
 
 class NewGrievanceForm(forms.ModelForm):
     class Meta:
         model = Grievance
         fields = ['category', 'sub_category', 'subject', 'message', 'image']
+
+    def clean_subject(self):
+        data = self.cleaned_data['subject']
+        if profanity.contains_profanity(data):
+            raise forms.ValidationError("Your Subject contains profanity!")
+        return data
+
+    def clean_message(self):
+        data = self.cleaned_data['message']
+        if profanity.contains_profanity(data):
+            raise forms.ValidationError("Your message contains profanity!")
+        return data
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
@@ -54,6 +66,12 @@ class NewReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ['message']
+
+    def clean_message(self):
+        data = self.cleaned_data['message']
+        if profanity.contains_profanity(data):
+            raise forms.ValidationError("Your message contains profanity!")
+        return data
 
 
 class RatingForm(forms.ModelForm):

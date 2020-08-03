@@ -332,11 +332,11 @@ class AddStudent(FormView):
         excel_file = self.request.FILES['file']
         data = pd.read_csv(excel_file)
         df = pd.DataFrame(
-            data, columns=['Fname', 'Lname', 'Email', 'Rollno'])
+            data, columns=['First name', 'Last name', 'Email', 'Rollno'])
         for index, row in df.iterrows():
             tuser = TempUser()
-            tuser.first_name = row['Fname']
-            tuser.last_name = row['Lname']
+            tuser.first_name = row['First name']
+            tuser.last_name = row['Last name']
             tuser.email = row['Email']
             tuser.created_at = timezone.now()
             tuser.redressal_body = self.request.user.get_redressal_body()
@@ -458,6 +458,7 @@ def grievances_line_chart(request):
     r_body = request.user.get_redressal_body()
     data_t = []
     data_r = []
+    # TODO query for production server with distinct clause
     # gr_list = Grievance.objects.annotate(t_count=Window(expression=Count('id'), order_by=F('date').asc()))
     gr_list = Grievance.objects.filter(
         redressal_body=r_body).exclude(status=Grievance.DRAFT).order_by('date').values('date').annotate(
@@ -505,14 +506,14 @@ def rating_bar_chart(request):
     data = {
         'labels': labels,
         'datasets': [{
-            'label': '# of Ratings',
+            'label': 'Ratings',
             'data': data,
             'backgroundColor': [
-                '#07a631',
-                '#4a90ed',
-                '#f29a4e',
-                '#f2eb1f',
-                '#c20808',
+                '#9cc168',
+                '#a9d652',
+                '#fdd44d',
+                '#fcb556',
+                '#f78961',
             ],
             'borderWidth': 1
         }]

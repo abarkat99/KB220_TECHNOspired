@@ -142,3 +142,6 @@ class Rating(models.Model):
         (ONE, '1 Star'),
     ]
     rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+
+    def get_lacking_score(self):
+        return 5 - self.rating
