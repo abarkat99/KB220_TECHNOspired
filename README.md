@@ -8,15 +8,15 @@ A Web Application for students to submit their grievances and for redressors to 
 cd studentg\
 pip3 install -r requirements.txt\
 python3 manage.py runserver
-3) By default, this server will be for student.
-For Redressal Body: redressal.localhost:8000
+3) By default, this server will be for student.\
+For Redressal Body: redressal.localhost:8000\
 For Admin: admin.localhost:8000
-4) Login Creds:
-Username: university
-Username: institute
-Username: department
-Username: student
-Username: umember
+4) Login Creds:\
+Username: university\
+Username: institute\
+Username: department\
+Username: student\
+Username: umember\
 Password: himanshu1
 
 ### Collaborators:-
@@ -28,7 +28,7 @@ Password: himanshu1
 6) Shivam Tiwari
 7) Somil Virani
 
-# CONGRATS TO EVERYONE ON WINNING THE SIH 2020!
+## CONGRATS TO EVERYONE ON WINNING THE SIH 2020!
 
 Special Thanks to:\
 Er. Ahlam Ansari (Mentor)\
