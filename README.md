@@ -2,7 +2,7 @@
 
 A Web Application for students to submit their grievances and for redressors to redress the same\
 
-###Steps to run:
+### Steps to run:
 1) Clone it
 2) In the terminal, type the following commands:
 cd studentg
@@ -19,7 +19,7 @@ Username: student
 Username: umember
 Password: himanshu1
 
-###Collaborators:-\
+### Collaborators:-\
 Abdul Aziz Barkat\
 Furqaan Thakur\
 Himanshu Patil\
@@ -28,7 +28,7 @@ Saloni Mishra\
 Shivam Tiwari\
 Somil Virani
 
-#CONGRATS TO EVERYONE ON WINNING THE SIH 2020!
+# CONGRATS TO EVERYONE ON WINNING THE SIH 2020!
 
 Special Thanks to:
 Er. Ahlam Ansari (Mentor)
