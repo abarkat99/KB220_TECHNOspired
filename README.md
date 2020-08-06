@@ -1,13 +1,13 @@
 # Student-Grievance-Support-System
 
-A Web Application for students to submit their grievances and for redressors to redress the same\
+A Web Application for students to submit their grievances and for redressors to redress the same.
 
 ### Steps to run:
 1) Clone it
 2) In the terminal, type the following commands:
-cd studentg
-pip3 install -r requirements.txt
-python3 manage.py runserver
+cd studentg\
+pip3 install -r requirements.txt\
+python3 manage.py runserver\
 3) By default, this server will be for student.
 For Redressal Body: redressal.localhost:8000
 For Admin: admin.localhost:8000
@@ -19,7 +19,7 @@ Username: student
 Username: umember
 Password: himanshu1
 
-### Collaborators:-\
+### Collaborators:-
 Abdul Aziz Barkat\
 Furqaan Thakur\
 Himanshu Patil\
