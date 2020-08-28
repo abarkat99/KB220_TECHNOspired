@@ -4,14 +4,17 @@ A Web Application for students to submit their grievances and for redressors to 
 
 ### Steps to run:
 1) Clone it
-2) In the terminal, type the following commands:\
+2) We have used the Sendgrid API for mail you whose api key was kept in a .env file in studentg directory you may do the same if you use sendgrid otherwise you need to change the EMAIL_BACKEND in settings.py 
+3) In the terminal, type the following commands:\
 cd studentg\
 pip3 install -r requirements.txt\
 python3 manage.py runserver
-3) By default, this server will be for student.\
+4) By default, www.localhost:8000 will be for students any other subdomain or no subdomain will also be for students.\
 For Redressal Body: redressal.localhost:8000\
-For Admin: admin.localhost:8000
-4) Login Creds:\
+For Admin: admin.localhost:8000\
+You will need to edit hosts.py in studentg if you want to change subdomains\
+If running on localhost you would also need to add entries in your OS's hosts file.
+5) Login Creds:\
 Username: university\
 Username: institute\
 Username: department\
