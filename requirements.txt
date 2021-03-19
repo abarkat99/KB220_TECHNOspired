@@ -13,7 +13,7 @@ lazy-object-proxy==1.4.3
 mccabe==0.6.1
 numpy==1.19.0
 pandas==1.0.5
-Pillow==7.2.0
+Pillow==8.1.1
 psutil==5.7.2
 pylint==2.5.3
 python-dateutil==2.8.1
