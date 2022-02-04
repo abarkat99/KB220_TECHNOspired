@@ -3,7 +3,7 @@ astroid==2.4.2
 better-profanity==0.6.1
 colorama==0.4.3
 Django==3.1.13
-django-filter==2.3.0
+django-filter==2.4.0
 django-hosts==4.0
 django-sendgrid-v5==0.8.1
 django-widget-tweaks==1.4.8
