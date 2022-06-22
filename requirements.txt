@@ -11,7 +11,7 @@ future==0.18.2
 isort==4.3.21
 lazy-object-proxy==1.4.3
 mccabe==0.6.1
-numpy==1.21.0
+numpy==1.22.0
 pandas==1.0.5
 Pillow==9.0.1
 psutil==5.7.2
